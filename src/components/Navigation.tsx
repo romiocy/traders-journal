@@ -3,15 +3,21 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
 import { clearCurrentUser } from "@/lib/auth";
 
 export function Navigation() {
   const router = useRouter();
   const { user, logout } = useAuth();
+  const { lang, setLang, t } = useLanguage();
 
   const handleLogout = () => {
     logout();
     router.push("/login");
+  };
+
+  const toggleLang = () => {
+    setLang(lang === "en" ? "ru" : "en");
   };
 
   return (
@@ -26,63 +32,72 @@ export function Navigation() {
                 <span className="text-white font-bold text-sm">TJ</span>
               </div>
               <span className="text-xl font-bold text-white hidden sm:inline drop-shadow-lg">
-                Trader&apos;s Journal
+                {t("common", "tradersJournal")}
               </span>
             </Link>
 
             <ul className="hidden md:flex gap-1 text-sm">
               <li>
                 <Link href="/" className="px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition">
-                  Dashboard
+                  {t("nav", "dashboard")}
                 </Link>
               </li>
               <li>
                 <Link href="/trades" className="px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition">
-                  Trades
+                  {t("nav", "trades")}
                 </Link>
               </li>
               {user && (
                 <li>
                   <Link href="/add-trade" className="px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition">
-                    Add Trade
+                    {t("nav", "addTrade")}
                   </Link>
                 </li>
               )}
               <li>
                 <Link href="/performance" className="px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition">
-                  Performance
+                  {t("nav", "performance")}
                 </Link>
               </li>
               {user && (
                 <li>
                   <Link href="/settings" className="px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition">
-                    Settings
+                    {t("nav", "settings")}
                   </Link>
                 </li>
               )}
               {user?.isAdmin && (
                 <li>
                   <Link href="/admin" className="px-3 py-2 text-blue-400 hover:text-blue-300 hover:bg-blue-900/30 rounded-lg transition font-semibold">
-                    Admin Panel
+                    {t("nav", "adminPanel")}
                   </Link>
                 </li>
               )}
             </ul>
 
             <div className="flex gap-2 items-center">
+              {/* Language Switcher */}
+              <button
+                onClick={toggleLang}
+                className="px-3 py-1.5 text-xs font-bold rounded-lg border border-slate-600 text-slate-300 hover:text-white hover:border-slate-400 transition bg-slate-800/50 backdrop-blur-sm"
+                title={lang === "en" ? "Switch to Russian" : "Переключить на English"}
+              >
+                {lang === "en" ? "🇷🇺 RU" : "🇬🇧 EN"}
+              </button>
+
               {user ? (
                 <>
                   <Link
                     href="/profile"
                     className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition font-medium text-sm"
                   >
-                    Profile
+                    {t("nav", "profile")}
                   </Link>
                   <button
                     onClick={handleLogout}
                     className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition font-medium text-sm"
                   >
-                    Sign Out
+                    {t("nav", "signOut")}
                   </button>
                 </>
               ) : (
@@ -91,13 +106,13 @@ export function Navigation() {
                     href="/login"
                     className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition font-medium text-sm"
                   >
-                    Login
+                    {t("nav", "login")}
                   </Link>
                   <Link
                     href="/signup"
                     className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition font-medium text-sm inline-block"
                   >
-                    Get Started
+                    {t("nav", "getStarted")}
                   </Link>
                 </>
               )}
@@ -111,54 +126,60 @@ export function Navigation() {
         <ul className="flex gap-2 text-xs overflow-x-auto mb-3">
           <li>
             <Link href="/" className="px-2 py-1 text-slate-300 hover:text-white whitespace-nowrap">
-              Dashboard
+              {t("nav", "dashboard")}
             </Link>
           </li>
           <li>
             <Link href="/trades" className="px-2 py-1 text-slate-300 hover:text-white whitespace-nowrap">
-              Trades
+              {t("nav", "trades")}
             </Link>
           </li>
           {user && (
             <li>
               <Link href="/add-trade" className="px-2 py-1 text-slate-300 hover:text-white whitespace-nowrap">
-                Add
+                {t("nav", "add")}
               </Link>
             </li>
           )}
           <li>
             <Link href="/performance" className="px-2 py-1 text-slate-300 hover:text-white whitespace-nowrap">
-              Performance
+              {t("nav", "performance")}
             </Link>
           </li>
           {user && (
             <li>
               <Link href="/settings" className="px-2 py-1 text-slate-300 hover:text-white whitespace-nowrap">
-                Settings
+                {t("nav", "settings")}
               </Link>
             </li>
           )}
         </ul>
         <div className="flex gap-2">
+          <button
+            onClick={toggleLang}
+            className="px-2 py-1 text-xs text-center text-slate-300 hover:text-white bg-slate-800 rounded font-bold"
+          >
+            {lang === "en" ? "🇷🇺 RU" : "🇬🇧 EN"}
+          </button>
           {user ? (
             <>
               <Link href="/profile" className="flex-1 px-2 py-1 text-xs text-center text-slate-300 hover:text-white bg-slate-800 rounded">
-                Profile
+                {t("nav", "profile")}
               </Link>
               <button
                 onClick={handleLogout}
                 className="flex-1 px-2 py-1 text-xs text-center bg-red-600 hover:bg-red-700 text-white rounded"
               >
-                Sign Out
+                {t("nav", "signOut")}
               </button>
             </>
           ) : (
             <>
               <Link href="/login" className="flex-1 px-2 py-1 text-xs text-center text-slate-300 hover:text-white bg-slate-800 rounded">
-                Login
+                {t("nav", "login")}
               </Link>
               <Link href="/signup" className="flex-1 px-2 py-1 text-xs text-center bg-blue-600 hover:bg-blue-700 text-white rounded">
-                Sign Up
+                {t("nav", "signUp")}
               </Link>
             </>
           )}

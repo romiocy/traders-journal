@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { setCurrentUser, getCurrentUser } from "@/lib/auth";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function SignupPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
@@ -30,7 +32,7 @@ export default function SignupPage() {
   }, [router]);
 
   if (loading) {
-    return <div className="text-center py-12 text-slate-400">Checking auth...</div>;
+    return <div className="text-center py-12 text-slate-400">{t("login", "checkingAuth")}</div>;
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,9 +96,9 @@ export default function SignupPage() {
       <div className="w-full max-w-md">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-transparent bg-clip-text gradient-text mb-2">
-            Join Trader&apos;s Journal
+            {t("signup", "joinTitle")}
           </h1>
-          <p className="text-slate-400">Create your account to start tracking trades</p>
+          <p className="text-slate-400">{t("signup", "createAccount")}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="card-base p-6 space-y-4">
@@ -108,14 +110,14 @@ export default function SignupPage() {
 
           <div>
             <label className="block text-sm font-semibold text-white mb-2">
-              Login *
+              {t("signup", "loginLabel")} *
             </label>
             <input
               type="text"
               name="login"
               value={formData.login}
               onChange={handleChange}
-              placeholder="Choose your login"
+              placeholder={t("signup", "chooseLogin")}
               required
               className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
@@ -124,7 +126,7 @@ export default function SignupPage() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-semibold text-white mb-2">
-                Name *
+                {t("signup", "name")} *
               </label>
               <input
                 type="text"
@@ -139,7 +141,7 @@ export default function SignupPage() {
 
             <div>
               <label className="block text-sm font-semibold text-white mb-2">
-                Surname *
+                {t("signup", "surname")} *
               </label>
               <input
                 type="text"
@@ -155,7 +157,7 @@ export default function SignupPage() {
 
           <div>
             <label className="block text-sm font-semibold text-white mb-2">
-              Email *
+              {t("signup", "email")} *
             </label>
             <input
               type="email"
@@ -170,7 +172,7 @@ export default function SignupPage() {
 
           <div>
             <label className="block text-sm font-semibold text-white mb-2">
-              Phone
+              {t("signup", "phone")}
             </label>
             <input
               type="tel"
@@ -184,14 +186,14 @@ export default function SignupPage() {
 
           <div>
             <label className="block text-sm font-semibold text-white mb-2">
-              Password *
+              {t("signup", "password")} *
             </label>
             <input
               type="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
-              placeholder="Enter your password"
+              placeholder={t("signup", "enterPassword")}
               required
               className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
@@ -199,14 +201,14 @@ export default function SignupPage() {
 
           <div>
             <label className="block text-sm font-semibold text-white mb-2">
-              Confirm Password *
+              {t("signup", "confirmPassword")} *
             </label>
             <input
               type="password"
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
-              placeholder="Confirm your password"
+              placeholder={t("signup", "confirmYourPassword")}
               required
               className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
@@ -217,13 +219,13 @@ export default function SignupPage() {
             disabled={loading}
             className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "Creating Account..." : "Sign Up"}
+            {loading ? t("signup", "creatingAccount") : t("signup", "signUp")}
           </button>
 
           <p className="text-center text-slate-400 text-sm">
-            Already have an account?{" "}
+            {t("signup", "alreadyHaveAccount")}{" "}
             <Link href="/login" className="text-blue-400 hover:text-blue-300">
-              Login here
+              {t("signup", "loginHere")}
             </Link>
           </p>
         </form>

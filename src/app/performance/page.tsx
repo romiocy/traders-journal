@@ -18,6 +18,7 @@ import {
 } from "recharts";
 import { Trade } from "@/types/trade";
 import { getCurrentUser } from "@/lib/auth";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface PerformanceMetrics {
   totalTrades: number;
@@ -52,6 +53,7 @@ interface SymbolPerformance {
 
 export default function PerformanceReviewPage() {
   const [loading, setLoading] = useState(true);
+  const { t } = useLanguage();
   const [metrics, setMetrics] = useState<PerformanceMetrics>({
     totalTrades: 0,
     closedTrades: 0,
@@ -252,7 +254,7 @@ export default function PerformanceReviewPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-slate-400">Loading performance data...</div>
+        <div className="text-slate-400">{t("performance", "loading")}</div>
       </div>
     );
   }
@@ -262,32 +264,32 @@ export default function PerformanceReviewPage() {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-transparent bg-clip-text gradient-text mb-2">
-          Performance Review
+          {t("performance", "title")}
         </h1>
-        <p className="text-slate-400">Comprehensive analysis of your trading performance</p>
+        <p className="text-slate-400">{t("performance", "subtitle")}</p>
       </div>
 
       {/* Key Metrics */}
       <div>
-        <h2 className="text-xl font-semibold text-white mb-4">Key Metrics</h2>
+        <h2 className="text-xl font-semibold text-white mb-4">{t("performance", "totalTrades")}</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <MetricCard
-            label="Total Trades"
+            label={t("performance", "totalTrades")}
             value={metrics.totalTrades}
             color={metrics.totalTrades > 0 ? "text-blue-400" : "text-slate-400"}
           />
           <MetricCard
-            label="Closed Trades"
+            label={t("performance", "closedTrades")}
             value={metrics.closedTrades}
             color="text-slate-300"
           />
           <MetricCard
-            label="Open Trades"
+            label={t("performance", "openTrades")}
             value={metrics.openTrades}
             color="text-yellow-400"
           />
           <MetricCard
-            label="Win Rate"
+            label={t("performance", "winRate")}
             value={metrics.winRate}
             unit="%"
             color={metrics.winRate >= 50 ? "text-green-400" : "text-red-400"}
@@ -297,30 +299,30 @@ export default function PerformanceReviewPage() {
 
       {/* Profitability Metrics */}
       <div>
-        <h2 className="text-xl font-semibold text-white mb-4">Profitability</h2>
+        <h2 className="text-xl font-semibold text-white mb-4">{t("performance", "totalPL")}</h2>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           <MetricCard
-            label="Total Profit"
+            label={t("performance", "totalPL")}
             value={metrics.totalProfit}
             color={metrics.totalProfit >= 0 ? "text-green-400" : "text-red-400"}
           />
           <MetricCard
-            label="Avg Profit/Trade"
+            label={t("performance", "avgProfit")}
             value={metrics.avgProfit}
             color={metrics.avgProfit >= 0 ? "text-green-400" : "text-red-400"}
           />
           <MetricCard
-            label="Best Trade"
+            label={t("performance", "bestTrade")}
             value={metrics.bestTrade}
             color="text-green-400"
           />
           <MetricCard
-            label="Worst Trade"
+            label={t("performance", "worstTrade")}
             value={metrics.worstTrade}
             color="text-red-400"
           />
           <MetricCard
-            label="Profit Factor"
+            label={t("performance", "profitFactor")}
             value={metrics.profitFactor}
             color={metrics.profitFactor > 1 ? "text-green-400" : "text-red-400"}
           />
@@ -329,26 +331,26 @@ export default function PerformanceReviewPage() {
 
       {/* Risk Metrics */}
       <div>
-        <h2 className="text-xl font-semibold text-white mb-4">Risk Analysis</h2>
+        <h2 className="text-xl font-semibold text-white mb-4">{t("performance", "maxDrawdown")}</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <MetricCard
-            label="Max Consecutive Wins"
+            label={t("performance", "maxConsecWins")}
             value={metrics.consecutiveWins}
             color="text-green-400"
           />
           <MetricCard
-            label="Max Consecutive Losses"
+            label={t("performance", "maxConsecLosses")}
             value={metrics.consecutiveLosses}
             color="text-red-400"
           />
           <MetricCard
-            label="Max Drawdown"
+            label={t("performance", "maxDrawdown")}
             value={metrics.maxDrawdown}
             unit="%"
             color="text-red-400"
           />
           <MetricCard
-            label="Total Volume"
+            label={t("performance", "totalVolume")}
             value={metrics.totalVolume}
             color="text-slate-300"
           />
@@ -358,7 +360,7 @@ export default function PerformanceReviewPage() {
       {/* Charts */}
       {chartData.length > 0 && (
         <div className="card-base p-6">
-          <h2 className="text-xl font-semibold text-white mb-4">Cumulative Profit Over Time</h2>
+          <h2 className="text-xl font-semibold text-white mb-4">{t("performance", "equityCurve")}</h2>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
@@ -377,7 +379,7 @@ export default function PerformanceReviewPage() {
                 dataKey="profit"
                 stroke="#3b82f6"
                 dot={false}
-                name="Cumulative Profit"
+                name={t("performance", "equityCurve")}
               />
             </LineChart>
           </ResponsiveContainer>
@@ -386,7 +388,7 @@ export default function PerformanceReviewPage() {
 
       {drawdownData.length > 0 && (
         <div className="card-base p-6">
-          <h2 className="text-xl font-semibold text-white mb-4">Drawdown Analysis</h2>
+          <h2 className="text-xl font-semibold text-white mb-4">{t("performance", "drawdownChart")}</h2>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={drawdownData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
@@ -400,7 +402,7 @@ export default function PerformanceReviewPage() {
                 }}
               />
               <Legend />
-              <Bar dataKey="drawdown" fill="#ef4444" name="Drawdown %" />
+              <Bar dataKey="drawdown" fill="#ef4444" name={t("performance", "drawdownChart")} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -409,7 +411,7 @@ export default function PerformanceReviewPage() {
       {/* Monthly Performance */}
       {monthlyData.length > 0 && (
         <div className="card-base p-6">
-          <h2 className="text-xl font-semibold text-white mb-4">Monthly Performance</h2>
+          <h2 className="text-xl font-semibold text-white mb-4">{t("performance", "monthlyPerformance")}</h2>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={monthlyData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
@@ -423,7 +425,7 @@ export default function PerformanceReviewPage() {
                 }}
               />
               <Legend />
-              <Bar dataKey="profit" fill="#10b981" name="Profit" />
+              <Bar dataKey="profit" fill="#10b981" name={t("performance", "profit")} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -432,16 +434,16 @@ export default function PerformanceReviewPage() {
       {/* Symbol Performance Table */}
       {symbolData.length > 0 && (
         <div className="card-base p-6">
-          <h2 className="text-xl font-semibold text-white mb-4">Performance by Symbol</h2>
+          <h2 className="text-xl font-semibold text-white mb-4">{t("performance", "symbolBreakdown")}</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-slate-700">
-                  <th className="text-left py-2 px-4 text-slate-400 font-semibold">Symbol</th>
-                  <th className="text-center py-2 px-4 text-slate-400 font-semibold">Trades</th>
-                  <th className="text-center py-2 px-4 text-slate-400 font-semibold">Wins</th>
-                  <th className="text-center py-2 px-4 text-slate-400 font-semibold">Win Rate</th>
-                  <th className="text-right py-2 px-4 text-slate-400 font-semibold">Profit</th>
+                  <th className="text-left py-2 px-4 text-slate-400 font-semibold">{t("admin", "symbol")}</th>
+                  <th className="text-center py-2 px-4 text-slate-400 font-semibold">{t("admin", "trades")}</th>
+                  <th className="text-center py-2 px-4 text-slate-400 font-semibold">{t("admin", "wins")}</th>
+                  <th className="text-center py-2 px-4 text-slate-400 font-semibold">{t("performance", "winRate")}</th>
+                  <th className="text-right py-2 px-4 text-slate-400 font-semibold">{t("performance", "profit")}</th>
                 </tr>
               </thead>
               <tbody>

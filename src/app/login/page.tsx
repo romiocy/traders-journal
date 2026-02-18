@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { setCurrentUser, getCurrentUser } from "@/lib/auth";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
@@ -25,7 +27,7 @@ export default function LoginPage() {
   }, [router]);
 
   if (loading) {
-    return <div className="text-center py-12 text-slate-400">Checking auth...</div>;
+    return <div className="text-center py-12 text-slate-400">{t("login", "checkingAuth")}</div>;
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,9 +80,9 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-transparent bg-clip-text gradient-text mb-2">
-            Welcome Back
+            {t("login", "welcomeBack")}
           </h1>
-          <p className="text-slate-400">Login to your Trader&apos;s Journal account</p>
+          <p className="text-slate-400">{t("login", "loginToAccount")}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="card-base p-6 space-y-4">
@@ -92,14 +94,14 @@ export default function LoginPage() {
 
           <div>
             <label className="block text-sm font-semibold text-white mb-2">
-              Login *
+              {t("login", "loginLabel")} *
             </label>
             <input
               type="text"
               name="login"
               value={formData.login}
               onChange={handleChange}
-              placeholder="Enter your login"
+              placeholder={t("login", "enterLogin")}
               required
               className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
@@ -107,14 +109,14 @@ export default function LoginPage() {
 
           <div>
             <label className="block text-sm font-semibold text-white mb-2">
-              Password *
+              {t("login", "password")} *
             </label>
             <input
               type="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
-              placeholder="Enter your password"
+              placeholder={t("login", "enterPassword")}
               required
               className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
@@ -125,13 +127,13 @@ export default function LoginPage() {
             disabled={loading}
             className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "Logging In..." : "Login"}
+            {loading ? t("login", "loggingIn") : t("login", "loginBtn")}
           </button>
 
           <p className="text-center text-slate-400 text-sm">
-            Don&apos;t have an account?{" "}
+            {t("login", "noAccount")}{" "}
             <Link href="/signup" className="text-blue-400 hover:text-blue-300">
-              Sign up here
+              {t("login", "signUpHere")}
             </Link>
           </p>
         </form>

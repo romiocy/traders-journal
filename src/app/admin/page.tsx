@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { getCurrentUser } from "@/lib/auth";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface Portfolio {
   totalTrades: number;
@@ -52,6 +53,7 @@ export default function AdminPanel() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [expandedUser, setExpandedUser] = useState<string | null>(null);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const checkAdminAndFetchUsers = async () => {
@@ -117,7 +119,7 @@ export default function AdminPanel() {
       <div className="min-h-[60vh] flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-slate-400">Loading admin panel...</p>
+          <p className="text-slate-400">{t("admin", "loading")}</p>
         </div>
       </div>
     );
@@ -135,37 +137,37 @@ export default function AdminPanel() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-4xl font-bold text-white mb-2">Admin Panel</h1>
-        <p className="text-slate-400">Overview of all registered members and their investment portfolios</p>
+        <h1 className="text-4xl font-bold text-white mb-2">{t("admin", "title")}</h1>
+        <p className="text-slate-400">{t("admin", "subtitle")}</p>
       </div>
 
       {/* Overview Stats */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-        <OverviewCard label="Total Members" value={totalMembers} icon="👥" />
-        <OverviewCard label="Admins" value={totalAdmins} icon="🛡️" color="text-blue-400" />
-        <OverviewCard label="Total Trades" value={totalAllTrades} icon="📊" color="text-cyan-400" />
+        <OverviewCard label={t("admin", "totalMembers")} value={totalMembers} icon="👥" />
+        <OverviewCard label={t("admin", "admins")} value={totalAdmins} icon="🛡️" color="text-blue-400" />
+        <OverviewCard label={t("admin", "totalTrades")} value={totalAllTrades} icon="📊" color="text-cyan-400" />
         <OverviewCard
-          label="Platform P&L"
+          label={t("admin", "platformPL")}
           value={`$${totalAllProfit.toFixed(2)}`}
           icon="💰"
           color={totalAllProfit >= 0 ? "text-green-400" : "text-red-400"}
         />
         <OverviewCard
-          label="Avg Win Rate"
+          label={t("admin", "avgWinRate")}
           value={`${isNaN(avgWinRate) ? 0 : avgWinRate.toFixed(1)}%`}
           icon="🎯"
           color="text-yellow-400"
         />
-        <OverviewCard label="New This Month" value={newThisMonth} icon="🆕" color="text-green-400" />
+        <OverviewCard label={t("admin", "newThisMonth")} value={newThisMonth} icon="🆕" color="text-green-400" />
       </div>
 
       {/* Members List */}
       <div className="space-y-4">
-        <h2 className="text-xl font-bold text-white">All Members</h2>
+        <h2 className="text-xl font-bold text-white">{t("admin", "allMembers")}</h2>
         
         {users.length === 0 ? (
           <div className="bg-slate-800/50 rounded-lg border border-slate-700 p-12 text-center">
-            <p className="text-slate-400">No members found</p>
+            <p className="text-slate-400">{t("admin", "noMembers")}</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -200,21 +202,21 @@ export default function AdminPanel() {
 
                   <div className="hidden md:flex items-center gap-6 mr-4">
                     <div className="text-center">
-                      <p className="text-xs text-slate-500">Trades</p>
+                      <p className="text-xs text-slate-500">{t("admin", "trades")}</p>
                       <p className="text-sm font-bold text-cyan-400">{member.tradeCount}</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-xs text-slate-500">Win Rate</p>
+                      <p className="text-xs text-slate-500">{t("admin", "winRate")}</p>
                       <p className="text-sm font-bold text-yellow-400">{member.portfolio.winRate}%</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-xs text-slate-500">Total P&L</p>
+                      <p className="text-xs text-slate-500">{t("admin", "totalPL")}</p>
                       <p className={`text-sm font-bold ${member.portfolio.totalProfit >= 0 ? "text-green-400" : "text-red-400"}`}>
                         ${member.portfolio.totalProfit.toFixed(2)}
                       </p>
                     </div>
                     <div className="text-center">
-                      <p className="text-xs text-slate-500">Joined</p>
+                      <p className="text-xs text-slate-500">{t("admin", "joined")}</p>
                       <p className="text-sm text-slate-300">{new Date(member.createdAt).toLocaleDateString()}</p>
                     </div>
                   </div>
@@ -230,51 +232,51 @@ export default function AdminPanel() {
                     {/* Member Info */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                       <div>
-                        <p className="text-xs text-slate-500 mb-1">Username</p>
+                        <p className="text-xs text-slate-500 mb-1">{t("admin", "username")}</p>
                         <p className="text-sm text-slate-300">{member.login}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-500 mb-1">Email</p>
+                        <p className="text-xs text-slate-500 mb-1">{t("admin", "email")}</p>
                         <p className="text-sm text-slate-300">{member.email}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-500 mb-1">Phone</p>
+                        <p className="text-xs text-slate-500 mb-1">{t("admin", "phone")}</p>
                         <p className="text-sm text-slate-300">{member.phone || "N/A"}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-500 mb-1">Member Since</p>
+                        <p className="text-xs text-slate-500 mb-1">{t("admin", "memberSince")}</p>
                         <p className="text-sm text-slate-300">{new Date(member.createdAt).toLocaleDateString()}</p>
                       </div>
                     </div>
 
                     {/* Portfolio Stats */}
-                    <h3 className="text-sm font-semibold text-white mb-3">📊 Investment Portfolio</h3>
+                    <h3 className="text-sm font-semibold text-white mb-3">📊 {t("admin", "investmentPortfolio")}</h3>
                     <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
-                      <MiniStat label="Total Trades" value={member.portfolio.totalTrades} />
-                      <MiniStat label="Open" value={member.portfolio.openTrades} color="text-blue-400" />
-                      <MiniStat label="Closed" value={member.portfolio.closedTrades} color="text-slate-300" />
-                      <MiniStat label="Wins" value={member.portfolio.winningTrades} color="text-green-400" />
-                      <MiniStat label="Losses" value={member.portfolio.losingTrades} color="text-red-400" />
+                      <MiniStat label={t("admin", "totalTrades")} value={member.portfolio.totalTrades} />
+                      <MiniStat label={t("admin", "open")} value={member.portfolio.openTrades} color="text-blue-400" />
+                      <MiniStat label={t("admin", "closed")} value={member.portfolio.closedTrades} color="text-slate-300" />
+                      <MiniStat label={t("admin", "wins")} value={member.portfolio.winningTrades} color="text-green-400" />
+                      <MiniStat label={t("admin", "losses")} value={member.portfolio.losingTrades} color="text-red-400" />
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
                       <MiniStat
-                        label="Total P&L"
+                        label={t("admin", "totalPL")}
                         value={`$${member.portfolio.totalProfit.toFixed(2)}`}
                         color={member.portfolio.totalProfit >= 0 ? "text-green-400" : "text-red-400"}
                       />
                       <MiniStat
-                        label="Win Rate"
+                        label={t("admin", "winRate")}
                         value={`${member.portfolio.winRate}%`}
                         color={member.portfolio.winRate >= 50 ? "text-green-400" : "text-yellow-400"}
                       />
                       <MiniStat
-                        label="Best Trade"
+                        label={t("admin", "bestTrade")}
                         value={`$${member.portfolio.bestTrade.toFixed(2)}`}
                         color="text-green-400"
                       />
                       <MiniStat
-                        label="Worst Trade"
+                        label={t("admin", "worstTrade")}
                         value={`$${member.portfolio.worstTrade.toFixed(2)}`}
                         color="text-red-400"
                       />
@@ -282,7 +284,7 @@ export default function AdminPanel() {
 
                     {member.portfolio.openPositionValue > 0 && (
                       <div className="bg-blue-900/20 border border-blue-800/40 rounded-lg p-3 mb-6">
-                        <p className="text-xs text-blue-400 mb-1">Open Position Value</p>
+                        <p className="text-xs text-blue-400 mb-1">{t("admin", "openPositionValue")}</p>
                         <p className="text-lg font-bold text-blue-300">${member.portfolio.openPositionValue.toFixed(2)}</p>
                       </div>
                     )}
@@ -290,18 +292,18 @@ export default function AdminPanel() {
                     {/* Recent Trades */}
                     {member.recentTrades.length > 0 ? (
                       <>
-                        <h3 className="text-sm font-semibold text-white mb-3">📝 Recent Trades (Last 5)</h3>
+                        <h3 className="text-sm font-semibold text-white mb-3">📝 {t("admin", "recentTrades")}</h3>
                         <div className="overflow-x-auto">
                           <table className="w-full text-sm">
                             <thead>
                               <tr className="border-b border-slate-700">
-                                <th className="text-left text-xs text-slate-500 pb-2 pr-4">Symbol</th>
-                                <th className="text-left text-xs text-slate-500 pb-2 pr-4">Type</th>
-                                <th className="text-left text-xs text-slate-500 pb-2 pr-4">Entry</th>
-                                <th className="text-left text-xs text-slate-500 pb-2 pr-4">Exit</th>
+                                <th className="text-left text-xs text-slate-500 pb-2 pr-4">{t("admin", "symbol")}</th>
+                                <th className="text-left text-xs text-slate-500 pb-2 pr-4">{t("admin", "type")}</th>
+                                <th className="text-left text-xs text-slate-500 pb-2 pr-4">{t("admin", "entry")}</th>
+                                <th className="text-left text-xs text-slate-500 pb-2 pr-4">{t("admin", "exit")}</th>
                                 <th className="text-left text-xs text-slate-500 pb-2 pr-4">P&L</th>
-                                <th className="text-left text-xs text-slate-500 pb-2 pr-4">Status</th>
-                                <th className="text-left text-xs text-slate-500 pb-2">Date</th>
+                                <th className="text-left text-xs text-slate-500 pb-2 pr-4">{t("admin", "status")}</th>
+                                <th className="text-left text-xs text-slate-500 pb-2">{t("admin", "date")}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -339,7 +341,7 @@ export default function AdminPanel() {
                         </div>
                       </>
                     ) : (
-                      <p className="text-slate-500 text-sm italic">No trades recorded yet</p>
+                      <p className="text-slate-500 text-sm italic">{t("admin", "noTradesRecorded")}</p>
                     )}
                   </div>
                 )}

@@ -4,10 +4,12 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { getCurrentUser } from "@/lib/auth";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function ProfilePage() {
   const router = useRouter();
   const { user, updateUser } = useAuth();
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -165,7 +167,7 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-slate-400">Loading your profile...</div>
+        <div className="text-slate-400">{t("profile", "loadingProfile")}</div>
       </div>
     );
   }
@@ -173,7 +175,7 @@ export default function ProfilePage() {
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-slate-400">Please log in first</div>
+        <div className="text-slate-400">{t("profile", "pleaseLogin")}</div>
       </div>
     );
   }
@@ -183,9 +185,9 @@ export default function ProfilePage() {
       <div className="max-w-2xl mx-auto px-4">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-transparent bg-clip-text gradient-text mb-2">
-            My Profile
+            {t("profile", "title")}
           </h1>
-          <p className="text-slate-400">Update your personal information</p>
+          <p className="text-slate-400">{t("profile", "subtitle")}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="card-base p-8 space-y-6">
@@ -203,7 +205,7 @@ export default function ProfilePage() {
 
           {/* Profile Image Section */}
           <div className="border-b border-slate-700 pb-6">
-            <h2 className="text-xl font-semibold text-white mb-4">Profile Picture</h2>
+            <h2 className="text-xl font-semibold text-white mb-4">{t("profile", "profileImage")}</h2>
             <div className="flex items-center gap-6">
               <div className="flex-shrink-0">
                 {preview ? (
@@ -232,7 +234,7 @@ export default function ProfilePage() {
                     onClick={handleRemoveImage}
                     className="text-xs text-red-400 hover:text-red-300 transition"
                   >
-                    Remove image
+                    {t("profile", "removeImage")}
                   </button>
                 )}
               </div>
@@ -241,11 +243,11 @@ export default function ProfilePage() {
 
           {/* Basic Information */}
           <div className="border-b border-slate-700 pb-6">
-            <h2 className="text-xl font-semibold text-white mb-4">Basic Information</h2>
+            <h2 className="text-xl font-semibold text-white mb-4">{ t("profile", "name") }</h2>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-white mb-2">
-                  Name *
+                  {t("profile", "name")} *
                 </label>
                 <input
                   type="text"
@@ -260,7 +262,7 @@ export default function ProfilePage() {
 
               <div>
                 <label className="block text-sm font-semibold text-white mb-2">
-                  Surname *
+                  {t("profile", "surname")} *
                 </label>
                 <input
                   type="text"
@@ -277,11 +279,11 @@ export default function ProfilePage() {
 
           {/* Contact Information */}
           <div className="border-b border-slate-700 pb-6">
-            <h2 className="text-xl font-semibold text-white mb-4">Contact Information</h2>
+            <h2 className="text-xl font-semibold text-white mb-4">{t("profile", "email")}</h2>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-semibold text-white mb-2">
-                  Login *
+                  {t("profile", "login")} *
                 </label>
                 <input
                   type="text"
@@ -296,7 +298,7 @@ export default function ProfilePage() {
 
               <div>
                 <label className="block text-sm font-semibold text-white mb-2">
-                  Email *
+                  {t("profile", "email")} *
                 </label>
                 <input
                   type="email"
@@ -311,7 +313,7 @@ export default function ProfilePage() {
 
               <div>
                 <label className="block text-sm font-semibold text-white mb-2">
-                  Phone Number
+                  {t("profile", "phone")}
                 </label>
                 <input
                   type="tel"
@@ -333,14 +335,14 @@ export default function ProfilePage() {
               className="flex items-center gap-2 text-white font-semibold mb-4 hover:text-blue-400 transition"
             >
               <span className="text-xl">{passwordSectionOpen ? "▼" : "▶"}</span>
-              Change Password
+              {t("profile", "changePassword")}
             </button>
 
             {passwordSectionOpen && (
               <div className="space-y-4 bg-slate-900/50 p-4 rounded-lg">
                 <div>
                   <label className="block text-sm font-semibold text-white mb-2">
-                    Current Password *
+                    {t("profile", "currentPassword")} *
                   </label>
                   <input
                     type="password"
@@ -354,7 +356,7 @@ export default function ProfilePage() {
 
                 <div>
                   <label className="block text-sm font-semibold text-white mb-2">
-                    New Password *
+                    {t("profile", "newPassword")} *
                   </label>
                   <input
                     type="password"
@@ -369,7 +371,7 @@ export default function ProfilePage() {
 
                 <div>
                   <label className="block text-sm font-semibold text-white mb-2">
-                    Confirm New Password *
+                    {t("profile", "confirmPassword")} *
                   </label>
                   <input
                     type="password"
@@ -391,7 +393,7 @@ export default function ProfilePage() {
               disabled={saving}
               className="flex-1 btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {saving ? "Saving..." : "Save Changes"}
+              {saving ? t("profile", "saving") : t("profile", "saveChanges")}
             </button>
 
             <button
@@ -399,7 +401,7 @@ export default function ProfilePage() {
               onClick={() => router.back()}
               className="flex-1 px-6 py-2 border border-slate-600 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition font-medium"
             >
-              Cancel
+              {t("common", "cancel")}
             </button>
           </div>
         </form>

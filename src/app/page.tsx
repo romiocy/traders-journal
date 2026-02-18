@@ -5,6 +5,7 @@ import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, L
 import { Trade } from "@/types/trade";
 import { getCurrentUser } from "@/lib/auth";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
 import { AIAssistant } from "@/components/AIAssistant";
 
 interface Stats {
@@ -21,6 +22,7 @@ interface ChartData {
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const { t, lang } = useLanguage();
   const [stats, setStats] = useState<Stats>({
     totalTrades: 0,
     winRate: 0,
@@ -74,8 +76,8 @@ export default function Dashboard() {
         const lossTrades = trades.filter((t) => t.profit && t.profit <= 0).length;
 
         setWinLossData([
-          { name: "Wins", value: winTrades, color: "#10b981" },
-          { name: "Losses", value: lossTrades, color: "#ef4444" },
+          { name: lang === "ru" ? "Победы" : "Wins", value: winTrades, color: "#10b981" },
+          { name: lang === "ru" ? "Поражения" : "Losses", value: lossTrades, color: "#ef4444" },
         ]);
       })
       .catch(() => console.error("Failed to fetch trades"));
@@ -87,10 +89,10 @@ export default function Dashboard() {
       <div className="space-y-4 mb-12">
         <div>
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-2">
-            <span className="gradient-text">Elevate Your Trading</span>
+            <span className="gradient-text">{t("dashboard", "heroTitle")}</span>
           </h1>
           <p className="text-xl text-slate-400 max-w-2xl">
-            Your AI-powered trading analyst. Track trades, analyze performance, and build winning strategies with confidence.
+            {t("dashboard", "heroSubtitle")}
           </p>
         </div>
       </div>
@@ -98,29 +100,33 @@ export default function Dashboard() {
       {/* Stats Section */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <StatCard
-          title="Total Trades"
+          title={t("dashboard", "totalTrades")}
           value={stats.totalTrades || 0}
           icon="📊"
           trend={stats.totalTrades > 0 ? "up" : "neutral"}
+          trendLabels={[t("dashboard", "positive"), t("dashboard", "negative"), t("dashboard", "neutral")]}
         />
         <StatCard
-          title="Win Rate"
+          title={t("dashboard", "winRate")}
           value={`${(stats.winRate || 0).toFixed(1)}%`}
           icon="🎯"
           trend={stats.winRate > 50 ? "up" : "down"}
+          trendLabels={[t("dashboard", "positive"), t("dashboard", "negative"), t("dashboard", "neutral")]}
         />
         <StatCard
-          title="Total Profit"
+          title={t("dashboard", "totalProfit")}
           value={`$${(stats.totalProfit || 0).toFixed(2)}`}
           icon="💰"
           trend={stats.totalProfit > 0 ? "up" : "down"}
           isProfit={stats.totalProfit >= 0}
+          trendLabels={[t("dashboard", "positive"), t("dashboard", "negative"), t("dashboard", "neutral")]}
         />
         <StatCard
-          title="Open Trades"
+          title={t("dashboard", "openTrades")}
           value={stats.openTrades || 0}
           icon="🔓"
           trend="neutral"
+          trendLabels={[t("dashboard", "positive"), t("dashboard", "negative"), t("dashboard", "neutral")]}
         />
       </div>
 
@@ -131,9 +137,9 @@ export default function Dashboard() {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-lg font-bold text-white">
-                Cumulative Profit/Loss
+                {t("dashboard", "cumulativePL")}
               </h2>
-              <p className="text-sm text-slate-400 mt-1">Your performance over time</p>
+              <p className="text-sm text-slate-400 mt-1">{t("dashboard", "performanceOverTime")}</p>
             </div>
             <div className="text-3xl">📈</div>
           </div>
@@ -176,8 +182,8 @@ export default function Dashboard() {
           ) : (
             <div className="h-[300px] flex items-center justify-center text-slate-500 rounded-lg bg-slate-800/20">
               <div className="text-center">
-                <p className="text-sm">No closed trades yet</p>
-                <p className="text-xs text-slate-600 mt-1">Close a trade to see your P&L growth</p>
+                <p className="text-sm">{t("dashboard", "noClosedTrades")}</p>
+                <p className="text-xs text-slate-600 mt-1">{t("dashboard", "closeTradeSee")}</p>
               </div>
             </div>
           )}
@@ -188,9 +194,9 @@ export default function Dashboard() {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-lg font-bold text-white">
-                Trade Results
+                {t("dashboard", "tradeResults")}
               </h2>
-              <p className="text-sm text-slate-400 mt-1">Wins vs losses breakdown</p>
+              <p className="text-sm text-slate-400 mt-1">{t("dashboard", "winsVsLosses")}</p>
             </div>
             <div className="text-3xl">🎯</div>
           </div>
@@ -224,8 +230,8 @@ export default function Dashboard() {
           ) : (
             <div className="h-[300px] flex items-center justify-center text-slate-500 rounded-lg bg-slate-800/20">
               <div className="text-center">
-                <p className="text-sm">No trade results yet</p>
-                <p className="text-xs text-slate-600 mt-1">Add and close trades to see your results</p>
+                <p className="text-sm">{t("dashboard", "noTradeResults")}</p>
+                <p className="text-xs text-slate-600 mt-1">{t("dashboard", "addAndClose")}</p>
               </div>
             </div>
           )}
@@ -237,21 +243,21 @@ export default function Dashboard() {
         <div className="card-base p-8 border-blue-500/20">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
-              <h2 className="text-2xl font-bold text-white mb-2">Ready to track your trades?</h2>
-              <p className="text-slate-400">Start logging your trades and unlock actionable insights.</p>
+              <h2 className="text-2xl font-bold text-white mb-2">{t("dashboard", "readyToTrack")}</h2>
+              <p className="text-slate-400">{t("dashboard", "startLogging")}</p>
             </div>
             <div className="flex gap-3">
               <a
                 href="/add-trade"
                 className="btn-primary flex items-center gap-2"
               >
-                <span>+</span> Add Trade
+                <span>+</span> {t("nav", "addTrade")}
               </a>
               <a
                 href="/trades"
                 className="btn-secondary flex items-center gap-2"
               >
-                📊 View Trades
+                📊 {t("dashboard", "viewTrades")}
               </a>
             </div>
           </div>
@@ -270,12 +276,14 @@ function StatCard({
   icon,
   isProfit = true,
   trend = "neutral",
+  trendLabels = ["Positive", "Negative", "Neutral"],
 }: {
   title: string;
   value: string | number;
   icon: string;
   isProfit?: boolean;
   trend?: "up" | "down" | "neutral";
+  trendLabels?: [string, string, string];
 }) {
   return (
     <div className="card-base p-6">
@@ -288,9 +296,9 @@ function StatCard({
             {value}
           </p>
           <div className="flex items-center gap-1">
-            {trend === "up" && <span className="text-green-400 text-xs font-medium">↑ Positive</span>}
-            {trend === "down" && <span className="text-red-400 text-xs font-medium">↓ Negative</span>}
-            {trend === "neutral" && <span className="text-slate-500 text-xs font-medium">— Neutral</span>}
+            {trend === "up" && <span className="text-green-400 text-xs font-medium">↑ {trendLabels[0]}</span>}
+            {trend === "down" && <span className="text-red-400 text-xs font-medium">↓ {trendLabels[1]}</span>}
+            {trend === "neutral" && <span className="text-slate-500 text-xs font-medium">— {trendLabels[2]}</span>}
           </div>
         </div>
         <span className="text-3xl">{icon}</span>

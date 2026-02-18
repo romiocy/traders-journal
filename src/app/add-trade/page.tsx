@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function AddTradePage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
@@ -70,8 +72,8 @@ export default function AddTradePage() {
   return (
     <div className="max-w-2xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold text-white mb-2">Add New Trade</h1>
-        <p className="text-slate-400">Log your trading activity and build your trading journal</p>
+        <h1 className="text-4xl font-bold text-white mb-2">{t("addTrade", "title")}</h1>
+        <p className="text-slate-400">{t("addTrade", "subtitle")}</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -85,14 +87,14 @@ export default function AddTradePage() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-semibold text-white mb-2">
-                Symbol *
+                {t("addTrade", "symbol")} *
               </label>
               <input
                 type="text"
                 name="symbol"
                 value={formData.symbol}
                 onChange={handleChange}
-                placeholder="e.g., AAPL, BTC/USD"
+                placeholder={t("addTrade", "symbolPlaceholder")}
                 required
                 className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               />
@@ -100,7 +102,7 @@ export default function AddTradePage() {
 
             <div>
               <label className="block text-sm font-semibold text-white mb-2">
-                Type *
+                {t("addTrade", "type")} *
               </label>
               <select
                 name="type"
@@ -108,14 +110,14 @@ export default function AddTradePage() {
                 onChange={handleChange}
                 className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               >
-                <option value="BUY">Buy</option>
-                <option value="SELL">Sell</option>
+                <option value="BUY">{t("addTrade", "buy")}</option>
+                <option value="SELL">{t("addTrade", "sell")}</option>
               </select>
             </div>
 
             <div>
               <label className="block text-sm font-semibold text-white mb-2">
-                Quantity *
+                {t("addTrade", "quantity")} *
               </label>
               <input
                 type="number"
@@ -130,7 +132,7 @@ export default function AddTradePage() {
 
             <div>
               <label className="block text-sm font-semibold text-white mb-2">
-                Entry Price *
+                {t("addTrade", "entryPrice")} *
               </label>
               <input
                 type="number"
@@ -145,7 +147,7 @@ export default function AddTradePage() {
 
             <div className="col-span-2">
               <label className="block text-sm font-semibold text-white mb-2">
-                Trade Date *
+                {t("addTrade", "tradeDate")} *
               </label>
               <input
                 type="date"
@@ -160,13 +162,13 @@ export default function AddTradePage() {
 
           <div>
             <label className="block text-sm font-semibold text-white mb-2">
-              Setup Description
+              {t("addTrade", "setupDescription")}
             </label>
             <textarea
               name="setupDescription"
               value={formData.setupDescription}
               onChange={handleChange}
-              placeholder="Describe the setup, chart pattern, or technical analysis..."
+              placeholder={t("addTrade", "setupPlaceholder")}
               rows={3}
               className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
             />
@@ -174,13 +176,13 @@ export default function AddTradePage() {
 
           <div>
             <label className="block text-sm font-semibold text-white mb-2">
-              Reason to Buy
+              {t("addTrade", "reasonToBuy")}
             </label>
             <textarea
               name="reasonToBuy"
               value={formData.reasonToBuy}
               onChange={handleChange}
-              placeholder="Why did you take this trade..."
+              placeholder={t("addTrade", "reasonPlaceholder")}
               rows={3}
               className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
             />
@@ -193,14 +195,14 @@ export default function AddTradePage() {
             disabled={loading}
             className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "Saving..." : "Save Trade"}
+            {loading ? t("addTrade", "saving") : t("addTrade", "saveTrade")}
           </button>
           <button
             type="button"
             onClick={() => router.back()}
             className="btn-secondary"
           >
-            Cancel
+            {t("addTrade", "cancel")}
           </button>
         </div>
       </form>

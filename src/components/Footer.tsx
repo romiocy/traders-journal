@@ -1,8 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { useLanguage } from "@/context/LanguageContext";
 
 export function Footer() {
+  const { t } = useLanguage();
+
   return (
     <footer
       className="border-t border-slate-800 relative w-full"
@@ -23,46 +26,46 @@ export function Footer() {
                 <span className="text-white font-bold text-sm">TJ</span>
               </div>
               <span className="text-lg font-bold text-white drop-shadow-lg">
-                Trader&apos;s Journal
+                {t("common", "tradersJournal")}
               </span>
             </div>
             <p className="text-slate-300 text-sm">
-              Track your trades, analyze your performance, and improve your trading strategy.
+              {t("footer", "description")}
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-white font-bold mb-4 drop-shadow-lg">Quick Links</h3>
+            <h3 className="text-white font-bold mb-4 drop-shadow-lg">{t("footer", "quickLinks")}</h3>
             <ul className="space-y-2">
               <li>
                 <Link href="/" className="text-slate-300 hover:text-white transition text-sm">
-                  Dashboard
+                  {t("nav", "dashboard")}
                 </Link>
               </li>
               <li>
                 <Link href="/trades" className="text-slate-300 hover:text-white transition text-sm">
-                  Trades
+                  {t("nav", "trades")}
                 </Link>
               </li>
               <li>
                 <Link href="/add-trade" className="text-slate-300 hover:text-white transition text-sm">
-                  Add Trade
+                  {t("nav", "addTrade")}
                 </Link>
               </li>
               <li>
                 <Link href="/settings" className="text-slate-300 hover:text-white transition text-sm">
-                  Settings
+                  {t("nav", "settings")}
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Contact Info */}
+          {/* About */}
           <div>
-            <h3 className="text-white font-bold mb-4 drop-shadow-lg">About</h3>
+            <h3 className="text-white font-bold mb-4 drop-shadow-lg">{t("footer", "about")}</h3>
             <p className="text-slate-300 text-sm mb-4">
-              Professional trading journal for serious traders. Manage your positions and track your performance.
+              {t("footer", "aboutText")}
             </p>
           </div>
         </div>
@@ -70,7 +73,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="border-t border-slate-700 mt-8 pt-8">
           <p className="text-slate-400 text-sm text-center">
-            © {new Date().getFullYear()} Trader&apos;s Journal. All rights reserved.
+            © {new Date().getFullYear()} {t("common", "tradersJournal")}. {t("footer", "allRightsReserved")}
           </p>
         </div>
       </div>

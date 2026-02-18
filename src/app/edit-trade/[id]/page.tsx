@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Trade } from "@/types/trade";
 import { getCurrentUser } from "@/lib/auth";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function EditTradePage() {
   const router = useRouter();
   const params = useParams();
   const tradeId = params.id as string;
+  const { t } = useLanguage();
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -115,43 +117,43 @@ export default function EditTradePage() {
   };
 
   if (loading) {
-    return <div className="text-center py-12">Loading trade...</div>;
+    return <div className="text-center py-12">{t("editTrade", "loadingTrade")}</div>;
   }
 
   if (!trade) {
-    return <div className="text-center py-12 text-red-600">Trade not found</div>;
+    return <div className="text-center py-12 text-red-600">{t("editTrade", "tradeNotFound")}</div>;
   }
 
   return (
     <div className="max-w-2xl mx-auto">
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-white mb-2">
-          Edit Trade - {trade.symbol}
+          {t("editTrade", "title")} - {trade.symbol}
         </h1>
-        <p className="text-slate-400">Review and update your trade details</p>
+        <p className="text-slate-400">{t("editTrade", "subtitle")}</p>
       </div>
 
       <div className="card-base p-6 mb-6">
-        <h2 className="text-lg font-bold text-white mb-4">Trade Details</h2>
+        <h2 className="text-lg font-bold text-white mb-4">{t("editTrade", "tradeDetails")}</h2>
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
-            <p className="text-slate-400">Entry Price</p>
+            <p className="text-slate-400">{t("editTrade", "entryPrice")}</p>
             <p className="font-bold text-white text-lg">${(trade.entryPrice || 0).toFixed(2)}</p>
           </div>
           <div>
-            <p className="text-slate-400">Entry Date</p>
+            <p className="text-slate-400">{t("editTrade", "entryDate")}</p>
             <p className="font-bold text-white text-lg">
               {new Date(trade.tradeDate).toLocaleDateString()}
             </p>
           </div>
           <div>
-            <p className="text-slate-400">Type</p>
+            <p className="text-slate-400">{t("editTrade", "type")}</p>
             <p className={`font-bold text-lg ${trade.type === "BUY" ? "text-green-400" : "text-red-400"}`}>
               {trade.type}
             </p>
           </div>
           <div>
-            <p className="text-slate-400">Quantity</p>
+            <p className="text-slate-400">{t("editTrade", "quantity")}</p>
             <p className="font-bold text-white text-lg">{trade.quantity}</p>
           </div>
         </div>
@@ -170,7 +172,7 @@ export default function EditTradePage() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-semibold text-white mb-2">
-                    Exit Price
+                    {t("editTrade", "exitPrice")}
                   </label>
                   <input
                     type="number"
@@ -178,14 +180,14 @@ export default function EditTradePage() {
                     value={formData.exitPrice}
                     onChange={handleChange}
                     step="0.01"
-                    placeholder="Enter exit price to close trade"
+                    placeholder={t("editTrade", "exitPricePlaceholder")}
                     className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-semibold text-white mb-2">
-                    Exit Date
+                    {t("editTrade", "exitDate")}
                   </label>
                   <input
                     type="date"
@@ -200,7 +202,7 @@ export default function EditTradePage() {
               {formData.exitPrice && (
                 <div className="bg-blue-900/30 border border-blue-700/50 rounded-lg p-4">
                   <p className="text-sm text-blue-300">
-                    <strong>Profit/Loss:</strong> $
+                    <strong>{t("editTrade", "profitLoss")}:</strong> $
                     {(
                       (parseFloat(formData.exitPrice) - (trade.entryPrice || 0)) *
                       trade.quantity
@@ -222,14 +224,14 @@ export default function EditTradePage() {
         {trade.status === "CLOSED" && (
           <div className="bg-green-900/30 border border-green-700/50 rounded-lg p-4">
             <p className="text-sm font-semibold text-green-300">
-              ✓ This trade is closed
+              ✓ {t("editTrade", "tradeClosed")}
             </p>
             <p className="text-sm text-green-400 mt-1">
-              Exit Price: ${(trade.exitPrice || 0).toFixed(2)}
+              {t("editTrade", "exitPrice")}: ${(trade.exitPrice || 0).toFixed(2)}
             </p>
             {trade.profit !== undefined && (
               <p className={`text-sm font-semibold mt-1 ${trade.profit >= 0 ? "text-green-400" : "text-red-400"}`}>
-                Profit/Loss: ${(trade.profit || 0).toFixed(2)}
+                {t("editTrade", "profitLoss")}: ${(trade.profit || 0).toFixed(2)}
               </p>
             )}
           </div>
@@ -238,13 +240,13 @@ export default function EditTradePage() {
         <div className="card-base p-6 space-y-6">
           <div>
             <label className="block text-sm font-semibold text-white mb-2">
-              Reason to Sell
+              {t("editTrade", "reasonToSell")}
             </label>
             <textarea
               name="reasonToSell"
               value={formData.reasonToSell}
               onChange={handleChange}
-              placeholder="Why did you exit this trade..."
+              placeholder={t("editTrade", "reasonToSellPlaceholder")}
               rows={3}
               className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
             />
@@ -252,13 +254,13 @@ export default function EditTradePage() {
 
           <div>
             <label className="block text-sm font-semibold text-white mb-2">
-              Mistakes
+              {t("editTrade", "mistakes")}
             </label>
             <textarea
               name="mistakes"
               value={formData.mistakes}
               onChange={handleChange}
-              placeholder="What could you have done better..."
+              placeholder={t("editTrade", "mistakesPlaceholder")}
               rows={3}
               className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
             />
@@ -266,13 +268,13 @@ export default function EditTradePage() {
 
           <div>
             <label className="block text-sm font-semibold text-white mb-2">
-              Lessons Learned
+              {t("editTrade", "lessonsLearned")}
             </label>
             <textarea
               name="lessonsLearned"
               value={formData.lessonsLearned}
               onChange={handleChange}
-              placeholder="Key takeaways from this trade..."
+              placeholder={t("editTrade", "lessonsPlaceholder")}
               rows={3}
               className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
             />
@@ -280,13 +282,13 @@ export default function EditTradePage() {
 
           <div>
             <label className="block text-sm font-semibold text-white mb-2">
-              Additional Notes
+              {t("editTrade", "additionalNotes")}
             </label>
             <textarea
               name="notes"
               value={formData.notes}
               onChange={handleChange}
-              placeholder="Any other observations..."
+              placeholder={t("editTrade", "notesPlaceholder")}
               rows={3}
               className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
             />
@@ -299,14 +301,14 @@ export default function EditTradePage() {
             disabled={saving}
             className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {saving ? "Saving..." : "Save Changes"}
+            {saving ? t("editTrade", "saving") : t("editTrade", "saveChanges")}
           </button>
           <button
             type="button"
             onClick={() => router.back()}
             className="btn-secondary"
           >
-            Cancel
+            {t("common", "cancel")}
           </button>
         </div>
       </form>
