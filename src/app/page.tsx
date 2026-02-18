@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { Trade } from "@/types/trade";
 import { getCurrentUser } from "@/lib/auth";
+import { useAuth } from "@/context/AuthContext";
 import { AIAssistant } from "@/components/AIAssistant";
 
 interface Stats {
@@ -19,6 +20,7 @@ interface ChartData {
 }
 
 export default function Dashboard() {
+  const { user } = useAuth();
   const [stats, setStats] = useState<Stats>({
     totalTrades: 0,
     winRate: 0,
@@ -230,29 +232,31 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Quick Actions */}
-      <div className="card-base p-8 border-blue-500/20">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-          <div>
-            <h2 className="text-2xl font-bold text-white mb-2">Ready to track your trades?</h2>
-            <p className="text-slate-400">Start logging your trades and unlock actionable insights.</p>
-          </div>
-          <div className="flex gap-3">
-            <a
-              href="/add-trade"
-              className="btn-primary flex items-center gap-2"
-            >
-              <span>+</span> Add Trade
-            </a>
-            <a
-              href="/trades"
-              className="btn-secondary flex items-center gap-2"
-            >
-              📊 View Trades
-            </a>
+      {/* Quick Actions - Only show when logged in */}
+      {user && (
+        <div className="card-base p-8 border-blue-500/20">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div>
+              <h2 className="text-2xl font-bold text-white mb-2">Ready to track your trades?</h2>
+              <p className="text-slate-400">Start logging your trades and unlock actionable insights.</p>
+            </div>
+            <div className="flex gap-3">
+              <a
+                href="/add-trade"
+                className="btn-primary flex items-center gap-2"
+              >
+                <span>+</span> Add Trade
+              </a>
+              <a
+                href="/trades"
+                className="btn-secondary flex items-center gap-2"
+              >
+                📊 View Trades
+              </a>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* AI Assistant */}
       <AIAssistant />
