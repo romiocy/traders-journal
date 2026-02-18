@@ -45,7 +45,7 @@ export async function GET(request: Request) {
     });
 
     // Enhance user data with trade count
-    const usersWithStats = users.map((user) => ({
+    const usersWithStats = users.map((user: any) => ({
       ...user,
       tradeCount: user.trades.length,
       trades: undefined,

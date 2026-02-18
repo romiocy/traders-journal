@@ -12,13 +12,13 @@ export async function GET(request: NextRequest) {
     });
 
     // Calculate stats
-    const closedTrades = trades.filter((t) => t.status === "CLOSED");
-    const openTrades = trades.filter((t) => t.status === "OPEN");
+    const closedTrades = trades.filter((t: any) => t.status === "CLOSED");
+    const openTrades = trades.filter((t: any) => t.status === "OPEN");
 
     let totalProfit = 0;
     let winningTrades = 0;
 
-    closedTrades.forEach((trade) => {
+    closedTrades.forEach((trade: any) => {
       if (trade.profit) {
         totalProfit += trade.profit;
         if (trade.profit > 0) winningTrades++;
