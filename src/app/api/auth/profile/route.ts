@@ -2,6 +2,8 @@ import { PrismaClient } from "@prisma/client";
 import { comparePasswords, hashPassword } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = 'force-dynamic';
+
 const prisma = new PrismaClient();
 
 export async function PUT(request: NextRequest) {
