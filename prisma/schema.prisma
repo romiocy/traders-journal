@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  
+  login     String     @unique
+  password  String     // hashed password
+  name      String
+  surname   String
+  email     String     @unique
+  phone     String?
+  profileImage String?  // URL to profile image
+  isAdmin   Boolean    @default(false)
+  
+  trades    Trade[]
+  
+  @@index([login])
+  @@index([email])
+}
+
+model Trade {
+  id        String     @id @default(cuid())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  
+  userId    String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Basic trade info
+  symbol    String     // e.g., "AAPL"
+  type      String     // "BUY" or "SELL"
+  quantity  Float
+  entryPrice Float
+  exitPrice Float?
+  
+  // Trade details
+  tradeDate DateTime
+  exitDate  DateTime?
+  status    String     @default("OPEN") // "OPEN", "CLOSED"
+  
+  // PnL
+  profit    Float?
+  profitPercentage Float?
+  
+  // Journal notes
+  setupDescription String?
+  reasonToBuy String?
+  reasonToSell String?
+  mistakes String?
+  lessonsLearned String?
+  notes    String?
+  
+  // Exchange integration
+  exchangeTradeId String?
+  exchangeSource String? // "BINANCE", "COINBASE", etc.
+  
+  @@index([userId])
+  @@index([symbol])
+  @@index([tradeDate])
+  @@index([status])
+}
+
+model ExchangeAPI {
+  id        String     @id @default(cuid())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  
+  name      String     // "BINANCE", "COINBASE", etc.
+  apiKey    String
+  apiSecret String
+  
+  @@unique([name])
+}
