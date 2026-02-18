@@ -27,7 +27,7 @@ export default function TradesPage() {
 
       const response = await fetch(`/api/trades?status=${filter === "all" ? "" : filter}`, { headers });
       const data = await response.json();
-      setTrades(data.trades);
+      setTrades(data.trades || []);
     } catch (error) {
       console.error("Failed to fetch trades:", error);
     } finally {
@@ -41,12 +41,12 @@ export default function TradesPage() {
         const user = getCurrentUser();
         const userId = user?.id;
         
-        const headers: any = { method: "DELETE" };
+        const fetchHeaders: any = {};
         if (userId) {
-          headers["x-user-id"] = userId;
+          fetchHeaders["x-user-id"] = userId;
         }
 
-        await fetch(`/api/trades/${id}`, headers);
+        await fetch(`/api/trades/${id}`, { method: "DELETE", headers: fetchHeaders });
         fetchTrades();
       } catch (error) {
         console.error("Failed to delete trade:", error);
