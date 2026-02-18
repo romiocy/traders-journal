@@ -41,21 +41,25 @@ export function Navigation() {
                   Trades
                 </Link>
               </li>
-              <li>
-                <Link href="/add-trade" className="px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition">
-                  Add Trade
-                </Link>
-              </li>
+              {user && (
+                <li>
+                  <Link href="/add-trade" className="px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition">
+                    Add Trade
+                  </Link>
+                </li>
+              )}
               <li>
                 <Link href="/performance" className="px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition">
                   Performance
                 </Link>
               </li>
-              <li>
-                <Link href="/settings" className="px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition">
-                  Settings
-                </Link>
-              </li>
+              {user && (
+                <li>
+                  <Link href="/settings" className="px-3 py-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition">
+                    Settings
+                  </Link>
+                </li>
+              )}
               {user?.isAdmin && (
                 <li>
                   <Link href="/admin" className="px-3 py-2 text-blue-400 hover:text-blue-300 hover:bg-blue-900/30 rounded-lg transition font-semibold">
@@ -115,21 +119,25 @@ export function Navigation() {
               Trades
             </Link>
           </li>
-          <li>
-            <Link href="/add-trade" className="px-2 py-1 text-slate-300 hover:text-white whitespace-nowrap">
-              Add
-            </Link>
-          </li>
+          {user && (
+            <li>
+              <Link href="/add-trade" className="px-2 py-1 text-slate-300 hover:text-white whitespace-nowrap">
+                Add
+              </Link>
+            </li>
+          )}
           <li>
             <Link href="/performance" className="px-2 py-1 text-slate-300 hover:text-white whitespace-nowrap">
               Performance
             </Link>
           </li>
-          <li>
-            <Link href="/settings" className="px-2 py-1 text-slate-300 hover:text-white whitespace-nowrap">
-              Settings
-            </Link>
-          </li>
+          {user && (
+            <li>
+              <Link href="/settings" className="px-2 py-1 text-slate-300 hover:text-white whitespace-nowrap">
+                Settings
+              </Link>
+            </li>
+          )}
         </ul>
         <div className="flex gap-2">
           {user ? (
