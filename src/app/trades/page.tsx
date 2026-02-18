@@ -5,6 +5,7 @@ import { Trade } from "@/types/trade";
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { useLanguage } from "@/context/LanguageContext";
+import { PageTransition, FadeIn, FadeInStagger, FadeInItem } from "@/components/PageTransition";
 
 export default function TradesPage() {
   const [trades, setTrades] = useState<Trade[]>([]);
@@ -61,28 +62,29 @@ export default function TradesPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <PageTransition>
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-white mb-1">{t("trades", "myTrades")}</h1>
-          <p className="text-slate-400">{t("trades", "trackAndAnalyze")}</p>
+          <h1 className="text-2xl sm:text-4xl font-bold text-white mb-1">{t("trades", "myTrades")}</h1>
+          <p className="text-slate-400 text-sm sm:text-base">{t("trades", "trackAndAnalyze")}</p>
         </div>
         <Link
           href="/add-trade"
-          className="btn-primary inline-flex items-center gap-2 w-fit"
+          className="btn-primary inline-flex items-center gap-2 w-fit text-sm sm:text-base"
         >
           <span>+</span> {t("trades", "addTrade")}
         </Link>
       </div>
 
       {/* Filters */}
-      <div className="flex gap-2 border-b border-slate-800">
+      <div className="flex gap-1 sm:gap-2 border-b border-slate-800 overflow-x-auto">
         {(["all", "open", "closed"] as const).map((status) => (
           <button
             key={status}
             onClick={() => setFilter(status)}
-            className={`py-3 px-4 capitalize font-medium text-sm transition ${
+            className={`py-2.5 sm:py-3 px-3 sm:px-4 capitalize font-medium text-xs sm:text-sm transition whitespace-nowrap ${
               filter === status
                 ? "border-b-2 border-blue-500 text-blue-400"
                 : "text-slate-400 hover:text-slate-300 border-b-2 border-transparent"
@@ -94,12 +96,67 @@ export default function TradesPage() {
       </div>
 
       {trades.length === 0 ? (
-        <div className="text-center py-16 card-base">
-          <p className="text-slate-400 text-lg mb-2">{t("trades", "no")} {filter !== "all" ? filter : ""} {t("trades", "noTradesFound")}</p>
-          <p className="text-slate-500 text-sm">{t("trades", "startByAdding")}</p>
+        <FadeIn>
+        <div className="text-center py-12 sm:py-16 card-base">
+          <p className="text-slate-400 text-base sm:text-lg mb-2">{t("trades", "no")} {filter !== "all" ? filter : ""} {t("trades", "noTradesFound")}</p>
+          <p className="text-slate-500 text-xs sm:text-sm">{t("trades", "startByAdding")}</p>
         </div>
+        </FadeIn>
       ) : (
-        <div className="overflow-x-auto">
+        <>
+          {/* Mobile Cards */}
+          <FadeInStagger className="sm:hidden space-y-3">
+            {trades.map((trade) => (
+              <FadeInItem key={trade.id}>
+                <div className="card-base p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-blue-400 text-base">{trade.symbol}</span>
+                      <span className={`px-2 py-0.5 rounded text-xs font-semibold ${
+                        trade.type === "BUY" ? "bg-green-900/30 text-green-300" : "bg-red-900/30 text-red-300"
+                      }`}>
+                        {trade.type === "BUY" ? t("common", "buy") : t("common", "sell")}
+                      </span>
+                    </div>
+                    <span className={`px-2 py-0.5 rounded text-xs font-semibold ${
+                      trade.status === "OPEN" ? "bg-blue-900/30 text-blue-300" : "bg-slate-700/50 text-slate-300"
+                    }`}>
+                      {trade.status === "OPEN" ? t("common", "open") : t("common", "closed")}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 text-xs mb-3">
+                    <div>
+                      <p className="text-slate-500">{t("trades", "entry")}</p>
+                      <p className="text-white font-medium">${(trade.entryPrice || 0).toFixed(2)}</p>
+                    </div>
+                    <div>
+                      <p className="text-slate-500">{t("trades", "exit")}</p>
+                      <p className="text-white font-medium">{trade.exitPrice ? `$${trade.exitPrice.toFixed(2)}` : "—"}</p>
+                    </div>
+                    <div>
+                      <p className="text-slate-500">{t("trades", "pl")}</p>
+                      <p className={`font-semibold ${
+                        trade.profit != null ? (trade.profit >= 0 ? "text-green-400" : "text-red-400") : "text-slate-500"
+                      }`}>
+                        {trade.profit != null ? `$${trade.profit.toFixed(2)}` : "—"}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-slate-500">{new Date(trade.tradeDate).toLocaleDateString()} · {t("trades", "qty")}: {trade.quantity}</span>
+                    <div className="flex gap-3">
+                      <Link href={`/edit-trade/${trade.id}`} className="text-blue-400 hover:text-blue-300 text-xs font-medium">{t("trades", "edit")}</Link>
+                      <button onClick={() => handleDelete(trade.id)} className="text-red-400 hover:text-red-300 text-xs font-medium">{t("trades", "delete")}</button>
+                    </div>
+                  </div>
+                </div>
+              </FadeInItem>
+            ))}
+          </FadeInStagger>
+
+          {/* Desktop Table */}
+          <FadeIn className="hidden sm:block">
+          <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b border-slate-700">
@@ -187,7 +244,10 @@ export default function TradesPage() {
             </tbody>
           </table>
         </div>
+        </FadeIn>
+        </>
       )}
     </div>
+    </PageTransition>
   );
 }

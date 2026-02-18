@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useLanguage } from "@/context/LanguageContext";
+import { PageTransition, FadeIn } from "@/components/PageTransition";
 
 export default function SettingsPage() {
   const { t } = useLanguage();
@@ -17,14 +18,16 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto space-y-8">
+    <PageTransition>
+    <div className="max-w-2xl mx-auto space-y-6 sm:space-y-8 px-1 sm:px-0">
       <div>
-        <h1 className="text-4xl font-bold text-white mb-2">{t("settings", "title")}</h1>
-        <p className="text-slate-400">{t("settings", "subtitle")}</p>
+        <h1 className="text-2xl sm:text-4xl font-bold text-white mb-2">{t("settings", "title")}</h1>
+        <p className="text-slate-400 text-sm sm:text-base">{t("settings", "subtitle")}</p>
       </div>
 
-      <div className="card-base p-6">
-        <h2 className="text-xl font-bold text-white mb-2">
+      <FadeIn>
+      <div className="card-base p-4 sm:p-6">
+        <h2 className="text-lg sm:text-xl font-bold text-white mb-2">
           {t("settings", "exchangeIntegrations")}
         </h2>
         <p className="text-slate-400 text-sm mb-6">
@@ -112,8 +115,10 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      <div className="card-base p-6">
-        <h2 className="text-xl font-bold text-white mb-6">
+      </FadeIn>
+      <FadeIn delay={0.15}>
+      <div className="card-base p-4 sm:p-6">
+        <h2 className="text-lg sm:text-xl font-bold text-white mb-6">
           {t("settings", "preferences")}
         </h2>
         <div className="space-y-4">
@@ -138,6 +143,8 @@ export default function SettingsPage() {
           </label>
         </div>
       </div>
+      </FadeIn>
     </div>
+    </PageTransition>
   );
 }

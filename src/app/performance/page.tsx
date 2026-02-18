@@ -19,6 +19,7 @@ import {
 import { Trade } from "@/types/trade";
 import { getCurrentUser } from "@/lib/auth";
 import { useLanguage } from "@/context/LanguageContext";
+import { PageTransition, FadeIn, FadeInStagger, FadeInItem } from "@/components/PageTransition";
 
 interface PerformanceMetrics {
   totalTrades: number;
@@ -242,9 +243,9 @@ export default function PerformanceReviewPage() {
   };
 
   const MetricCard = ({ label, value, unit = "", color = "text-blue-400" }: any) => (
-    <div className="p-4 bg-slate-800/50 rounded-lg border border-slate-700">
-      <div className="text-sm text-slate-400 mb-1">{label}</div>
-      <div className={`text-2xl font-bold ${color}`}>
+    <div className="p-3 sm:p-4 bg-slate-800/50 rounded-lg border border-slate-700">
+      <div className="text-xs sm:text-sm text-slate-400 mb-1">{label}</div>
+      <div className={`text-lg sm:text-2xl font-bold ${color}`}>
         {typeof value === "number" ? value.toFixed(2) : value}
         {unit}
       </div>
@@ -260,13 +261,14 @@ export default function PerformanceReviewPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <PageTransition>
+    <div className="space-y-6 sm:space-y-8">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold text-transparent bg-clip-text gradient-text mb-2">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-4xl font-bold text-transparent bg-clip-text gradient-text mb-2">
           {t("performance", "title")}
         </h1>
-        <p className="text-slate-400">{t("performance", "subtitle")}</p>
+        <p className="text-slate-400 text-sm sm:text-base">{t("performance", "subtitle")}</p>
       </div>
 
       {/* Key Metrics */}
@@ -359,9 +361,10 @@ export default function PerformanceReviewPage() {
 
       {/* Charts */}
       {chartData.length > 0 && (
-        <div className="card-base p-6">
+        <FadeIn delay={0.15}>
+        <div className="card-base p-4 sm:p-6">
           <h2 className="text-xl font-semibold text-white mb-4">{t("performance", "equityCurve")}</h2>
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={250}>
             <LineChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
               <XAxis dataKey="date" stroke="#94a3b8" />
@@ -384,12 +387,14 @@ export default function PerformanceReviewPage() {
             </LineChart>
           </ResponsiveContainer>
         </div>
+        </FadeIn>
       )}
 
       {drawdownData.length > 0 && (
-        <div className="card-base p-6">
+        <FadeIn delay={0.2}>
+        <div className="card-base p-4 sm:p-6">
           <h2 className="text-xl font-semibold text-white mb-4">{t("performance", "drawdownChart")}</h2>
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={250}>
             <BarChart data={drawdownData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
               <XAxis dataKey="date" stroke="#94a3b8" />
@@ -406,13 +411,15 @@ export default function PerformanceReviewPage() {
             </BarChart>
           </ResponsiveContainer>
         </div>
+        </FadeIn>
       )}
 
       {/* Monthly Performance */}
       {monthlyData.length > 0 && (
-        <div className="card-base p-6">
+        <FadeIn delay={0.25}>
+        <div className="card-base p-4 sm:p-6">
           <h2 className="text-xl font-semibold text-white mb-4">{t("performance", "monthlyPerformance")}</h2>
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={250}>
             <BarChart data={monthlyData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
               <XAxis dataKey="month" stroke="#94a3b8" />
@@ -429,11 +436,13 @@ export default function PerformanceReviewPage() {
             </BarChart>
           </ResponsiveContainer>
         </div>
+        </FadeIn>
       )}
 
       {/* Symbol Performance Table */}
       {symbolData.length > 0 && (
-        <div className="card-base p-6">
+        <FadeIn delay={0.3}>
+        <div className="card-base p-4 sm:p-6">
           <h2 className="text-xl font-semibold text-white mb-4">{t("performance", "symbolBreakdown")}</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -464,17 +473,21 @@ export default function PerformanceReviewPage() {
             </table>
           </div>
         </div>
+        </FadeIn>
       )}
 
       {/* Empty State */}
       {metrics.totalTrades === 0 && (
-        <div className="card-base p-12 text-center">
+        <FadeIn>
+        <div className="card-base p-8 sm:p-12 text-center">
           <div className="text-slate-400">
-            <p className="text-lg mb-2">No trades yet</p>
-            <p className="text-sm">Start trading to see your performance metrics</p>
+            <p className="text-base sm:text-lg mb-2">No trades yet</p>
+            <p className="text-xs sm:text-sm">Start trading to see your performance metrics</p>
           </div>
         </div>
+        </FadeIn>
       )}
     </div>
+    </PageTransition>
   );
 }

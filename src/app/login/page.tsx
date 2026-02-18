@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { setCurrentUser, getCurrentUser } from "@/lib/auth";
 import { useLanguage } from "@/context/LanguageContext";
+import { PageTransition } from "@/components/PageTransition";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -76,16 +77,17 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
+    <PageTransition>
+    <div className="min-h-[70vh] flex items-center justify-center px-4 py-8 sm:py-12">
       <div className="w-full max-w-md">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-transparent bg-clip-text gradient-text mb-2">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text gradient-text mb-2">
             {t("login", "welcomeBack")}
           </h1>
           <p className="text-slate-400">{t("login", "loginToAccount")}</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="card-base p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="card-base p-5 sm:p-6 space-y-4">
           {error && (
             <div className="p-4 bg-red-900/30 border border-red-700/50 rounded-lg text-red-300 text-sm">
               {error}
@@ -139,5 +141,6 @@ export default function LoginPage() {
         </form>
       </div>
     </div>
+    </PageTransition>
   );
 }

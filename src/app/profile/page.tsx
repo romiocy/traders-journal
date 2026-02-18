@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { getCurrentUser } from "@/lib/auth";
 import { useLanguage } from "@/context/LanguageContext";
+import { PageTransition } from "@/components/PageTransition";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -181,16 +182,17 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen py-12">
-      <div className="max-w-2xl mx-auto px-4">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-transparent bg-clip-text gradient-text mb-2">
+    <PageTransition>
+    <div className="min-h-[60vh] py-6 sm:py-12">
+      <div className="max-w-2xl mx-auto px-1 sm:px-4">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-4xl font-bold text-transparent bg-clip-text gradient-text mb-2">
             {t("profile", "title")}
           </h1>
-          <p className="text-slate-400">{t("profile", "subtitle")}</p>
+          <p className="text-slate-400 text-sm sm:text-base">{t("profile", "subtitle")}</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="card-base p-8 space-y-6">
+        <form onSubmit={handleSubmit} className="card-base p-4 sm:p-8 space-y-5 sm:space-y-6">
           {error && (
             <div className="p-4 bg-red-900/30 border border-red-700/50 rounded-lg text-red-300 text-sm">
               {error}
@@ -204,9 +206,9 @@ export default function ProfilePage() {
           )}
 
           {/* Profile Image Section */}
-          <div className="border-b border-slate-700 pb-6">
-            <h2 className="text-xl font-semibold text-white mb-4">{t("profile", "profileImage")}</h2>
-            <div className="flex items-center gap-6">
+          <div className="border-b border-slate-700 pb-5 sm:pb-6">
+            <h2 className="text-lg sm:text-xl font-semibold text-white mb-4">{t("profile", "profileImage")}</h2>
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
               <div className="flex-shrink-0">
                 {preview ? (
                   <img
@@ -242,9 +244,9 @@ export default function ProfilePage() {
           </div>
 
           {/* Basic Information */}
-          <div className="border-b border-slate-700 pb-6">
-            <h2 className="text-xl font-semibold text-white mb-4">{ t("profile", "name") }</h2>
-            <div className="grid grid-cols-2 gap-4">
+          <div className="border-b border-slate-700 pb-5 sm:pb-6">
+            <h2 className="text-lg sm:text-xl font-semibold text-white mb-4">{ t("profile", "name") }</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-white mb-2">
                   {t("profile", "name")} *
@@ -278,8 +280,8 @@ export default function ProfilePage() {
           </div>
 
           {/* Contact Information */}
-          <div className="border-b border-slate-700 pb-6">
-            <h2 className="text-xl font-semibold text-white mb-4">{t("profile", "email")}</h2>
+          <div className="border-b border-slate-700 pb-5 sm:pb-6">
+            <h2 className="text-lg sm:text-xl font-semibold text-white mb-4">{t("profile", "email")}</h2>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-semibold text-white mb-2">
@@ -407,5 +409,6 @@ export default function ProfilePage() {
         </form>
       </div>
     </div>
+    </PageTransition>
   );
 }

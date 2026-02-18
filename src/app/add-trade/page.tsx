@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { useLanguage } from "@/context/LanguageContext";
+import { PageTransition } from "@/components/PageTransition";
 
 export default function AddTradePage() {
   const router = useRouter();
@@ -70,10 +71,11 @@ export default function AddTradePage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold text-white mb-2">{t("addTrade", "title")}</h1>
-        <p className="text-slate-400">{t("addTrade", "subtitle")}</p>
+    <PageTransition>
+    <div className="max-w-2xl mx-auto px-1 sm:px-0">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-4xl font-bold text-white mb-2">{t("addTrade", "title")}</h1>
+        <p className="text-slate-400 text-sm sm:text-base">{t("addTrade", "subtitle")}</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -83,8 +85,8 @@ export default function AddTradePage() {
           </div>
         )}
 
-        <div className="card-base p-6 space-y-6">
-          <div className="grid grid-cols-2 gap-4">
+        <div className="card-base p-4 sm:p-6 space-y-5 sm:space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-semibold text-white mb-2">
                 {t("addTrade", "symbol")} *
@@ -207,5 +209,6 @@ export default function AddTradePage() {
         </div>
       </form>
     </div>
+    </PageTransition>
   );
 }

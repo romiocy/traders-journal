@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { getCurrentUser } from "@/lib/auth";
 import { useLanguage } from "@/context/LanguageContext";
+import { PageTransition, FadeIn, FadeInStagger, FadeInItem } from "@/components/PageTransition";
 
 interface Portfolio {
   totalTrades: number;
@@ -134,15 +135,16 @@ export default function AdminPanel() {
   }
 
   return (
-    <div className="space-y-8">
+    <PageTransition>
+    <div className="space-y-6 sm:space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-4xl font-bold text-white mb-2">{t("admin", "title")}</h1>
-        <p className="text-slate-400">{t("admin", "subtitle")}</p>
+        <h1 className="text-2xl sm:text-4xl font-bold text-white mb-2">{t("admin", "title")}</h1>
+        <p className="text-slate-400 text-sm sm:text-base">{t("admin", "subtitle")}</p>
       </div>
 
       {/* Overview Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      <FadeInStagger className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
         <OverviewCard label={t("admin", "totalMembers")} value={totalMembers} icon="👥" />
         <OverviewCard label={t("admin", "admins")} value={totalAdmins} icon="🛡️" color="text-blue-400" />
         <OverviewCard label={t("admin", "totalTrades")} value={totalAllTrades} icon="📊" color="text-cyan-400" />
@@ -159,11 +161,12 @@ export default function AdminPanel() {
           color="text-yellow-400"
         />
         <OverviewCard label={t("admin", "newThisMonth")} value={newThisMonth} icon="🆕" color="text-green-400" />
-      </div>
+      </FadeInStagger>
 
       {/* Members List */}
+      <FadeIn delay={0.2}>
       <div className="space-y-4">
-        <h2 className="text-xl font-bold text-white">{t("admin", "allMembers")}</h2>
+        <h2 className="text-lg sm:text-xl font-bold text-white">{t("admin", "allMembers")}</h2>
         
         {users.length === 0 ? (
           <div className="bg-slate-800/50 rounded-lg border border-slate-700 p-12 text-center">
@@ -179,7 +182,7 @@ export default function AdminPanel() {
                 {/* Member Row */}
                 <button
                   onClick={() => toggleExpand(member.id)}
-                  className="w-full px-6 py-4 flex items-center justify-between text-left"
+                  className="w-full px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between text-left"
                 >
                   <div className="flex items-center gap-4 flex-1 min-w-0">
                     <div className="w-10 h-10 rounded-full bg-blue-600/80 flex items-center justify-center text-sm font-bold text-white flex-shrink-0">
@@ -228,7 +231,7 @@ export default function AdminPanel() {
 
                 {/* Expanded Portfolio Details */}
                 {expandedUser === member.id && (
-                  <div className="border-t border-slate-700 px-6 py-5 bg-slate-900/50">
+                  <div className="border-t border-slate-700 px-4 sm:px-6 py-4 sm:py-5 bg-slate-900/50">
                     {/* Member Info */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                       <div>
@@ -350,7 +353,9 @@ export default function AdminPanel() {
           </div>
         )}
       </div>
+      </FadeIn>
     </div>
+    </PageTransition>
   );
 }
 
@@ -366,13 +371,15 @@ function OverviewCard({
   color?: string;
 }) {
   return (
-    <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
+    <FadeInItem>
+    <div className="bg-slate-800/50 rounded-lg p-3 sm:p-4 border border-slate-700">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xl">{icon}</span>
+        <span className="text-lg sm:text-xl">{icon}</span>
       </div>
-      <p className="text-slate-400 text-xs mb-1">{label}</p>
-      <p className={`text-xl font-bold ${color}`}>{value}</p>
+      <p className="text-slate-400 text-[10px] sm:text-xs mb-1">{label}</p>
+      <p className={`text-base sm:text-xl font-bold ${color}`}>{value}</p>
     </div>
+    </FadeInItem>
   );
 }
 

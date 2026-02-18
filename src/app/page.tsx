@@ -7,6 +7,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { AIAssistant } from "@/components/AIAssistant";
+import { PageTransition, FadeIn, FadeInStagger, FadeInItem } from "@/components/PageTransition";
 
 interface Stats {
   totalTrades: number;
@@ -84,21 +85,25 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="space-y-8">
+    <PageTransition>
+    <div className="space-y-6 sm:space-y-8">
       {/* Hero Section */}
-      <div className="space-y-4 mb-12">
+      <FadeIn>
+      <div className="space-y-3 sm:space-y-4 mb-8 sm:mb-12">
         <div>
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-2">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-2">
             <span className="gradient-text">{t("dashboard", "heroTitle")}</span>
           </h1>
-          <p className="text-xl text-slate-400 max-w-2xl">
+          <p className="text-base sm:text-xl text-slate-400 max-w-2xl">
             {t("dashboard", "heroSubtitle")}
           </p>
         </div>
       </div>
+      </FadeIn>
 
       {/* Stats Section */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <FadeInStagger className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <FadeInItem>
         <StatCard
           title={t("dashboard", "totalTrades")}
           value={stats.totalTrades || 0}
@@ -106,6 +111,8 @@ export default function Dashboard() {
           trend={stats.totalTrades > 0 ? "up" : "neutral"}
           trendLabels={[t("dashboard", "positive"), t("dashboard", "negative"), t("dashboard", "neutral")]}
         />
+        </FadeInItem>
+        <FadeInItem>
         <StatCard
           title={t("dashboard", "winRate")}
           value={`${(stats.winRate || 0).toFixed(1)}%`}
@@ -113,6 +120,8 @@ export default function Dashboard() {
           trend={stats.winRate > 50 ? "up" : "down"}
           trendLabels={[t("dashboard", "positive"), t("dashboard", "negative"), t("dashboard", "neutral")]}
         />
+        </FadeInItem>
+        <FadeInItem>
         <StatCard
           title={t("dashboard", "totalProfit")}
           value={`$${(stats.totalProfit || 0).toFixed(2)}`}
@@ -121,6 +130,8 @@ export default function Dashboard() {
           isProfit={stats.totalProfit >= 0}
           trendLabels={[t("dashboard", "positive"), t("dashboard", "negative"), t("dashboard", "neutral")]}
         />
+        </FadeInItem>
+        <FadeInItem>
         <StatCard
           title={t("dashboard", "openTrades")}
           value={stats.openTrades || 0}
@@ -128,12 +139,14 @@ export default function Dashboard() {
           trend="neutral"
           trendLabels={[t("dashboard", "positive"), t("dashboard", "negative"), t("dashboard", "neutral")]}
         />
-      </div>
+        </FadeInItem>
+      </FadeInStagger>
 
       {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Cumulative P&L Chart */}
-        <div className="card-base p-6">
+        <FadeIn delay={0.15}>
+        <div className="card-base p-4 sm:p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-lg font-bold text-white">
@@ -144,7 +157,7 @@ export default function Dashboard() {
             <div className="text-3xl">📈</div>
           </div>
           {chartData.length > 0 ? (
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={250}>
               <LineChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
                 <XAxis 
@@ -180,7 +193,7 @@ export default function Dashboard() {
               </LineChart>
             </ResponsiveContainer>
           ) : (
-            <div className="h-[300px] flex items-center justify-center text-slate-500 rounded-lg bg-slate-800/20">
+            <div className="h-[250px] flex items-center justify-center text-slate-500 rounded-lg bg-slate-800/20">
               <div className="text-center">
                 <p className="text-sm">{t("dashboard", "noClosedTrades")}</p>
                 <p className="text-xs text-slate-600 mt-1">{t("dashboard", "closeTradeSee")}</p>
@@ -188,9 +201,10 @@ export default function Dashboard() {
             </div>
           )}
         </div>
-
+        </FadeIn>
         {/* Win/Loss Distribution */}
-        <div className="card-base p-6">
+        <FadeIn delay={0.25}>
+        <div className="card-base p-4 sm:p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-lg font-bold text-white">
@@ -201,7 +215,7 @@ export default function Dashboard() {
             <div className="text-3xl">🎯</div>
           </div>
           {winLossData.some((d) => d.value > 0) ? (
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={250}>
               <PieChart>
                 <Pie
                   data={winLossData}
@@ -228,7 +242,7 @@ export default function Dashboard() {
               </PieChart>
             </ResponsiveContainer>
           ) : (
-            <div className="h-[300px] flex items-center justify-center text-slate-500 rounded-lg bg-slate-800/20">
+            <div className="h-[250px] flex items-center justify-center text-slate-500 rounded-lg bg-slate-800/20">
               <div className="text-center">
                 <p className="text-sm">{t("dashboard", "noTradeResults")}</p>
                 <p className="text-xs text-slate-600 mt-1">{t("dashboard", "addAndClose")}</p>
@@ -236,37 +250,41 @@ export default function Dashboard() {
             </div>
           )}
         </div>
+        </FadeIn>
       </div>
 
       {/* Quick Actions - Only show when logged in */}
       {user && (
-        <div className="card-base p-8 border-blue-500/20">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <FadeIn delay={0.3}>
+        <div className="card-base p-5 sm:p-8 border-blue-500/20">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 sm:gap-6">
             <div>
-              <h2 className="text-2xl font-bold text-white mb-2">{t("dashboard", "readyToTrack")}</h2>
-              <p className="text-slate-400">{t("dashboard", "startLogging")}</p>
+              <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">{t("dashboard", "readyToTrack")}</h2>
+              <p className="text-slate-400 text-sm sm:text-base">{t("dashboard", "startLogging")}</p>
             </div>
-            <div className="flex gap-3">
+            <div className="flex gap-2 sm:gap-3">
               <a
                 href="/add-trade"
-                className="btn-primary flex items-center gap-2"
+                className="btn-primary flex items-center gap-2 text-sm sm:text-base"
               >
                 <span>+</span> {t("nav", "addTrade")}
               </a>
               <a
                 href="/trades"
-                className="btn-secondary flex items-center gap-2"
+                className="btn-secondary flex items-center gap-2 text-sm sm:text-base"
               >
                 📊 {t("dashboard", "viewTrades")}
               </a>
             </div>
           </div>
         </div>
+        </FadeIn>
       )}
 
       {/* AI Assistant */}
       <AIAssistant />
     </div>
+    </PageTransition>
   );
 }
 
@@ -286,11 +304,11 @@ function StatCard({
   trendLabels?: [string, string, string];
 }) {
   return (
-    <div className="card-base p-6">
+    <div className="card-base p-4 sm:p-6">
       <div className="flex items-start justify-between">
-        <div className="space-y-3 flex-1">
-          <p className="text-sm text-slate-400 font-medium">{title}</p>
-          <p className={`text-3xl font-bold ${
+        <div className="space-y-2 sm:space-y-3 flex-1">
+          <p className="text-xs sm:text-sm text-slate-400 font-medium">{title}</p>
+          <p className={`text-2xl sm:text-3xl font-bold ${
             isProfit ? "text-white" : "text-red-400"
           }`}>
             {value}
@@ -301,7 +319,7 @@ function StatCard({
             {trend === "neutral" && <span className="text-slate-500 text-xs font-medium">— {trendLabels[2]}</span>}
           </div>
         </div>
-        <span className="text-3xl">{icon}</span>
+        <span className="text-2xl sm:text-3xl">{icon}</span>
       </div>
     </div>
   );
