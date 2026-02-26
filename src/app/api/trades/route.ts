@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
 
     const where: any = { userId: actualUserId };
     if (status) {
-      where.status = status;
+      where.status = status.toUpperCase();
     }
 
     const trades = await prisma.trade.findMany({
