@@ -247,6 +247,22 @@ export const translations = {
     loading: { en: "Loading admin panel...", ru: "Загрузка панели..." },
   },
 
+  // Trade Detail page
+  tradeDetail: {
+    loading: { en: "Loading trade details...", ru: "Загрузка деталей сделки..." },
+    backToTrades: { en: "Back to Trades", ru: "Назад к сделкам" },
+    result: { en: "Trade Result", ru: "Результат сделки" },
+    returnPct: { en: "Return", ru: "Доходность" },
+    tradeInfo: { en: "Trade Information", ru: "Информация о сделке" },
+    entryDate: { en: "Entry Date", ru: "Дата входа" },
+    exitDate: { en: "Exit Date", ru: "Дата выхода" },
+    holdingPeriod: { en: "Holding Period", ru: "Период удержания" },
+    journalNotes: { en: "Journal Notes", ru: "Заметки журнала" },
+    noNotes: { en: "No journal notes yet for this trade.", ru: "Для этой сделки ещё нет заметок." },
+    addNotes: { en: "Add notes →", ru: "Добавить заметки →" },
+    viewTrade: { en: "View", ru: "Откр." },
+  },
+
   // Common
   common: {
     tradersJournal: { en: "Trader's Journal", ru: "Журнал Трейдера" },

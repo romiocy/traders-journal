@@ -3,11 +3,13 @@
 import { useEffect, useState } from "react";
 import { Trade } from "@/types/trade";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { useLanguage } from "@/context/LanguageContext";
 import { PageTransition, FadeIn, FadeInStagger, FadeInItem } from "@/components/PageTransition";
 
 export default function TradesPage() {
+  const router = useRouter();
   const [trades, setTrades] = useState<Trade[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "open" | "closed">("all");
@@ -108,7 +110,7 @@ export default function TradesPage() {
           <FadeInStagger className="sm:hidden space-y-3">
             {trades.map((trade) => (
               <FadeInItem key={trade.id}>
-                <div className="card-base p-4">
+                <Link href={`/trades/${trade.id}`} className="block card-base p-4 hover:bg-slate-800/60 transition cursor-pointer">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-blue-400 text-base">{trade.symbol}</span>
@@ -145,11 +147,11 @@ export default function TradesPage() {
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-slate-400">{new Date(trade.tradeDate).toLocaleDateString()} · {t("trades", "qty")}: {trade.quantity}</span>
                     <div className="flex gap-3">
-                      <Link href={`/edit-trade/${trade.id}`} className="text-blue-400 hover:text-blue-300 text-xs font-medium">{t("trades", "edit")}</Link>
-                      <button onClick={() => handleDelete(trade.id)} className="text-red-400 hover:text-red-300 text-xs font-medium">{t("trades", "delete")}</button>
+                      <span onClick={(e) => { e.preventDefault(); router.push(`/edit-trade/${trade.id}`); }} className="text-blue-400 hover:text-blue-300 text-xs font-medium cursor-pointer">{t("trades", "edit")}</span>
+                      <span onClick={(e) => { e.preventDefault(); handleDelete(trade.id); }} className="text-red-400 hover:text-red-300 text-xs font-medium cursor-pointer">{t("trades", "delete")}</span>
                     </div>
                   </div>
-                </div>
+                </Link>
               </FadeInItem>
             ))}
           </FadeInStagger>
@@ -175,7 +177,8 @@ export default function TradesPage() {
               {trades.map((trade) => (
                 <tr
                   key={trade.id}
-                  className="hover:bg-slate-800/50 transition"
+                  className="hover:bg-slate-800/50 transition cursor-pointer"
+                  onClick={() => router.push(`/trades/${trade.id}`)}
                 >
                   <td className="px-4 py-4 font-semibold text-blue-400">
                     {trade.symbol}
@@ -228,11 +231,12 @@ export default function TradesPage() {
                       <Link
                         href={`/edit-trade/${trade.id}`}
                         className="text-blue-400 hover:text-blue-300 text-xs font-medium transition"
+                        onClick={(e) => e.stopPropagation()}
                       >
                         {t("trades", "edit")}
                       </Link>
                       <button
-                        onClick={() => handleDelete(trade.id)}
+                        onClick={(e) => { e.stopPropagation(); handleDelete(trade.id); }}
                         className="text-red-400 hover:text-red-300 text-xs font-medium transition"
                       >
                         {t("trades", "delete")}
