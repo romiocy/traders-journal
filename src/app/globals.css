@@ -40,6 +40,7 @@ body {
   bottom: 0;
   background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(30, 41, 59, 0.85) 100%);
   pointer-events: none;
+  z-index: 0;
 }
 
 /* Custom scrollbar */

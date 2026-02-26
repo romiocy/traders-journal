@@ -26,7 +26,7 @@ export default function RootLayout({
         <AuthProvider>
           <LanguageProvider>
             <div className="app-bg min-h-screen flex flex-col">
-              <div className="relative z-10">
+              <div className="relative">
                 <Navigation />
                 <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1">{children}</main>
               </div>
