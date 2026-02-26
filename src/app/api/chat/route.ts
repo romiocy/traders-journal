@@ -34,10 +34,11 @@ export async function POST(request: NextRequest) {
 
     const openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
+      baseURL: "https://openrouter.ai/api/v1",
     });
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "openai/gpt-oss-120b:free",
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         ...messages.map((m: { role: string; content: string }) => ({
