@@ -33,7 +33,7 @@ export default function SignupPage() {
   }, [router]);
 
   if (loading) {
-    return <div className="text-center py-12 text-slate-400">{t("login", "checkingAuth")}</div>;
+    return <div className="text-center py-12 text-slate-300">{t("login", "checkingAuth")}</div>;
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,7 +100,7 @@ export default function SignupPage() {
           <h1 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text gradient-text mb-2">
             {t("signup", "joinTitle")}
           </h1>
-          <p className="text-slate-400">{t("signup", "createAccount")}</p>
+          <p className="text-slate-300">{t("signup", "createAccount")}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="card-base p-5 sm:p-6 space-y-4">
@@ -121,7 +121,7 @@ export default function SignupPage() {
               onChange={handleChange}
               placeholder={t("signup", "chooseLogin")}
               required
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
           </div>
 
@@ -137,7 +137,7 @@ export default function SignupPage() {
                 onChange={handleChange}
                 placeholder="John"
                 required
-                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               />
             </div>
 
@@ -152,7 +152,7 @@ export default function SignupPage() {
                 onChange={handleChange}
                 placeholder="Doe"
                 required
-                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               />
             </div>
           </div>
@@ -168,7 +168,7 @@ export default function SignupPage() {
               onChange={handleChange}
               placeholder="john@example.com"
               required
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
           </div>
 
@@ -182,7 +182,7 @@ export default function SignupPage() {
               value={formData.phone}
               onChange={handleChange}
               placeholder="+1 (555) 000-0000"
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
           </div>
 
@@ -197,7 +197,7 @@ export default function SignupPage() {
               onChange={handleChange}
               placeholder={t("signup", "enterPassword")}
               required
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
           </div>
 
@@ -212,7 +212,7 @@ export default function SignupPage() {
               onChange={handleChange}
               placeholder={t("signup", "confirmYourPassword")}
               required
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
           </div>
 
@@ -224,7 +224,7 @@ export default function SignupPage() {
             {loading ? t("signup", "creatingAccount") : t("signup", "signUp")}
           </button>
 
-          <p className="text-center text-slate-400 text-sm">
+          <p className="text-center text-slate-300 text-sm">
             {t("signup", "alreadyHaveAccount")}{" "}
             <Link href="/login" className="text-blue-400 hover:text-blue-300">
               {t("signup", "loginHere")}

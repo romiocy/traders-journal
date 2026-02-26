@@ -58,7 +58,7 @@ export default function TradesPage() {
   };
 
   if (loading) {
-    return <div className="text-center py-12 text-slate-400">{t("trades", "loadingTrades")}</div>;
+    return <div className="text-center py-12 text-slate-300">{t("trades", "loadingTrades")}</div>;
   }
 
   return (
@@ -68,7 +68,7 @@ export default function TradesPage() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div>
           <h1 className="text-2xl sm:text-4xl font-bold text-white mb-1">{t("trades", "myTrades")}</h1>
-          <p className="text-slate-400 text-sm sm:text-base">{t("trades", "trackAndAnalyze")}</p>
+          <p className="text-slate-300 text-sm sm:text-base">{t("trades", "trackAndAnalyze")}</p>
         </div>
         <Link
           href="/add-trade"
@@ -87,7 +87,7 @@ export default function TradesPage() {
             className={`py-2.5 sm:py-3 px-3 sm:px-4 capitalize font-medium text-xs sm:text-sm transition whitespace-nowrap ${
               filter === status
                 ? "border-b-2 border-blue-500 text-blue-400"
-                : "text-slate-400 hover:text-slate-300 border-b-2 border-transparent"
+                : "text-slate-300 hover:text-slate-200 border-b-2 border-transparent"
             }`}
           >
             {status === "all" ? t("trades", "allTrades") : status === "open" ? t("trades", "openTrades") : t("trades", "closedTrades")}
@@ -98,8 +98,8 @@ export default function TradesPage() {
       {trades.length === 0 ? (
         <FadeIn>
         <div className="text-center py-12 sm:py-16 card-base">
-          <p className="text-slate-400 text-base sm:text-lg mb-2">{t("trades", "no")} {filter !== "all" ? filter : ""} {t("trades", "noTradesFound")}</p>
-          <p className="text-slate-500 text-xs sm:text-sm">{t("trades", "startByAdding")}</p>
+          <p className="text-slate-300 text-base sm:text-lg mb-2">{t("trades", "no")} {filter !== "all" ? filter : ""} {t("trades", "noTradesFound")}</p>
+          <p className="text-slate-400 text-xs sm:text-sm">{t("trades", "startByAdding")}</p>
         </div>
         </FadeIn>
       ) : (
@@ -126,24 +126,24 @@ export default function TradesPage() {
                   </div>
                   <div className="grid grid-cols-3 gap-2 text-xs mb-3">
                     <div>
-                      <p className="text-slate-500">{t("trades", "entry")}</p>
+                      <p className="text-slate-400">{t("trades", "entry")}</p>
                       <p className="text-white font-medium">${(trade.entryPrice || 0).toFixed(2)}</p>
                     </div>
                     <div>
-                      <p className="text-slate-500">{t("trades", "exit")}</p>
+                      <p className="text-slate-400">{t("trades", "exit")}</p>
                       <p className="text-white font-medium">{trade.exitPrice ? `$${trade.exitPrice.toFixed(2)}` : "—"}</p>
                     </div>
                     <div>
-                      <p className="text-slate-500">{t("trades", "pl")}</p>
+                      <p className="text-slate-400">{t("trades", "pl")}</p>
                       <p className={`font-semibold ${
-                        trade.profit != null ? (trade.profit >= 0 ? "text-green-400" : "text-red-400") : "text-slate-500"
+                        trade.profit != null ? (trade.profit >= 0 ? "text-green-400" : "text-red-400") : "text-slate-400"
                       }`}>
                         {trade.profit != null ? `$${trade.profit.toFixed(2)}` : "—"}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-slate-500">{new Date(trade.tradeDate).toLocaleDateString()} · {t("trades", "qty")}: {trade.quantity}</span>
+                    <span className="text-xs text-slate-400">{new Date(trade.tradeDate).toLocaleDateString()} · {t("trades", "qty")}: {trade.quantity}</span>
                     <div className="flex gap-3">
                       <Link href={`/edit-trade/${trade.id}`} className="text-blue-400 hover:text-blue-300 text-xs font-medium">{t("trades", "edit")}</Link>
                       <button onClick={() => handleDelete(trade.id)} className="text-red-400 hover:text-red-300 text-xs font-medium">{t("trades", "delete")}</button>
@@ -160,15 +160,15 @@ export default function TradesPage() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-slate-700">
-                <th className="px-4 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">{t("trades", "symbol")}</th>
-                <th className="px-4 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">{t("trades", "type")}</th>
-                <th className="px-4 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">{t("trades", "qty")}</th>
-                <th className="px-4 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">{t("trades", "entry")}</th>
-                <th className="px-4 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">{t("trades", "exit")}</th>
-                <th className="px-4 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">{t("trades", "pl")}</th>
-                <th className="px-4 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">{t("trades", "status")}</th>
-                <th className="px-4 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">{t("trades", "date")}</th>
-                <th className="px-4 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">{t("trades", "actions")}</th>
+                <th className="px-4 py-4 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider">{t("trades", "symbol")}</th>
+                <th className="px-4 py-4 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider">{t("trades", "type")}</th>
+                <th className="px-4 py-4 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider">{t("trades", "qty")}</th>
+                <th className="px-4 py-4 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider">{t("trades", "entry")}</th>
+                <th className="px-4 py-4 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider">{t("trades", "exit")}</th>
+                <th className="px-4 py-4 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider">{t("trades", "pl")}</th>
+                <th className="px-4 py-4 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider">{t("trades", "status")}</th>
+                <th className="px-4 py-4 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider">{t("trades", "date")}</th>
+                <th className="px-4 py-4 text-left text-xs font-semibold text-slate-300 uppercase tracking-wider">{t("trades", "actions")}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-700">
@@ -206,7 +206,7 @@ export default function TradesPage() {
                         ${trade.profit.toFixed(2)}
                       </span>
                     ) : (
-                      <span className="text-slate-500">—</span>
+                      <span className="text-slate-400">—</span>
                     )}
                   </td>
                   <td className="px-4 py-4">
@@ -220,7 +220,7 @@ export default function TradesPage() {
                       {trade.status === "OPEN" ? t("common", "open") : t("common", "closed")}
                     </span>
                   </td>
-                  <td className="px-4 py-4 text-slate-400 text-sm">
+                  <td className="px-4 py-4 text-slate-300 text-sm">
                     {new Date(trade.tradeDate).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-4">

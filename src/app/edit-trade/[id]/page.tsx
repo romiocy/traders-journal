@@ -122,7 +122,7 @@ export default function EditTradePage() {
   }
 
   if (!trade) {
-    return <div className="text-center py-12 text-red-600">{t("editTrade", "tradeNotFound")}</div>;
+    return <div className="text-center py-12 text-red-400">{t("editTrade", "tradeNotFound")}</div>;
   }
 
   return (
@@ -132,30 +132,30 @@ export default function EditTradePage() {
         <h1 className="text-2xl sm:text-4xl font-bold text-white mb-2">
           {t("editTrade", "title")} - {trade.symbol}
         </h1>
-        <p className="text-slate-400 text-sm sm:text-base">{t("editTrade", "subtitle")}</p>
+        <p className="text-slate-300 text-sm sm:text-base">{t("editTrade", "subtitle")}</p>
       </div>
 
       <div className="card-base p-4 sm:p-6 mb-4 sm:mb-6">
         <h2 className="text-lg font-bold text-white mb-4">{t("editTrade", "tradeDetails")}</h2>
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
-            <p className="text-slate-400">{t("editTrade", "entryPrice")}</p>
+            <p className="text-slate-300">{t("editTrade", "entryPrice")}</p>
             <p className="font-bold text-white text-lg">${(trade.entryPrice || 0).toFixed(2)}</p>
           </div>
           <div>
-            <p className="text-slate-400">{t("editTrade", "entryDate")}</p>
+            <p className="text-slate-300">{t("editTrade", "entryDate")}</p>
             <p className="font-bold text-white text-lg">
               {new Date(trade.tradeDate).toLocaleDateString()}
             </p>
           </div>
           <div>
-            <p className="text-slate-400">{t("editTrade", "type")}</p>
+            <p className="text-slate-300">{t("editTrade", "type")}</p>
             <p className={`font-bold text-lg ${trade.type === "BUY" ? "text-green-400" : "text-red-400"}`}>
               {trade.type}
             </p>
           </div>
           <div>
-            <p className="text-slate-400">{t("editTrade", "quantity")}</p>
+            <p className="text-slate-300">{t("editTrade", "quantity")}</p>
             <p className="font-bold text-white text-lg">{trade.quantity}</p>
           </div>
         </div>
@@ -183,7 +183,7 @@ export default function EditTradePage() {
                     onChange={handleChange}
                     step="0.01"
                     placeholder={t("editTrade", "exitPricePlaceholder")}
-                    className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                    className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                   />
                 </div>
 
@@ -250,7 +250,7 @@ export default function EditTradePage() {
               onChange={handleChange}
               placeholder={t("editTrade", "reasonToSellPlaceholder")}
               rows={3}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
             />
           </div>
 
@@ -264,7 +264,7 @@ export default function EditTradePage() {
               onChange={handleChange}
               placeholder={t("editTrade", "mistakesPlaceholder")}
               rows={3}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
             />
           </div>
 
@@ -278,7 +278,7 @@ export default function EditTradePage() {
               onChange={handleChange}
               placeholder={t("editTrade", "lessonsPlaceholder")}
               rows={3}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
             />
           </div>
 
@@ -292,7 +292,7 @@ export default function EditTradePage() {
               onChange={handleChange}
               placeholder={t("editTrade", "notesPlaceholder")}
               rows={3}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
             />
           </div>
         </div>

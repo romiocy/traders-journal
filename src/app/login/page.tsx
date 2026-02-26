@@ -28,7 +28,7 @@ export default function LoginPage() {
   }, [router]);
 
   if (loading) {
-    return <div className="text-center py-12 text-slate-400">{t("login", "checkingAuth")}</div>;
+    return <div className="text-center py-12 text-slate-300">{t("login", "checkingAuth")}</div>;
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,7 +84,7 @@ export default function LoginPage() {
           <h1 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text gradient-text mb-2">
             {t("login", "welcomeBack")}
           </h1>
-          <p className="text-slate-400">{t("login", "loginToAccount")}</p>
+          <p className="text-slate-300">{t("login", "loginToAccount")}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="card-base p-5 sm:p-6 space-y-4">
@@ -105,7 +105,7 @@ export default function LoginPage() {
               onChange={handleChange}
               placeholder={t("login", "enterLogin")}
               required
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
           </div>
 
@@ -120,7 +120,7 @@ export default function LoginPage() {
               onChange={handleChange}
               placeholder={t("login", "enterPassword")}
               required
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
           </div>
 
@@ -132,7 +132,7 @@ export default function LoginPage() {
             {loading ? t("login", "loggingIn") : t("login", "loginBtn")}
           </button>
 
-          <p className="text-center text-slate-400 text-sm">
+          <p className="text-center text-slate-300 text-sm">
             {t("login", "noAccount")}{" "}
             <Link href="/signup" className="text-blue-400 hover:text-blue-300">
               {t("login", "signUpHere")}

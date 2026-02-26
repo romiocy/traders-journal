@@ -244,7 +244,7 @@ export default function PerformanceReviewPage() {
 
   const MetricCard = ({ label, value, unit = "", color = "text-blue-400" }: any) => (
     <div className="p-3 sm:p-4 bg-slate-800/50 rounded-lg border border-slate-700">
-      <div className="text-xs sm:text-sm text-slate-400 mb-1">{label}</div>
+      <div className="text-xs sm:text-sm text-slate-300 mb-1">{label}</div>
       <div className={`text-lg sm:text-2xl font-bold ${color}`}>
         {typeof value === "number" ? value.toFixed(2) : value}
         {unit}
@@ -255,7 +255,7 @@ export default function PerformanceReviewPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-slate-400">{t("performance", "loading")}</div>
+        <div className="text-slate-300">{t("performance", "loading")}</div>
       </div>
     );
   }
@@ -268,7 +268,7 @@ export default function PerformanceReviewPage() {
         <h1 className="text-2xl sm:text-4xl font-bold text-transparent bg-clip-text gradient-text mb-2">
           {t("performance", "title")}
         </h1>
-        <p className="text-slate-400 text-sm sm:text-base">{t("performance", "subtitle")}</p>
+        <p className="text-slate-300 text-sm sm:text-base">{t("performance", "subtitle")}</p>
       </div>
 
       {/* Key Metrics */}
@@ -448,11 +448,11 @@ export default function PerformanceReviewPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-slate-700">
-                  <th className="text-left py-2 px-4 text-slate-400 font-semibold">{t("admin", "symbol")}</th>
-                  <th className="text-center py-2 px-4 text-slate-400 font-semibold">{t("admin", "trades")}</th>
-                  <th className="text-center py-2 px-4 text-slate-400 font-semibold">{t("admin", "wins")}</th>
-                  <th className="text-center py-2 px-4 text-slate-400 font-semibold">{t("performance", "winRate")}</th>
-                  <th className="text-right py-2 px-4 text-slate-400 font-semibold">{t("performance", "profit")}</th>
+                  <th className="text-left py-2 px-4 text-slate-300 font-semibold">{t("admin", "symbol")}</th>
+                  <th className="text-center py-2 px-4 text-slate-300 font-semibold">{t("admin", "trades")}</th>
+                  <th className="text-center py-2 px-4 text-slate-300 font-semibold">{t("admin", "wins")}</th>
+                  <th className="text-center py-2 px-4 text-slate-300 font-semibold">{t("performance", "winRate")}</th>
+                  <th className="text-right py-2 px-4 text-slate-300 font-semibold">{t("performance", "profit")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -480,9 +480,9 @@ export default function PerformanceReviewPage() {
       {metrics.totalTrades === 0 && (
         <FadeIn>
         <div className="card-base p-8 sm:p-12 text-center">
-          <div className="text-slate-400">
+          <div className="text-slate-300">
             <p className="text-base sm:text-lg mb-2">No trades yet</p>
-            <p className="text-xs sm:text-sm">Start trading to see your performance metrics</p>
+            <p className="text-xs sm:text-sm text-slate-400">Start trading to see your performance metrics</p>
           </div>
         </div>
         </FadeIn>

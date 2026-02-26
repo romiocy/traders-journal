@@ -22,7 +22,7 @@ export default function SettingsPage() {
     <div className="max-w-2xl mx-auto space-y-6 sm:space-y-8 px-1 sm:px-0">
       <div>
         <h1 className="text-2xl sm:text-4xl font-bold text-white mb-2">{t("settings", "title")}</h1>
-        <p className="text-slate-400 text-sm sm:text-base">{t("settings", "subtitle")}</p>
+        <p className="text-slate-300 text-sm sm:text-base">{t("settings", "subtitle")}</p>
       </div>
 
       <FadeIn>
@@ -30,7 +30,7 @@ export default function SettingsPage() {
         <h2 className="text-lg sm:text-xl font-bold text-white mb-2">
           {t("settings", "exchangeIntegrations")}
         </h2>
-        <p className="text-slate-400 text-sm mb-6">
+        <p className="text-slate-300 text-sm mb-6">
           {t("settings", "exchangeDesc")}
         </p>
 
@@ -60,7 +60,7 @@ export default function SettingsPage() {
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
               placeholder={t("settings", "enterApiKey")}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
           </div>
 
@@ -73,7 +73,7 @@ export default function SettingsPage() {
               value={apiSecret}
               onChange={(e) => setApiSecret(e.target.value)}
               placeholder={t("settings", "enterApiSecret")}
-              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
           </div>
 
@@ -89,7 +89,7 @@ export default function SettingsPage() {
           <h3 className="font-medium text-white mb-4">{t("settings", "connectedExchanges")}</h3>
           <div className="space-y-2">
             {exchanges.length === 0 ? (
-              <p className="text-slate-400 text-sm">
+              <p className="text-slate-300 text-sm">
                 {t("settings", "noExchanges")}
               </p>
             ) : (

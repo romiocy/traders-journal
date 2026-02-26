@@ -4,8 +4,8 @@ export default function NotFound() {
   return (
     <div className="text-center py-12">
       <h1 className="text-4xl font-bold mb-4">404 - Page Not Found</h1>
-      <p className="text-slate-600 mb-8">The page you&apos;re looking for doesn&apos;t exist.</p>
-      <Link href="/" className="text-blue-600 hover:text-blue-700">
+      <p className="text-slate-300 mb-8">The page you&apos;re looking for doesn&apos;t exist.</p>
+      <Link href="/" className="text-blue-400 hover:text-blue-300">
         Go back to dashboard
       </Link>
     </div>

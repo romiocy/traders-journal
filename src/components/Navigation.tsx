@@ -51,8 +51,8 @@ export function Navigation() {
 
   return (
     <>
-      <nav className="border-b border-slate-800 sticky top-0 z-50" style={{backgroundImage: "url('/header2.jpg')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed'}}>
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/40"></div>
+      <nav className="border-b border-slate-700 sticky top-0 z-50" style={{backgroundImage: "url('/header2.jpg')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed'}}>
+        <div className="absolute inset-0 bg-gradient-to-r from-black/85 to-black/75"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Logo */}

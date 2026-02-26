@@ -94,7 +94,7 @@ export default function Dashboard() {
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-2">
             <span className="gradient-text">{t("dashboard", "heroTitle")}</span>
           </h1>
-          <p className="text-base sm:text-xl text-slate-400 max-w-2xl">
+          <p className="text-base sm:text-xl text-slate-300 max-w-2xl">
             {t("dashboard", "heroSubtitle")}
           </p>
         </div>
@@ -152,7 +152,7 @@ export default function Dashboard() {
               <h2 className="text-lg font-bold text-white">
                 {t("dashboard", "cumulativePL")}
               </h2>
-              <p className="text-sm text-slate-400 mt-1">{t("dashboard", "performanceOverTime")}</p>
+              <p className="text-sm text-slate-300 mt-1">{t("dashboard", "performanceOverTime")}</p>
             </div>
             <div className="text-3xl">📈</div>
           </div>
@@ -193,10 +193,10 @@ export default function Dashboard() {
               </LineChart>
             </ResponsiveContainer>
           ) : (
-            <div className="h-[250px] flex items-center justify-center text-slate-500 rounded-lg bg-slate-800/20">
+            <div className="h-[250px] flex items-center justify-center text-slate-300 rounded-lg bg-slate-800/20">
               <div className="text-center">
                 <p className="text-sm">{t("dashboard", "noClosedTrades")}</p>
-                <p className="text-xs text-slate-600 mt-1">{t("dashboard", "closeTradeSee")}</p>
+                <p className="text-xs text-slate-400 mt-1">{t("dashboard", "closeTradeSee")}</p>
               </div>
             </div>
           )}
@@ -210,7 +210,7 @@ export default function Dashboard() {
               <h2 className="text-lg font-bold text-white">
                 {t("dashboard", "tradeResults")}
               </h2>
-              <p className="text-sm text-slate-400 mt-1">{t("dashboard", "winsVsLosses")}</p>
+              <p className="text-sm text-slate-300 mt-1">{t("dashboard", "winsVsLosses")}</p>
             </div>
             <div className="text-3xl">🎯</div>
           </div>
@@ -242,10 +242,10 @@ export default function Dashboard() {
               </PieChart>
             </ResponsiveContainer>
           ) : (
-            <div className="h-[250px] flex items-center justify-center text-slate-500 rounded-lg bg-slate-800/20">
+            <div className="h-[250px] flex items-center justify-center text-slate-300 rounded-lg bg-slate-800/20">
               <div className="text-center">
                 <p className="text-sm">{t("dashboard", "noTradeResults")}</p>
-                <p className="text-xs text-slate-600 mt-1">{t("dashboard", "addAndClose")}</p>
+                <p className="text-xs text-slate-400 mt-1">{t("dashboard", "addAndClose")}</p>
               </div>
             </div>
           )}
@@ -260,7 +260,7 @@ export default function Dashboard() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 sm:gap-6">
             <div>
               <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">{t("dashboard", "readyToTrack")}</h2>
-              <p className="text-slate-400 text-sm sm:text-base">{t("dashboard", "startLogging")}</p>
+              <p className="text-slate-300 text-sm sm:text-base">{t("dashboard", "startLogging")}</p>
             </div>
             <div className="flex gap-2 sm:gap-3">
               <a
@@ -307,7 +307,7 @@ function StatCard({
     <div className="card-base p-4 sm:p-6">
       <div className="flex items-start justify-between">
         <div className="space-y-2 sm:space-y-3 flex-1">
-          <p className="text-xs sm:text-sm text-slate-400 font-medium">{title}</p>
+          <p className="text-xs sm:text-sm text-slate-300 font-medium">{title}</p>
           <p className={`text-2xl sm:text-3xl font-bold ${
             isProfit ? "text-white" : "text-red-400"
           }`}>
@@ -316,7 +316,7 @@ function StatCard({
           <div className="flex items-center gap-1">
             {trend === "up" && <span className="text-green-400 text-xs font-medium">↑ {trendLabels[0]}</span>}
             {trend === "down" && <span className="text-red-400 text-xs font-medium">↓ {trendLabels[1]}</span>}
-            {trend === "neutral" && <span className="text-slate-500 text-xs font-medium">— {trendLabels[2]}</span>}
+            {trend === "neutral" && <span className="text-slate-400 text-xs font-medium">— {trendLabels[2]}</span>}
           </div>
         </div>
         <span className="text-2xl sm:text-3xl">{icon}</span>

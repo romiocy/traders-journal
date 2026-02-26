@@ -120,7 +120,7 @@ export default function AdminPanel() {
       <div className="min-h-[60vh] flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-slate-400">{t("admin", "loading")}</p>
+          <p className="text-slate-300">{t("admin", "loading")}</p>
         </div>
       </div>
     );
@@ -140,7 +140,7 @@ export default function AdminPanel() {
       {/* Header */}
       <div>
         <h1 className="text-2xl sm:text-4xl font-bold text-white mb-2">{t("admin", "title")}</h1>
-        <p className="text-slate-400 text-sm sm:text-base">{t("admin", "subtitle")}</p>
+        <p className="text-slate-300 text-sm sm:text-base">{t("admin", "subtitle")}</p>
       </div>
 
       {/* Overview Stats */}
@@ -170,7 +170,7 @@ export default function AdminPanel() {
         
         {users.length === 0 ? (
           <div className="bg-slate-800/50 rounded-lg border border-slate-700 p-12 text-center">
-            <p className="text-slate-400">{t("admin", "noMembers")}</p>
+            <p className="text-slate-300">{t("admin", "noMembers")}</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -199,32 +199,32 @@ export default function AdminPanel() {
                           </span>
                         )}
                       </div>
-                      <p className="text-slate-400 text-sm truncate">{member.email}</p>
+                      <p className="text-slate-300 text-sm truncate">{member.email}</p>
                     </div>
                   </div>
 
                   <div className="hidden md:flex items-center gap-6 mr-4">
                     <div className="text-center">
-                      <p className="text-xs text-slate-500">{t("admin", "trades")}</p>
+                      <p className="text-xs text-slate-400">{t("admin", "trades")}</p>
                       <p className="text-sm font-bold text-cyan-400">{member.tradeCount}</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-xs text-slate-500">{t("admin", "winRate")}</p>
+                      <p className="text-xs text-slate-400">{t("admin", "winRate")}</p>
                       <p className="text-sm font-bold text-yellow-400">{member.portfolio.winRate}%</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-xs text-slate-500">{t("admin", "totalPL")}</p>
+                      <p className="text-xs text-slate-400">{t("admin", "totalPL")}</p>
                       <p className={`text-sm font-bold ${member.portfolio.totalProfit >= 0 ? "text-green-400" : "text-red-400"}`}>
                         ${member.portfolio.totalProfit.toFixed(2)}
                       </p>
                     </div>
                     <div className="text-center">
-                      <p className="text-xs text-slate-500">{t("admin", "joined")}</p>
+                      <p className="text-xs text-slate-400">{t("admin", "joined")}</p>
                       <p className="text-sm text-slate-300">{new Date(member.createdAt).toLocaleDateString()}</p>
                     </div>
                   </div>
 
-                  <span className={`text-slate-400 transition-transform ${expandedUser === member.id ? "rotate-180" : ""}`}>
+                  <span className={`text-slate-300 transition-transform ${expandedUser === member.id ? "rotate-180" : ""}`}>
                     ▼
                   </span>
                 </button>
@@ -235,19 +235,19 @@ export default function AdminPanel() {
                     {/* Member Info */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                       <div>
-                        <p className="text-xs text-slate-500 mb-1">{t("admin", "username")}</p>
+                        <p className="text-xs text-slate-400 mb-1">{t("admin", "username")}</p>
                         <p className="text-sm text-slate-300">{member.login}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-500 mb-1">{t("admin", "email")}</p>
+                        <p className="text-xs text-slate-400 mb-1">{t("admin", "email")}</p>
                         <p className="text-sm text-slate-300">{member.email}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-500 mb-1">{t("admin", "phone")}</p>
+                        <p className="text-xs text-slate-400 mb-1">{t("admin", "phone")}</p>
                         <p className="text-sm text-slate-300">{member.phone || "N/A"}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-slate-500 mb-1">{t("admin", "memberSince")}</p>
+                        <p className="text-xs text-slate-400 mb-1">{t("admin", "memberSince")}</p>
                         <p className="text-sm text-slate-300">{new Date(member.createdAt).toLocaleDateString()}</p>
                       </div>
                     </div>
@@ -300,13 +300,13 @@ export default function AdminPanel() {
                           <table className="w-full text-sm">
                             <thead>
                               <tr className="border-b border-slate-700">
-                                <th className="text-left text-xs text-slate-500 pb-2 pr-4">{t("admin", "symbol")}</th>
-                                <th className="text-left text-xs text-slate-500 pb-2 pr-4">{t("admin", "type")}</th>
-                                <th className="text-left text-xs text-slate-500 pb-2 pr-4">{t("admin", "entry")}</th>
-                                <th className="text-left text-xs text-slate-500 pb-2 pr-4">{t("admin", "exit")}</th>
-                                <th className="text-left text-xs text-slate-500 pb-2 pr-4">P&L</th>
-                                <th className="text-left text-xs text-slate-500 pb-2 pr-4">{t("admin", "status")}</th>
-                                <th className="text-left text-xs text-slate-500 pb-2">{t("admin", "date")}</th>
+                                <th className="text-left text-xs text-slate-400 pb-2 pr-4">{t("admin", "symbol")}</th>
+                                <th className="text-left text-xs text-slate-400 pb-2 pr-4">{t("admin", "type")}</th>
+                                <th className="text-left text-xs text-slate-400 pb-2 pr-4">{t("admin", "entry")}</th>
+                                <th className="text-left text-xs text-slate-400 pb-2 pr-4">{t("admin", "exit")}</th>
+                                <th className="text-left text-xs text-slate-400 pb-2 pr-4">P&L</th>
+                                <th className="text-left text-xs text-slate-400 pb-2 pr-4">{t("admin", "status")}</th>
+                                <th className="text-left text-xs text-slate-400 pb-2">{t("admin", "date")}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -336,7 +336,7 @@ export default function AdminPanel() {
                                       {trade.status}
                                     </span>
                                   </td>
-                                  <td className="py-2 text-slate-400">{new Date(trade.tradeDate).toLocaleDateString()}</td>
+                                  <td className="py-2 text-slate-300">{new Date(trade.tradeDate).toLocaleDateString()}</td>
                                 </tr>
                               ))}
                             </tbody>
@@ -344,7 +344,7 @@ export default function AdminPanel() {
                         </div>
                       </>
                     ) : (
-                      <p className="text-slate-500 text-sm italic">{t("admin", "noTradesRecorded")}</p>
+                      <p className="text-slate-400 text-sm italic">{t("admin", "noTradesRecorded")}</p>
                     )}
                   </div>
                 )}
@@ -376,7 +376,7 @@ function OverviewCard({
       <div className="flex items-center justify-between mb-2">
         <span className="text-lg sm:text-xl">{icon}</span>
       </div>
-      <p className="text-slate-400 text-[10px] sm:text-xs mb-1">{label}</p>
+      <p className="text-slate-300 text-[10px] sm:text-xs mb-1">{label}</p>
       <p className={`text-base sm:text-xl font-bold ${color}`}>{value}</p>
     </div>
     </FadeInItem>
@@ -394,7 +394,7 @@ function MiniStat({
 }) {
   return (
     <div className="bg-slate-800/40 rounded-lg p-3 border border-slate-700/50">
-      <p className="text-xs text-slate-500 mb-1">{label}</p>
+      <p className="text-xs text-slate-400 mb-1">{label}</p>
       <p className={`text-lg font-bold ${color}`}>{value}</p>
     </div>
   );

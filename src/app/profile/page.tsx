@@ -168,7 +168,7 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-slate-400">{t("profile", "loadingProfile")}</div>
+        <div className="text-slate-300">{t("profile", "loadingProfile")}</div>
       </div>
     );
   }
@@ -176,7 +176,7 @@ export default function ProfilePage() {
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-slate-400">{t("profile", "pleaseLogin")}</div>
+        <div className="text-slate-300">{t("profile", "pleaseLogin")}</div>
       </div>
     );
   }
@@ -189,7 +189,7 @@ export default function ProfilePage() {
           <h1 className="text-2xl sm:text-4xl font-bold text-transparent bg-clip-text gradient-text mb-2">
             {t("profile", "title")}
           </h1>
-          <p className="text-slate-400 text-sm sm:text-base">{t("profile", "subtitle")}</p>
+          <p className="text-slate-300 text-sm sm:text-base">{t("profile", "subtitle")}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="card-base p-4 sm:p-8 space-y-5 sm:space-y-6">
@@ -227,9 +227,9 @@ export default function ProfilePage() {
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
-                  className="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition cursor-pointer"
+                  className="block w-full text-sm text-slate-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition cursor-pointer"
                 />
-                <p className="text-xs text-slate-500">PNG, JPG, GIF up to 5MB</p>
+                <p className="text-xs text-slate-400">PNG, JPG, GIF up to 5MB</p>
                 {preview && (
                   <button
                     type="button"
@@ -257,7 +257,7 @@ export default function ProfilePage() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                   placeholder="John"
                 />
               </div>
@@ -272,7 +272,7 @@ export default function ProfilePage() {
                   value={formData.surname}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                   placeholder="Doe"
                 />
               </div>
@@ -293,7 +293,7 @@ export default function ProfilePage() {
                   value={formData.login}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                   placeholder="username"
                 />
               </div>
@@ -308,7 +308,7 @@ export default function ProfilePage() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                   placeholder="john@example.com"
                 />
               </div>
@@ -322,7 +322,7 @@ export default function ProfilePage() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                   placeholder="+1 (555) 000-0000"
                 />
               </div>
@@ -351,7 +351,7 @@ export default function ProfilePage() {
                     name="currentPassword"
                     value={formData.currentPassword}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                    className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                     placeholder="Enter your current password"
                   />
                 </div>
@@ -365,10 +365,10 @@ export default function ProfilePage() {
                     name="newPassword"
                     value={formData.newPassword}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                    className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                     placeholder="Enter new password"
                   />
-                  <p className="text-xs text-slate-500 mt-1">Minimum 6 characters</p>
+                  <p className="text-xs text-slate-400 mt-1">Minimum 6 characters</p>
                 </div>
 
                 <div>
@@ -380,7 +380,7 @@ export default function ProfilePage() {
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                    className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                     placeholder="Confirm new password"
                   />
                 </div>
