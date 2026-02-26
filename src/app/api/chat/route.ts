@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     });
 
     const completion = await openai.chat.completions.create({
-      model: "arcee-ai/arcee-trinity",
+      model: "arcee-ai/trinity-large-preview:free",
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         ...messages.map((m: { role: string; content: string }) => ({
