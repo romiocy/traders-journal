@@ -43,38 +43,43 @@ export function AIAssistant() {
       content: input,
       timestamp: new Date(),
     };
-    setMessages((prev) => [...prev, userMessage]);
+    const updatedMessages = [...messages, userMessage];
+    setMessages(updatedMessages);
     setInput("");
     setIsLoading(true);
 
-    // Simulate API call to AI backend
-    // TODO: Replace with actual API endpoint
-    setTimeout(() => {
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: updatedMessages.map((m) => ({
+            role: m.role,
+            content: m.content,
+          })),
+        }),
+      });
+
+      const data = await response.json();
+
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: generateAIResponse(input),
+        content: data.message || data.error || "Sorry, something went wrong.",
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, assistantMessage]);
+    } catch (err) {
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: "Sorry, I couldn't connect to the AI service. Please try again later.",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
       setIsLoading(false);
-    }, 1000);
-  };
-
-  const generateAIResponse = (userInput: string): string => {
-    // Placeholder responses - replace with real AI API
-    const responses: { [key: string]: string } = {
-      strategy: "Based on your trading patterns, I'd recommend analyzing your win rate and risk-reward ratio. Consider documenting your entry and exit criteria in your journal.",
-      risk: "Risk management is crucial. A common rule is to risk no more than 1-2% of your account per trade. Make sure you have stop losses set on all positions.",
-      analysis: "To improve your trading, review your recent trades in the journal. Look for patterns in your winners and losers, and identify what strategies work best for you.",
-    };
-
-    const lowerInput = userInput.toLowerCase();
-    for (const [key, value] of Object.entries(responses)) {
-      if (lowerInput.includes(key)) return value;
     }
-
-    return "That's a great question! To give you more specific advice, could you provide more details about your trading setup, time frame, or the specific asset you're trading?";
   };
 
   if (!isOpen) {
