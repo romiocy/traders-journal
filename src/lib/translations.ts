@@ -59,6 +59,7 @@ export const translations = {
     noAccount: { en: "Don't have an account?", ru: "Нет аккаунта?" },
     signUpHere: { en: "Sign up here", ru: "Зарегистрируйтесь" },
     checkingAuth: { en: "Checking auth...", ru: "Проверка авторизации..." },
+    forgotPassword: { en: "Forgot your password?", ru: "Забыли пароль?" },
   },
 
   // Signup page
@@ -261,6 +262,41 @@ export const translations = {
     noNotes: { en: "No journal notes yet for this trade.", ru: "Для этой сделки ещё нет заметок." },
     addNotes: { en: "Add notes →", ru: "Добавить заметки →" },
     viewTrade: { en: "View", ru: "Откр." },
+  },
+
+  // Forgot password page
+  forgotPassword: {
+    title: { en: "Reset Password", ru: "Сброс пароля" },
+    subtitle: { en: "We'll send you a recovery link", ru: "Мы отправим вам ссылку для восстановления" },
+    instructions: { en: "Enter the email address associated with your account and we'll send you a link to reset your password.", ru: "Введите адрес электронной почты, связанный с вашим аккаунтом, и мы отправим вам ссылку для сброса пароля." },
+    emailLabel: { en: "Email", ru: "Эл. почта" },
+    emailPlaceholder: { en: "Enter your email", ru: "Введите вашу почту" },
+    sendLink: { en: "Send Recovery Link", ru: "Отправить ссылку" },
+    sending: { en: "Sending...", ru: "Отправка..." },
+    emailSent: { en: "Check Your Email", ru: "Проверьте почту" },
+    checkInbox: { en: "We've sent a password recovery link to your email address. Click the link in the email to reset your password.", ru: "Мы отправили ссылку для восстановления пароля на ваш адрес. Нажмите на ссылку в письме, чтобы сбросить пароль." },
+    checkSpam: { en: "Don't see it? Check your spam folder.", ru: "Не видите? Проверьте папку спам." },
+    backToLogin: { en: "Back to Login", ru: "Назад к входу" },
+    rememberPassword: { en: "Remember your password?", ru: "Помните пароль?" },
+  },
+
+  // Reset password page
+  resetPassword: {
+    title: { en: "New Password", ru: "Новый пароль" },
+    subtitle: { en: "Choose a new password for your account", ru: "Выберите новый пароль для аккаунта" },
+    newPassword: { en: "New Password", ru: "Новый пароль" },
+    newPasswordPlaceholder: { en: "Enter new password", ru: "Введите новый пароль" },
+    confirmPassword: { en: "Confirm Password", ru: "Подтвердите пароль" },
+    confirmPlaceholder: { en: "Confirm new password", ru: "Подтвердите новый пароль" },
+    resetBtn: { en: "Reset Password", ru: "Сбросить пароль" },
+    resetting: { en: "Resetting...", ru: "Сброс..." },
+    success: { en: "Password Reset!", ru: "Пароль сброшен!" },
+    successMsg: { en: "Your password has been updated. You can now log in with your new password.", ru: "Ваш пароль обновлён. Теперь вы можете войти с новым паролем." },
+    goToLogin: { en: "Go to Login", ru: "Перейти к входу" },
+    invalidLink: { en: "Invalid or missing reset link. Please request a new one.", ru: "Недействительная или отсутствующая ссылка. Запросите новую." },
+    requestNew: { en: "Request new link →", ru: "Запросить новую ссылку →" },
+    minLength: { en: "Password must be at least 6 characters", ru: "Пароль должен быть не менее 6 символов" },
+    mismatch: { en: "Passwords do not match", ru: "Пароли не совпадают" },
   },
 
   // Common
