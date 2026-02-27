@@ -1,12 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import { PageTransition, FadeIn } from "@/components/PageTransition";
 
 export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<div className="text-center py-16 text-slate-300">Loading...</div>}>
+      <ResetPasswordContent />
+    </Suspense>
+  );
+}
+
+function ResetPasswordContent() {
   const { t } = useLanguage();
   const searchParams = useSearchParams();
   const router = useRouter();
