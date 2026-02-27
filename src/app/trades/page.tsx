@@ -15,6 +15,11 @@ export default function TradesPage() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "open" | "closed">("all");
   const [selectedTrade, setSelectedTrade] = useState<Trade | null>(null);
+  const [showFilters, setShowFilters] = useState(false);
+  const [dateFrom, setDateFrom] = useState("");
+  const [dateTo, setDateTo] = useState("");
+  const [plFilter, setPlFilter] = useState<"all" | "profit" | "loss">("all");
+  const [sortBy, setSortBy] = useState<"date-desc" | "date-asc" | "pl-desc" | "pl-asc">("date-desc");
   const { t, lang } = useLanguage();
 
   useEffect(() => {
@@ -61,6 +66,49 @@ export default function TradesPage() {
     }
   };
 
+  // Client-side filtering & sorting
+  const filteredTrades = trades
+    .filter((trade) => {
+      // Date range filter
+      if (dateFrom) {
+        const from = new Date(dateFrom);
+        if (new Date(trade.tradeDate) < from) return false;
+      }
+      if (dateTo) {
+        const to = new Date(dateTo);
+        to.setHours(23, 59, 59, 999);
+        if (new Date(trade.tradeDate) > to) return false;
+      }
+      // P/L filter
+      if (plFilter === "profit" && (trade.profit == null || trade.profit < 0)) return false;
+      if (plFilter === "loss" && (trade.profit == null || trade.profit >= 0)) return false;
+      return true;
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case "date-desc":
+          return new Date(b.tradeDate).getTime() - new Date(a.tradeDate).getTime();
+        case "date-asc":
+          return new Date(a.tradeDate).getTime() - new Date(b.tradeDate).getTime();
+        case "pl-desc":
+          return (b.profit ?? 0) - (a.profit ?? 0);
+        case "pl-asc":
+          return (a.profit ?? 0) - (b.profit ?? 0);
+        default:
+          return 0;
+      }
+    });
+
+  const activeFilterCount =
+    (dateFrom ? 1 : 0) + (dateTo ? 1 : 0) + (plFilter !== "all" ? 1 : 0) + (sortBy !== "date-desc" ? 1 : 0);
+
+  const clearFilters = () => {
+    setDateFrom("");
+    setDateTo("");
+    setPlFilter("all");
+    setSortBy("date-desc");
+  };
+
   if (loading) {
     return <div className="text-center py-12 text-slate-300">{t("trades", "loadingTrades")}</div>;
   }
@@ -99,7 +147,111 @@ export default function TradesPage() {
         ))}
       </div>
 
-      {trades.length === 0 ? (
+      {/* Advanced Filters Toggle */}
+      <div className="flex items-center gap-3">
+        <button
+          onClick={() => setShowFilters(!showFilters)}
+          className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition ${
+            showFilters || activeFilterCount > 0
+              ? "bg-blue-900/30 text-blue-400 border border-blue-700/50"
+              : "bg-slate-800/50 text-slate-300 border border-slate-700/50 hover:text-white"
+          }`}
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+          </svg>
+          {t("trades", "filters")}
+          {activeFilterCount > 0 && (
+            <span className="bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              {activeFilterCount}
+            </span>
+          )}
+        </button>
+        {activeFilterCount > 0 && (
+          <button
+            onClick={clearFilters}
+            className="text-xs text-slate-400 hover:text-slate-200 transition"
+          >
+            {t("trades", "clearFilters")}
+          </button>
+        )}
+        <span className="text-xs text-slate-400 ml-auto">
+          {filteredTrades.length} {t("trades", "tradesShown")}
+        </span>
+      </div>
+
+      {/* Advanced Filters Panel */}
+      <AnimatePresence>
+        {showFilters && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <div className="card-base p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Date From */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-400 mb-1.5">
+                  {t("trades", "dateFrom")}
+                </label>
+                <input
+                  type="date"
+                  value={dateFrom}
+                  onChange={(e) => setDateFrom(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                />
+              </div>
+              {/* Date To */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-400 mb-1.5">
+                  {t("trades", "dateTo")}
+                </label>
+                <input
+                  type="date"
+                  value={dateTo}
+                  onChange={(e) => setDateTo(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                />
+              </div>
+              {/* P/L Filter */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-400 mb-1.5">
+                  {t("trades", "plFilter")}
+                </label>
+                <select
+                  value={plFilter}
+                  onChange={(e) => setPlFilter(e.target.value as any)}
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                >
+                  <option value="all">{t("trades", "allTrades")}</option>
+                  <option value="profit">{t("trades", "profitOnly")}</option>
+                  <option value="loss">{t("trades", "lossOnly")}</option>
+                </select>
+              </div>
+              {/* Sort By */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-400 mb-1.5">
+                  {t("trades", "sortBy")}
+                </label>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as any)}
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                >
+                  <option value="date-desc">{t("trades", "newestFirst")}</option>
+                  <option value="date-asc">{t("trades", "oldestFirst")}</option>
+                  <option value="pl-desc">{t("trades", "highestProfit")}</option>
+                  <option value="pl-asc">{t("trades", "highestLoss")}</option>
+                </select>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {filteredTrades.length === 0 ? (
         <FadeIn>
         <div className="text-center py-12 sm:py-16 card-base">
           <p className="text-slate-300 text-base sm:text-lg mb-2">{t("trades", "no")} {filter !== "all" ? filter : ""} {t("trades", "noTradesFound")}</p>
@@ -110,7 +262,7 @@ export default function TradesPage() {
         <>
           {/* Mobile Cards */}
           <FadeInStagger className="sm:hidden space-y-3">
-            {trades.map((trade) => (
+            {filteredTrades.map((trade) => (
               <FadeInItem key={trade.id}>
                 <div onClick={() => setSelectedTrade(trade)} className="block card-base p-4 hover:bg-slate-800/60 transition cursor-pointer">
                   <div className="flex items-center justify-between mb-3">
@@ -176,7 +328,7 @@ export default function TradesPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-700">
-              {trades.map((trade) => (
+              {filteredTrades.map((trade) => (
                 <tr
                   key={trade.id}
                   className="hover:bg-slate-800/50 transition cursor-pointer"
