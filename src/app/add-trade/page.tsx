@@ -15,11 +15,36 @@ export default function AddTradePage() {
     symbol: "",
     type: "BUY" as const,
     quantity: "",
+    quantityCurrency: "USDT",
     entryPrice: "",
     tradeDate: new Date().toISOString().slice(0, 10),
     setupDescription: "",
     reasonToBuy: "",
   });
+
+  // Extract base currency from symbol (e.g., "BTC" from "BTC/USDT")
+  const getBaseCurrency = () => {
+    const symbol = formData.symbol.trim().toUpperCase();
+    if (symbol.includes("/")) {
+      return symbol.split("/")[0];
+    }
+    // Try common quote currencies
+    for (const quote of ["USDT", "USDC", "USD", "EUR", "BTC", "ETH", "BNB"]) {
+      if (symbol.endsWith(quote) && symbol.length > quote.length) {
+        return symbol.slice(0, -quote.length);
+      }
+    }
+    return symbol || null;
+  };
+
+  const baseCurrency = getBaseCurrency();
+
+  const currencyOptions = [
+    ...(baseCurrency ? [baseCurrency] : []),
+    "USDT",
+    "USDC",
+    "USD",
+  ].filter((v, i, a) => a.indexOf(v) === i); // deduplicate
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -54,6 +79,7 @@ export default function AddTradePage() {
           ...formData,
           quantity: parseFloat(formData.quantity),
           entryPrice: parseFloat(formData.entryPrice),
+          quantityCurrency: formData.quantityCurrency,
           tradeDate: new Date(formData.tradeDate),
         }),
       });
@@ -121,15 +147,27 @@ export default function AddTradePage() {
               <label className="block text-sm font-semibold text-white mb-2">
                 {t("addTrade", "quantity")} *
               </label>
-              <input
-                type="number"
-                name="quantity"
-                value={formData.quantity}
-                onChange={handleChange}
-                step="0.01"
-                required
-                className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-              />
+              <div className="flex gap-2">
+                <input
+                  type="number"
+                  name="quantity"
+                  value={formData.quantity}
+                  onChange={handleChange}
+                  step="0.01"
+                  required
+                  className="flex-1 min-w-0 px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                />
+                <select
+                  name="quantityCurrency"
+                  value={formData.quantityCurrency}
+                  onChange={handleChange}
+                  className="w-24 px-2 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                >
+                  {currencyOptions.map((cur) => (
+                    <option key={cur} value={cur}>{cur}</option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             <div>

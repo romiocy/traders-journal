@@ -7,6 +7,7 @@ export interface Trade {
   symbol: string;
   type: "BUY" | "SELL";
   quantity: number;
+  quantityCurrency?: string;
   entryPrice: number;
   exitPrice?: number;
   tradeDate: Date;
@@ -28,6 +29,7 @@ export interface CreateTradePayload {
   symbol: string;
   type: "BUY" | "SELL";
   quantity: number;
+  quantityCurrency?: string;
   entryPrice: number;
   tradeDate: Date;
   setupDescription?: string;

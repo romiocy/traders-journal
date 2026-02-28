@@ -46,6 +46,7 @@ export async function POST(request: NextRequest) {
         symbol: data.symbol,
         type: data.type,
         quantity: parseFloat(data.quantity),
+        quantityCurrency: data.quantityCurrency || null,
         entryPrice: parseFloat(data.entryPrice),
         tradeDate: new Date(data.tradeDate),
         setupDescription: data.setupDescription || null,

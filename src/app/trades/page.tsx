@@ -299,7 +299,7 @@ export default function TradesPage() {
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-slate-400">{new Date(trade.tradeDate).toLocaleDateString()} · {t("trades", "qty")}: {trade.quantity}</span>
+                    <span className="text-xs text-slate-400">{new Date(trade.tradeDate).toLocaleDateString()} · {t("trades", "qty")}: {trade.quantity}{trade.quantityCurrency ? ` ${trade.quantityCurrency}` : ""}</span>
                     <div className="flex gap-3">
                       <span onClick={(e) => { e.stopPropagation(); router.push(`/edit-trade/${trade.id}`); }} className="text-blue-400 hover:text-blue-300 text-xs font-medium cursor-pointer">{t("trades", "edit")}</span>
                       <span onClick={(e) => { e.stopPropagation(); handleDelete(trade.id); }} className="text-red-400 hover:text-red-300 text-xs font-medium cursor-pointer">{t("trades", "delete")}</span>
@@ -348,7 +348,7 @@ export default function TradesPage() {
                       {trade.type === "BUY" ? t("common", "buy") : t("common", "sell")}
                     </span>
                   </td>
-                  <td className="px-4 py-4 text-slate-300">{trade.quantity}</td>
+                  <td className="px-4 py-4 text-slate-300">{trade.quantity}{trade.quantityCurrency ? ` ${trade.quantityCurrency}` : ""}</td>
                   <td className="px-4 py-4 text-slate-300">${(trade.entryPrice || 0).toFixed(2)}</td>
                   <td className="px-4 py-4 text-slate-300">
                     {trade.exitPrice ? `$${trade.exitPrice.toFixed(2)}` : "—"}
@@ -531,7 +531,7 @@ function TradeDetailDialog({
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 <InfoItem label={t("trades", "entry")} value={`$${(trade.entryPrice || 0).toFixed(2)}`} />
                 <InfoItem label={t("trades", "exit")} value={trade.exitPrice ? `$${trade.exitPrice.toFixed(2)}` : "—"} />
-                <InfoItem label={t("trades", "qty")} value={String(trade.quantity)} />
+                <InfoItem label={t("trades", "qty")} value={`${trade.quantity}${trade.quantityCurrency ? ` ${trade.quantityCurrency}` : ""}`} />
                 <InfoItem label={t("tradeDetail", "entryDate")} value={new Date(trade.tradeDate).toLocaleDateString()} />
                 <InfoItem label={t("tradeDetail", "exitDate")} value={trade.exitDate ? new Date(trade.exitDate).toLocaleDateString() : "—"} />
                 {holdingDays != null && (

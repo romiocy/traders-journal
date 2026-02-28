@@ -132,6 +132,7 @@ export const translations = {
     buy: { en: "Buy", ru: "Покупка" },
     sell: { en: "Sell", ru: "Продажа" },
     quantity: { en: "Quantity", ru: "Количество" },
+    quantityCurrency: { en: "Currency", ru: "Валюта" },
     entryPrice: { en: "Entry Price", ru: "Цена входа" },
     tradeDate: { en: "Trade Date", ru: "Дата сделки" },
     setupDescription: { en: "Setup Description", ru: "Описание сетапа" },

@@ -42,6 +42,7 @@ model Trade {
   symbol    String     // e.g., "AAPL"
   type      String     // "BUY" or "SELL"
   quantity  Float
+  quantityCurrency String?  // e.g., "BTC", "USDT", "USDC", "USD"
   entryPrice Float
   exitPrice Float?
   

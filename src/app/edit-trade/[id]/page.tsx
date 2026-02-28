@@ -156,7 +156,7 @@ export default function EditTradePage() {
           </div>
           <div>
             <p className="text-slate-300">{t("editTrade", "quantity")}</p>
-            <p className="font-bold text-white text-lg">{trade.quantity}</p>
+            <p className="font-bold text-white text-lg">{trade.quantity}{trade.quantityCurrency ? ` ${trade.quantityCurrency}` : ""}</p>
           </div>
         </div>
       </div>
