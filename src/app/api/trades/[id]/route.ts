@@ -61,9 +61,20 @@ export async function PUT(
     const exitPrice = data.exitPrice || existingTrade.exitPrice;
     const entryPrice = existingTrade.entryPrice;
     const quantity = existingTrade.quantity;
+    const quantityCurrency = existingTrade.quantityCurrency;
+    const isFiatQuantity = ["USDT", "USDC", "USD"].includes(quantityCurrency || "");
 
     if (exitPrice && entryPrice) {
-      profit = (exitPrice - entryPrice) * quantity;
+      if (isFiatQuantity) {
+        // Quantity is in fiat/stablecoin: calculate crypto amount first, then profit
+        // e.g., bought BTC at 64076 for 1000 USDT → 1000/64076 = 0.0156 BTC
+        // sold at 64784 → 0.0156 * 64784 = 1011 USDT → profit = 11 USDT
+        const cryptoAmount = quantity / entryPrice;
+        profit = cryptoAmount * exitPrice - quantity;
+      } else {
+        // Quantity is in crypto: profit = (exitPrice - entryPrice) * quantity
+        profit = (exitPrice - entryPrice) * quantity;
+      }
       profitPercentage = ((exitPrice - entryPrice) / entryPrice) * 100;
     }
 

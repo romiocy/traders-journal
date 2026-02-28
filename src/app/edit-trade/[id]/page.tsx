@@ -201,24 +201,26 @@ export default function EditTradePage() {
                 </div>
               </div>
 
-              {formData.exitPrice && (
-                <div className="bg-blue-900/30 border border-blue-700/50 rounded-lg p-4">
-                  <p className="text-sm text-blue-300">
-                    <strong>{t("editTrade", "profitLoss")}:</strong> $
-                    {(
-                      (parseFloat(formData.exitPrice) - (trade.entryPrice || 0)) *
-                      trade.quantity
-                    ).toFixed(2)}{" "}
-                    (
-                    {(
-                      (((parseFloat(formData.exitPrice) - (trade.entryPrice || 0)) /
-                        (trade.entryPrice || 1)) *
-                        100)
-                    ).toFixed(2)}
-                    %)
-                  </p>
-                </div>
-              )}
+              {formData.exitPrice && (() => {
+                const exit = parseFloat(formData.exitPrice);
+                const entry = trade.entryPrice || 0;
+                const qty = trade.quantity;
+                const isFiat = ["USDT", "USDC", "USD"].includes(trade.quantityCurrency || "");
+                const profitVal = isFiat
+                  ? (qty / (entry || 1)) * exit - qty
+                  : (exit - entry) * qty;
+                const profitPct = entry ? ((exit - entry) / entry) * 100 : 0;
+                const currLabel = trade.quantityCurrency || "USD";
+                return (
+                  <div className="bg-blue-900/30 border border-blue-700/50 rounded-lg p-4">
+                    <p className="text-sm text-blue-300">
+                      <strong>{t("editTrade", "profitLoss")}:</strong>{" "}
+                      {profitVal >= 0 ? "+" : ""}{profitVal.toFixed(2)} {currLabel}{" "}
+                      ({profitPct >= 0 ? "+" : ""}{profitPct.toFixed(2)}%)
+                    </p>
+                  </div>
+                );
+              })()}
             </div>
           </>
         )}
