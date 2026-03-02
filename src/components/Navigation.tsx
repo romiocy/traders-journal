@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
@@ -59,9 +60,7 @@ export function Navigation() {
           <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-              <div className="w-8 h-8 bg-blue-600/80 rounded-lg flex items-center justify-center backdrop-blur-sm">
-                <span className="text-white font-bold text-sm">TJ</span>
-              </div>
+              <Image src="/logo.png" alt="Trader's Journal" width={32} height={32} className="w-8 h-8 rounded-lg object-contain" />
               <span className="text-lg sm:text-xl font-bold text-white hidden sm:inline drop-shadow-lg">
                 {t("common", "tradersJournal")}
               </span>
@@ -170,9 +169,7 @@ export function Navigation() {
                 {/* Close button */}
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 bg-blue-600/80 rounded-lg flex items-center justify-center">
-                      <span className="text-white font-bold text-xs">TJ</span>
-                    </div>
+                    <Image src="/logo.png" alt="Trader's Journal" width={28} height={28} className="w-7 h-7 rounded-lg object-contain" />
                     <span className="text-sm font-bold text-white">{t("common", "tradersJournal")}</span>
                   </div>
                   <button
