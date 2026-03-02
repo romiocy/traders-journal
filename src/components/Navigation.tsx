@@ -60,7 +60,7 @@ export function Navigation() {
           <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-              <Image src="/logo.png" alt="Trader's Journal" width={32} height={32} className="w-8 h-8 rounded-lg object-contain" />
+              <Image src="/tj-logo.png" alt="Trader's Journal" width={36} height={36} className="rounded-lg" />
               <span className="text-lg sm:text-xl font-bold text-white hidden sm:inline drop-shadow-lg">
                 {t("common", "tradersJournal")}
               </span>
@@ -169,7 +169,7 @@ export function Navigation() {
                 {/* Close button */}
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-2">
-                    <Image src="/logo.png" alt="Trader's Journal" width={28} height={28} className="w-7 h-7 rounded-lg object-contain" />
+                    <Image src="/tj-logo.png" alt="Trader's Journal" width={28} height={28} className="rounded-lg" />
                     <span className="text-sm font-bold text-white">{t("common", "tradersJournal")}</span>
                   </div>
                   <button
