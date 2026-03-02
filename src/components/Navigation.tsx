@@ -61,7 +61,7 @@ export function Navigation() {
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
               <Image src="/tj-logo.png" alt="Trader's Journal" width={36} height={36} className="rounded-lg" />
-              <span className="text-lg sm:text-xl font-bold text-white hidden sm:inline drop-shadow-lg">
+              <span className="text-base sm:text-xl font-bold text-white whitespace-nowrap drop-shadow-lg">
                 {t("common", "tradersJournal")}
               </span>
             </Link>
