@@ -98,3 +98,97 @@ body {
   @apply px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-600 transition font-medium;
 }
 
+/* ──────────────────────────────────────────────── */
+/* ENHANCED ANIMATIONS                              */
+/* ──────────────────────────────────────────────── */
+
+/* Smooth focus ring for all interactive elements */
+input:focus, select:focus, textarea:focus, button:focus-visible {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* Animated gradient border on focus */
+.card-base:focus-within {
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.08);
+}
+
+/* Subtle pulse for active nav items */
+@keyframes nav-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.2); }
+  50% { box-shadow: 0 0 12px 2px rgba(59, 130, 246, 0.15); }
+}
+
+/* Shimmer effect for loading states */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.shimmer-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-effect::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+  animation: shimmer 2s infinite;
+}
+
+/* Smooth text gradient animation */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradient-text-animated {
+  background: linear-gradient(270deg, #3b82f6, #06b6d4, #8b5cf6, #3b82f6);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 6s ease infinite;
+}
+
+/* Crypto Ticker scrolling animation */
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+.crypto-ticker-scroll {
+  display: flex;
+  width: max-content;
+}
+
+.crypto-ticker-track {
+  animation: ticker-scroll var(--ticker-duration, 40s) linear infinite;
+}
+
+.crypto-ticker-scroll:hover .crypto-ticker-track {
+  animation-play-state: paused;
+}
+
+/* Glow effect for buttons on hover */
+.btn-primary:hover {
+  box-shadow: 0 8px 30px rgba(59, 130, 246, 0.25);
+}
+
+.btn-secondary:hover {
+  box-shadow: 0 8px 30px rgba(100, 116, 139, 0.15);
+}
+
+/* Smooth transitions for all interactive elements */
+a, button, input, select, textarea {
+  transition-property: color, background-color, border-color, box-shadow, transform, opacity;
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
+}
+

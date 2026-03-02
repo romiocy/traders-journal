@@ -19,7 +19,12 @@ import {
 import { Trade } from "@/types/trade";
 import { getCurrentUser } from "@/lib/auth";
 import { useLanguage } from "@/context/LanguageContext";
-import { PageTransition, FadeIn, FadeInStagger, FadeInItem } from "@/components/PageTransition";
+import { 
+  PageTransition, FadeIn, FadeInStagger, FadeInItem,
+  ScrollFadeIn, ScrollStagger, ScrollStaggerItem, ScrollScaleIn,
+  HoverCard, AnimatedCounter, AnimatedProgressBar, SlideIn, TextReveal, FloatingParticles
+} from "@/components/PageTransition";
+import { motion } from "framer-motion";
 
 interface PerformanceMetrics {
   totalTrades: number;
@@ -243,13 +248,18 @@ export default function PerformanceReviewPage() {
   };
 
   const MetricCard = ({ label, value, unit = "", color = "text-blue-400" }: any) => (
-    <div className="p-3 sm:p-4 bg-slate-800/50 rounded-lg border border-slate-700">
-      <div className="text-xs sm:text-sm text-slate-300 mb-1">{label}</div>
-      <div className={`text-lg sm:text-2xl font-bold ${color}`}>
-        {typeof value === "number" ? value.toFixed(2) : value}
+    <HoverCard>
+    <div className="p-3 sm:p-4 bg-slate-800/50 rounded-lg border border-slate-700 relative overflow-hidden group">
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.02] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+      <div className="text-xs sm:text-sm text-slate-300 mb-1 relative">{label}</div>
+      <div className={`text-lg sm:text-2xl font-bold ${color} relative`}>
+        {typeof value === "number" ? (
+          <AnimatedCounter value={value} decimals={2} duration={1.5} />
+        ) : value}
         {unit}
       </div>
     </div>
+    </HoverCard>
   );
 
   if (loading) {
@@ -262,106 +272,158 @@ export default function PerformanceReviewPage() {
 
   return (
     <PageTransition>
-    <div className="space-y-6 sm:space-y-8">
+    <div className="space-y-6 sm:space-y-8 relative">
+      {/* Floating particles */}
+      <FloatingParticles count={10} />
+
       {/* Header */}
       <div className="mb-6 sm:mb-8">
         <h1 className="text-2xl sm:text-4xl font-bold text-transparent bg-clip-text gradient-text mb-2">
-          {t("performance", "title")}
+          <TextReveal text={t("performance", "title")} />
         </h1>
-        <p className="text-slate-300 text-sm sm:text-base">{t("performance", "subtitle")}</p>
+        <ScrollFadeIn delay={0.2}>
+          <p className="text-slate-300 text-sm sm:text-base">{t("performance", "subtitle")}</p>
+        </ScrollFadeIn>
       </div>
 
+      {/* Win Rate Progress Bar */}
+      <ScrollFadeIn>
+        <div className="card-base p-4 sm:p-5">
+          <AnimatedProgressBar
+            value={metrics.winRate}
+            maxValue={100}
+            color={metrics.winRate >= 50 ? "from-green-500 to-emerald-400" : "from-red-500 to-orange-400"}
+            label={t("performance", "winRate")}
+            showPercentage
+            height="h-3"
+          />
+        </div>
+      </ScrollFadeIn>
+
       {/* Key Metrics */}
+      <ScrollFadeIn>
       <div>
         <h2 className="text-xl font-semibold text-white mb-4">{t("performance", "totalTrades")}</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <ScrollStagger className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <ScrollStaggerItem>
           <MetricCard
             label={t("performance", "totalTrades")}
             value={metrics.totalTrades}
             color={metrics.totalTrades > 0 ? "text-blue-400" : "text-slate-400"}
           />
+          </ScrollStaggerItem>
+          <ScrollStaggerItem>
           <MetricCard
             label={t("performance", "closedTrades")}
             value={metrics.closedTrades}
             color="text-slate-300"
           />
+          </ScrollStaggerItem>
+          <ScrollStaggerItem>
           <MetricCard
             label={t("performance", "openTrades")}
             value={metrics.openTrades}
             color="text-yellow-400"
           />
+          </ScrollStaggerItem>
+          <ScrollStaggerItem>
           <MetricCard
             label={t("performance", "winRate")}
             value={metrics.winRate}
             unit="%"
             color={metrics.winRate >= 50 ? "text-green-400" : "text-red-400"}
           />
-        </div>
+          </ScrollStaggerItem>
+        </ScrollStagger>
       </div>
+      </ScrollFadeIn>
 
       {/* Profitability Metrics */}
+      <ScrollFadeIn delay={0.1}>
       <div>
         <h2 className="text-xl font-semibold text-white mb-4">{t("performance", "totalPL")}</h2>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <ScrollStagger className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          <ScrollStaggerItem>
           <MetricCard
             label={t("performance", "totalPL")}
             value={metrics.totalProfit}
             color={metrics.totalProfit >= 0 ? "text-green-400" : "text-red-400"}
           />
+          </ScrollStaggerItem>
+          <ScrollStaggerItem>
           <MetricCard
             label={t("performance", "avgProfit")}
             value={metrics.avgProfit}
             color={metrics.avgProfit >= 0 ? "text-green-400" : "text-red-400"}
           />
+          </ScrollStaggerItem>
+          <ScrollStaggerItem>
           <MetricCard
             label={t("performance", "bestTrade")}
             value={metrics.bestTrade}
             color="text-green-400"
           />
+          </ScrollStaggerItem>
+          <ScrollStaggerItem>
           <MetricCard
             label={t("performance", "worstTrade")}
             value={metrics.worstTrade}
             color="text-red-400"
           />
+          </ScrollStaggerItem>
+          <ScrollStaggerItem>
           <MetricCard
             label={t("performance", "profitFactor")}
             value={metrics.profitFactor}
             color={metrics.profitFactor > 1 ? "text-green-400" : "text-red-400"}
           />
-        </div>
+          </ScrollStaggerItem>
+        </ScrollStagger>
       </div>
+      </ScrollFadeIn>
 
       {/* Risk Metrics */}
+      <ScrollFadeIn delay={0.15}>
       <div>
         <h2 className="text-xl font-semibold text-white mb-4">{t("performance", "maxDrawdown")}</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <ScrollStagger className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <ScrollStaggerItem>
           <MetricCard
             label={t("performance", "maxConsecWins")}
             value={metrics.consecutiveWins}
             color="text-green-400"
           />
+          </ScrollStaggerItem>
+          <ScrollStaggerItem>
           <MetricCard
             label={t("performance", "maxConsecLosses")}
             value={metrics.consecutiveLosses}
             color="text-red-400"
           />
+          </ScrollStaggerItem>
+          <ScrollStaggerItem>
           <MetricCard
             label={t("performance", "maxDrawdown")}
             value={metrics.maxDrawdown}
             unit="%"
             color="text-red-400"
           />
+          </ScrollStaggerItem>
+          <ScrollStaggerItem>
           <MetricCard
             label={t("performance", "totalVolume")}
             value={metrics.totalVolume}
             color="text-slate-300"
           />
-        </div>
+          </ScrollStaggerItem>
+        </ScrollStagger>
       </div>
+      </ScrollFadeIn>
 
       {/* Charts */}
       {chartData.length > 0 && (
-        <FadeIn delay={0.15}>
+        <SlideIn from="left" delay={0.1}>
+        <HoverCard>
         <div className="card-base p-4 sm:p-6">
           <h2 className="text-xl font-semibold text-white mb-4">{t("performance", "equityCurve")}</h2>
           <ResponsiveContainer width="100%" height={250}>
@@ -387,11 +449,13 @@ export default function PerformanceReviewPage() {
             </LineChart>
           </ResponsiveContainer>
         </div>
-        </FadeIn>
+        </HoverCard>
+        </SlideIn>
       )}
 
       {drawdownData.length > 0 && (
-        <FadeIn delay={0.2}>
+        <SlideIn from="right" delay={0.15}>
+        <HoverCard>
         <div className="card-base p-4 sm:p-6">
           <h2 className="text-xl font-semibold text-white mb-4">{t("performance", "drawdownChart")}</h2>
           <ResponsiveContainer width="100%" height={250}>
@@ -411,12 +475,14 @@ export default function PerformanceReviewPage() {
             </BarChart>
           </ResponsiveContainer>
         </div>
-        </FadeIn>
+        </HoverCard>
+        </SlideIn>
       )}
 
       {/* Monthly Performance */}
       {monthlyData.length > 0 && (
-        <FadeIn delay={0.25}>
+        <ScrollScaleIn>
+        <HoverCard>
         <div className="card-base p-4 sm:p-6">
           <h2 className="text-xl font-semibold text-white mb-4">{t("performance", "monthlyPerformance")}</h2>
           <ResponsiveContainer width="100%" height={250}>
@@ -436,12 +502,14 @@ export default function PerformanceReviewPage() {
             </BarChart>
           </ResponsiveContainer>
         </div>
-        </FadeIn>
+        </HoverCard>
+        </ScrollScaleIn>
       )}
 
       {/* Symbol Performance Table */}
       {symbolData.length > 0 && (
-        <FadeIn delay={0.3}>
+        <ScrollFadeIn delay={0.1}>
+        <HoverCard>
         <div className="card-base p-4 sm:p-6">
           <h2 className="text-xl font-semibold text-white mb-4">{t("performance", "symbolBreakdown")}</h2>
           <div className="overflow-x-auto">
@@ -473,19 +541,20 @@ export default function PerformanceReviewPage() {
             </table>
           </div>
         </div>
-        </FadeIn>
+        </HoverCard>
+        </ScrollFadeIn>
       )}
 
       {/* Empty State */}
       {metrics.totalTrades === 0 && (
-        <FadeIn>
+        <ScrollScaleIn>
         <div className="card-base p-8 sm:p-12 text-center">
           <div className="text-slate-300">
             <p className="text-base sm:text-lg mb-2">No trades yet</p>
             <p className="text-xs sm:text-sm text-slate-400">Start trading to see your performance metrics</p>
           </div>
         </div>
-        </FadeIn>
+        </ScrollScaleIn>
       )}
     </div>
     </PageTransition>

@@ -8,6 +8,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { clearCurrentUser } from "@/lib/auth";
 import { motion, AnimatePresence } from "framer-motion";
+import { CryptoTicker } from "./CryptoTicker";
 
 export function Navigation() {
   const router = useRouter();
@@ -51,7 +52,8 @@ export function Navigation() {
 
   return (
     <>
-      <nav className="border-b border-slate-700 sticky top-0 z-50" style={{backgroundImage: "url('/header2.jpg')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed'}}>
+      <div className="sticky top-0 z-50">
+      <nav className="border-b border-slate-700/50" style={{backgroundImage: "url('/header2.jpg')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed'}}>
         <div className="absolute inset-0 bg-gradient-to-r from-black/85 to-black/75"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="flex items-center justify-between h-14 sm:h-16">
@@ -136,6 +138,9 @@ export function Navigation() {
           </div>
         </div>
       </nav>
+      {/* Crypto Ticker - outside nav to avoid overlay coverage */}
+      <CryptoTicker />
+      </div>
 
       {/* Mobile Slide-out Menu — rendered via portal to escape all stacking contexts */}
       {portalRoot && createPortal(

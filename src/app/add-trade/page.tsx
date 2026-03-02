@@ -4,7 +4,16 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { useLanguage } from "@/context/LanguageContext";
-import { PageTransition } from "@/components/PageTransition";
+import { PageTransition, ScrollFadeIn, TextReveal } from "@/components/PageTransition";
+import { motion } from "framer-motion";
+
+const fieldVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1, y: 0,
+    transition: { delay: 0.05 + i * 0.06, duration: 0.45, ease: "easeOut" as const },
+  }),
+};
 
 export default function AddTradePage() {
   const router = useRouter();
@@ -100,20 +109,39 @@ export default function AddTradePage() {
     <PageTransition>
     <div className="max-w-2xl mx-auto px-1 sm:px-0">
       <div className="mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-4xl font-bold text-white mb-2">{t("addTrade", "title")}</h1>
-        <p className="text-slate-300 text-sm sm:text-base">{t("addTrade", "subtitle")}</p>
+        <h1 className="text-2xl sm:text-4xl font-bold text-white mb-2">
+          <TextReveal text={t("addTrade", "title")} />
+        </h1>
+        <motion.p
+          className="text-slate-300 text-sm sm:text-base"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+        >
+          {t("addTrade", "subtitle")}
+        </motion.p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {error && (
-          <div className="p-4 bg-red-900/30 border border-red-700/50 rounded-lg text-red-300">
+          <motion.div
+            className="p-4 bg-red-900/30 border border-red-700/50 rounded-lg text-red-300"
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.3 }}
+          >
             {error}
-          </div>
+          </motion.div>
         )}
 
-        <div className="card-base p-4 sm:p-6 space-y-5 sm:space-y-6">
+        <motion.div
+          className="card-base p-4 sm:p-6 space-y-5 sm:space-y-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
+            <motion.div custom={0} variants={fieldVariants} initial="hidden" animate="visible">
               <label className="block text-sm font-semibold text-white mb-2">
                 {t("addTrade", "symbol")} *
               </label>
@@ -126,9 +154,9 @@ export default function AddTradePage() {
                 required
                 className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               />
-            </div>
+            </motion.div>
 
-            <div>
+            <motion.div custom={1} variants={fieldVariants} initial="hidden" animate="visible">
               <label className="block text-sm font-semibold text-white mb-2">
                 {t("addTrade", "type")} *
               </label>
@@ -141,9 +169,9 @@ export default function AddTradePage() {
                 <option value="BUY">{t("addTrade", "buy")}</option>
                 <option value="SELL">{t("addTrade", "sell")}</option>
               </select>
-            </div>
+            </motion.div>
 
-            <div>
+            <motion.div custom={2} variants={fieldVariants} initial="hidden" animate="visible">
               <label className="block text-sm font-semibold text-white mb-2">
                 {t("addTrade", "quantity")} *
               </label>
@@ -168,9 +196,9 @@ export default function AddTradePage() {
                   ))}
                 </select>
               </div>
-            </div>
+            </motion.div>
 
-            <div>
+            <motion.div custom={3} variants={fieldVariants} initial="hidden" animate="visible">
               <label className="block text-sm font-semibold text-white mb-2">
                 {t("addTrade", "entryPrice")} *
               </label>
@@ -183,9 +211,9 @@ export default function AddTradePage() {
                 required
                 className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               />
-            </div>
+            </motion.div>
 
-            <div className="col-span-2">
+            <motion.div custom={4} variants={fieldVariants} initial="hidden" animate="visible" className="col-span-2">
               <label className="block text-sm font-semibold text-white mb-2">
                 {t("addTrade", "tradeDate")} *
               </label>
@@ -197,10 +225,10 @@ export default function AddTradePage() {
                 required
                 className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               />
-            </div>
+            </motion.div>
           </div>
 
-          <div>
+          <motion.div custom={5} variants={fieldVariants} initial="hidden" animate="visible">
             <label className="block text-sm font-semibold text-white mb-2">
               {t("addTrade", "setupDescription")}
             </label>
@@ -212,9 +240,9 @@ export default function AddTradePage() {
               rows={3}
               className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
             />
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div custom={6} variants={fieldVariants} initial="hidden" animate="visible">
             <label className="block text-sm font-semibold text-white mb-2">
               {t("addTrade", "reasonToBuy")}
             </label>
@@ -226,25 +254,34 @@ export default function AddTradePage() {
               rows={3}
               className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
             />
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        <div className="flex gap-3">
-          <button
+        <motion.div
+          className="flex gap-3"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.4 }}
+        >
+          <motion.button
             type="submit"
             disabled={loading}
             className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+            whileHover={{ scale: 1.03, boxShadow: "0 10px 40px rgba(59, 130, 246, 0.3)" }}
+            whileTap={{ scale: 0.97 }}
           >
             {loading ? t("addTrade", "saving") : t("addTrade", "saveTrade")}
-          </button>
-          <button
+          </motion.button>
+          <motion.button
             type="button"
             onClick={() => router.back()}
             className="btn-secondary"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
           >
             {t("addTrade", "cancel")}
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
       </form>
     </div>
     </PageTransition>

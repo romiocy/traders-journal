@@ -7,7 +7,13 @@ import { getCurrentUser } from "@/lib/auth";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { AIAssistant } from "@/components/AIAssistant";
-import { PageTransition, FadeIn, FadeInStagger, FadeInItem } from "@/components/PageTransition";
+import { 
+  PageTransition, FadeIn, FadeInStagger, FadeInItem,
+  ScrollFadeIn, ScrollStagger, ScrollStaggerItem, ScrollScaleIn,
+  HoverCard, AnimatedCounter, FloatingParticles, GlowPulse,
+  TextReveal, SlideIn, AnimatedProgressBar
+} from "@/components/PageTransition";
+import { motion } from "framer-motion";
 
 interface Stats {
   totalTrades: number;
@@ -86,67 +92,101 @@ export default function Dashboard() {
 
   return (
     <PageTransition>
-    <div className="space-y-6 sm:space-y-8">
+    <div className="space-y-6 sm:space-y-8 relative">
+      {/* Floating particles background */}
+      <FloatingParticles count={20} />
+
       {/* Hero Section */}
-      <FadeIn>
-      <div className="space-y-3 sm:space-y-4 mb-8 sm:mb-12">
+      <div className="space-y-3 sm:space-y-4 mb-8 sm:mb-12 relative">
         <div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-2">
-            <span className="gradient-text">{t("dashboard", "heroTitle")}</span>
+            <TextReveal text={t("dashboard", "heroTitle")} className="gradient-text" />
           </h1>
-          <p className="text-base sm:text-xl text-slate-300 max-w-2xl">
-            {t("dashboard", "heroSubtitle")}
-          </p>
+          <ScrollFadeIn delay={0.3} direction="up">
+            <p className="text-base sm:text-xl text-slate-300 max-w-2xl">
+              {t("dashboard", "heroSubtitle")}
+            </p>
+          </ScrollFadeIn>
         </div>
       </div>
-      </FadeIn>
 
-      {/* Stats Section */}
-      <FadeInStagger className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        <FadeInItem>
-        <StatCard
-          title={t("dashboard", "totalTrades")}
-          value={stats.totalTrades || 0}
-          icon="📊"
-          trend={stats.totalTrades > 0 ? "up" : "neutral"}
-          trendLabels={[t("dashboard", "positive"), t("dashboard", "negative"), t("dashboard", "neutral")]}
-        />
-        </FadeInItem>
-        <FadeInItem>
-        <StatCard
-          title={t("dashboard", "winRate")}
-          value={`${(stats.winRate || 0).toFixed(1)}%`}
-          icon="🎯"
-          trend={stats.winRate > 50 ? "up" : "down"}
-          trendLabels={[t("dashboard", "positive"), t("dashboard", "negative"), t("dashboard", "neutral")]}
-        />
-        </FadeInItem>
-        <FadeInItem>
-        <StatCard
-          title={t("dashboard", "totalProfit")}
-          value={`$${(stats.totalProfit || 0).toFixed(2)}`}
-          icon="💰"
-          trend={stats.totalProfit > 0 ? "up" : "down"}
-          isProfit={stats.totalProfit >= 0}
-          trendLabels={[t("dashboard", "positive"), t("dashboard", "negative"), t("dashboard", "neutral")]}
-        />
-        </FadeInItem>
-        <FadeInItem>
-        <StatCard
-          title={t("dashboard", "openTrades")}
-          value={stats.openTrades || 0}
-          icon="🔓"
-          trend="neutral"
-          trendLabels={[t("dashboard", "positive"), t("dashboard", "negative"), t("dashboard", "neutral")]}
-        />
-        </FadeInItem>
-      </FadeInStagger>
+      {/* Stats Section - Scroll-triggered stagger with hover cards */}
+      <ScrollStagger className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <ScrollStaggerItem>
+          <HoverCard glowColor="rgba(59, 130, 246, 0.15)">
+            <StatCard
+              title={t("dashboard", "totalTrades")}
+              value={stats.totalTrades || 0}
+              numericValue={stats.totalTrades || 0}
+              icon="📊"
+              trend={stats.totalTrades > 0 ? "up" : "neutral"}
+              trendLabels={[t("dashboard", "positive"), t("dashboard", "negative"), t("dashboard", "neutral")]}
+            />
+          </HoverCard>
+        </ScrollStaggerItem>
+        <ScrollStaggerItem>
+          <HoverCard glowColor="rgba(16, 185, 129, 0.15)">
+            <StatCard
+              title={t("dashboard", "winRate")}
+              value={`${(stats.winRate || 0).toFixed(1)}%`}
+              numericValue={stats.winRate || 0}
+              suffix="%"
+              decimals={1}
+              icon="🎯"
+              trend={stats.winRate > 50 ? "up" : "down"}
+              trendLabels={[t("dashboard", "positive"), t("dashboard", "negative"), t("dashboard", "neutral")]}
+            />
+          </HoverCard>
+        </ScrollStaggerItem>
+        <ScrollStaggerItem>
+          <HoverCard glowColor={stats.totalProfit >= 0 ? "rgba(16, 185, 129, 0.15)" : "rgba(239, 68, 68, 0.15)"}>
+            <StatCard
+              title={t("dashboard", "totalProfit")}
+              value={`$${(stats.totalProfit || 0).toFixed(2)}`}
+              numericValue={stats.totalProfit || 0}
+              prefix="$"
+              decimals={2}
+              icon="💰"
+              trend={stats.totalProfit > 0 ? "up" : "down"}
+              isProfit={stats.totalProfit >= 0}
+              trendLabels={[t("dashboard", "positive"), t("dashboard", "negative"), t("dashboard", "neutral")]}
+            />
+          </HoverCard>
+        </ScrollStaggerItem>
+        <ScrollStaggerItem>
+          <HoverCard glowColor="rgba(139, 92, 246, 0.15)">
+            <StatCard
+              title={t("dashboard", "openTrades")}
+              value={stats.openTrades || 0}
+              numericValue={stats.openTrades || 0}
+              icon="🔓"
+              trend="neutral"
+              trendLabels={[t("dashboard", "positive"), t("dashboard", "negative"), t("dashboard", "neutral")]}
+            />
+          </HoverCard>
+        </ScrollStaggerItem>
+      </ScrollStagger>
+
+      {/* Win Rate Progress Bar */}
+      <ScrollFadeIn delay={0.1}>
+        <div className="card-base p-4 sm:p-6">
+          <AnimatedProgressBar
+            value={stats.winRate || 0}
+            maxValue={100}
+            color={stats.winRate >= 50 ? "from-green-500 to-emerald-400" : "from-red-500 to-orange-400"}
+            label={t("dashboard", "winRate")}
+            showPercentage
+            height="h-3"
+          />
+        </div>
+      </ScrollFadeIn>
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Cumulative P&L Chart */}
-        <FadeIn delay={0.15}>
-        <div className="card-base p-4 sm:p-6">
+        <SlideIn from="left" delay={0.1}>
+        <HoverCard className="h-full">
+        <div className="card-base p-4 sm:p-6 h-full">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-lg font-bold text-white">
@@ -154,7 +194,13 @@ export default function Dashboard() {
               </h2>
               <p className="text-sm text-slate-300 mt-1">{t("dashboard", "performanceOverTime")}</p>
             </div>
-            <div className="text-3xl">📈</div>
+            <motion.div 
+              className="text-3xl"
+              animate={{ rotate: [0, 5, -5, 0] }}
+              transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+            >
+              📈
+            </motion.div>
           </div>
           {chartData.length > 0 ? (
             <ResponsiveContainer width="100%" height={250}>
@@ -201,10 +247,12 @@ export default function Dashboard() {
             </div>
           )}
         </div>
-        </FadeIn>
+        </HoverCard>
+        </SlideIn>
         {/* Win/Loss Distribution */}
-        <FadeIn delay={0.25}>
-        <div className="card-base p-4 sm:p-6">
+        <SlideIn from="right" delay={0.15}>
+        <HoverCard className="h-full">
+        <div className="card-base p-4 sm:p-6 h-full">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-lg font-bold text-white">
@@ -212,7 +260,13 @@ export default function Dashboard() {
               </h2>
               <p className="text-sm text-slate-300 mt-1">{t("dashboard", "winsVsLosses")}</p>
             </div>
-            <div className="text-3xl">🎯</div>
+            <motion.div 
+              className="text-3xl"
+              animate={{ scale: [1, 1.15, 1] }}
+              transition={{ duration: 2, repeat: Infinity, repeatDelay: 4 }}
+            >
+              🎯
+            </motion.div>
           </div>
           {winLossData.some((d) => d.value > 0) ? (
             <ResponsiveContainer width="100%" height={250}>
@@ -250,12 +304,14 @@ export default function Dashboard() {
             </div>
           )}
         </div>
-        </FadeIn>
+        </HoverCard>
+        </SlideIn>
       </div>
 
       {/* Quick Actions - Only show when logged in */}
       {user && (
-        <FadeIn delay={0.3}>
+        <ScrollScaleIn>
+        <GlowPulse color="blue">
         <div className="card-base p-5 sm:p-8 border-blue-500/20">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 sm:gap-6">
             <div>
@@ -263,22 +319,27 @@ export default function Dashboard() {
               <p className="text-slate-300 text-sm sm:text-base">{t("dashboard", "startLogging")}</p>
             </div>
             <div className="flex gap-2 sm:gap-3">
-              <a
+              <motion.a
                 href="/add-trade"
                 className="btn-primary flex items-center gap-2 text-sm sm:text-base"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 <span>+</span> {t("nav", "addTrade")}
-              </a>
-              <a
+              </motion.a>
+              <motion.a
                 href="/trades"
                 className="btn-secondary flex items-center gap-2 text-sm sm:text-base"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 📊 {t("dashboard", "viewTrades")}
-              </a>
+              </motion.a>
             </div>
           </div>
         </div>
-        </FadeIn>
+        </GlowPulse>
+        </ScrollScaleIn>
       )}
 
       {/* AI Assistant */}
@@ -295,6 +356,10 @@ function StatCard({
   isProfit = true,
   trend = "neutral",
   trendLabels = ["Positive", "Negative", "Neutral"],
+  numericValue,
+  prefix = "",
+  suffix = "",
+  decimals = 0,
 }: {
   title: string;
   value: string | number;
@@ -302,24 +367,71 @@ function StatCard({
   isProfit?: boolean;
   trend?: "up" | "down" | "neutral";
   trendLabels?: [string, string, string];
+  numericValue?: number;
+  prefix?: string;
+  suffix?: string;
+  decimals?: number;
 }) {
   return (
-    <div className="card-base p-4 sm:p-6">
-      <div className="flex items-start justify-between">
+    <div className="card-base p-4 sm:p-6 relative overflow-hidden group">
+      {/* Subtle shimmer on hover */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+      <div className="flex items-start justify-between relative">
         <div className="space-y-2 sm:space-y-3 flex-1">
           <p className="text-xs sm:text-sm text-slate-300 font-medium">{title}</p>
           <p className={`text-2xl sm:text-3xl font-bold ${
             isProfit ? "text-white" : "text-red-400"
           }`}>
-            {value}
+            {numericValue !== undefined ? (
+              <AnimatedCounter 
+                value={numericValue} 
+                prefix={prefix} 
+                suffix={suffix} 
+                decimals={decimals} 
+                duration={1.8}
+              />
+            ) : value}
           </p>
           <div className="flex items-center gap-1">
-            {trend === "up" && <span className="text-green-400 text-xs font-medium">↑ {trendLabels[0]}</span>}
-            {trend === "down" && <span className="text-red-400 text-xs font-medium">↓ {trendLabels[1]}</span>}
-            {trend === "neutral" && <span className="text-slate-400 text-xs font-medium">— {trendLabels[2]}</span>}
+            {trend === "up" && (
+              <motion.span 
+                className="text-green-400 text-xs font-medium"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                ↑ {trendLabels[0]}
+              </motion.span>
+            )}
+            {trend === "down" && (
+              <motion.span 
+                className="text-red-400 text-xs font-medium"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                ↓ {trendLabels[1]}
+              </motion.span>
+            )}
+            {trend === "neutral" && (
+              <motion.span 
+                className="text-slate-400 text-xs font-medium"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                — {trendLabels[2]}
+              </motion.span>
+            )}
           </div>
         </div>
-        <span className="text-2xl sm:text-3xl">{icon}</span>
+        <motion.span 
+          className="text-2xl sm:text-3xl"
+          animate={{ y: [0, -4, 0] }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+        >
+          {icon}
+        </motion.span>
       </div>
     </div>
   );

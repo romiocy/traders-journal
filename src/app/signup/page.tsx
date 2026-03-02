@@ -5,7 +5,16 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { setCurrentUser, getCurrentUser } from "@/lib/auth";
 import { useLanguage } from "@/context/LanguageContext";
-import { PageTransition } from "@/components/PageTransition";
+import { PageTransition, FloatingParticles, TextReveal } from "@/components/PageTransition";
+import { motion } from "framer-motion";
+
+const formItemVariants = {
+  hidden: { opacity: 0, y: 20, scale: 0.98 },
+  visible: (i: number) => ({
+    opacity: 1, y: 0, scale: 1,
+    transition: { delay: 0.1 + i * 0.06, duration: 0.5, ease: "easeOut" as const },
+  }),
+};
 
 export default function SignupPage() {
   const router = useRouter();
@@ -94,23 +103,41 @@ export default function SignupPage() {
 
   return (
     <PageTransition>
-    <div className="min-h-[70vh] flex items-center justify-center px-4 py-8 sm:py-12">
-      <div className="w-full max-w-md">
+    <div className="min-h-[70vh] flex items-center justify-center px-4 py-8 sm:py-12 relative">
+      <FloatingParticles count={12} />
+      <motion.div
+        className="w-full max-w-md relative"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      >
         <div className="mb-6 sm:mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text gradient-text mb-2">
-            {t("signup", "joinTitle")}
+            <TextReveal text={t("signup", "joinTitle")} />
           </h1>
-          <p className="text-slate-300">{t("signup", "createAccount")}</p>
+          <motion.p
+            className="text-slate-300"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
+            {t("signup", "createAccount")}
+          </motion.p>
         </div>
 
         <form onSubmit={handleSubmit} className="card-base p-5 sm:p-6 space-y-4">
           {error && (
-            <div className="p-4 bg-red-900/30 border border-red-700/50 rounded-lg text-red-300 text-sm">
+            <motion.div
+              className="p-4 bg-red-900/30 border border-red-700/50 rounded-lg text-red-300 text-sm"
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.3 }}
+            >
               {error}
-            </div>
+            </motion.div>
           )}
 
-          <div>
+          <motion.div custom={0} variants={formItemVariants} initial="hidden" animate="visible">
             <label className="block text-sm font-semibold text-white mb-2">
               {t("signup", "loginLabel")} *
             </label>
@@ -123,9 +150,9 @@ export default function SignupPage() {
               required
               className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <motion.div custom={1} variants={formItemVariants} initial="hidden" animate="visible" className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-semibold text-white mb-2">
                 {t("signup", "name")} *
@@ -155,9 +182,9 @@ export default function SignupPage() {
                 className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               />
             </div>
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div custom={2} variants={formItemVariants} initial="hidden" animate="visible">
             <label className="block text-sm font-semibold text-white mb-2">
               {t("signup", "email")} *
             </label>
@@ -170,9 +197,9 @@ export default function SignupPage() {
               required
               className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div custom={3} variants={formItemVariants} initial="hidden" animate="visible">
             <label className="block text-sm font-semibold text-white mb-2">
               {t("signup", "phone")}
             </label>
@@ -184,9 +211,9 @@ export default function SignupPage() {
               placeholder="+1 (555) 000-0000"
               className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div custom={4} variants={formItemVariants} initial="hidden" animate="visible">
             <label className="block text-sm font-semibold text-white mb-2">
               {t("signup", "password")} *
             </label>
@@ -199,9 +226,9 @@ export default function SignupPage() {
               required
               className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div custom={5} variants={formItemVariants} initial="hidden" animate="visible">
             <label className="block text-sm font-semibold text-white mb-2">
               {t("signup", "confirmPassword")} *
             </label>
@@ -214,24 +241,33 @@ export default function SignupPage() {
               required
               className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
             />
-          </div>
+          </motion.div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+          <motion.div custom={6} variants={formItemVariants} initial="hidden" animate="visible">
+            <motion.button
+              type="submit"
+              disabled={loading}
+              className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+              whileHover={{ scale: 1.02, boxShadow: "0 10px 40px rgba(59, 130, 246, 0.3)" }}
+              whileTap={{ scale: 0.98 }}
+            >
+              {loading ? t("signup", "creatingAccount") : t("signup", "signUp")}
+            </motion.button>
+          </motion.div>
+
+          <motion.p
+            className="text-center text-slate-300 text-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7 }}
           >
-            {loading ? t("signup", "creatingAccount") : t("signup", "signUp")}
-          </button>
-
-          <p className="text-center text-slate-300 text-sm">
             {t("signup", "alreadyHaveAccount")}{" "}
             <Link href="/login" className="text-blue-400 hover:text-blue-300">
               {t("signup", "loginHere")}
             </Link>
-          </p>
+          </motion.p>
         </form>
-      </div>
+      </motion.div>
     </div>
     </PageTransition>
   );
