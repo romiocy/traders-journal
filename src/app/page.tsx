@@ -87,7 +87,7 @@ function WelcomeLanding() {
 
   return (
     <PageTransition>
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-hidden -mx-4 sm:-mx-6 lg:-mx-8 -mt-8 -mb-8">
         <FloatingParticles count={30} />
 
         {/* ─── HERO SECTION ─── */}
