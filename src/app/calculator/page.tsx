@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { motion } from "framer-motion";
 
@@ -8,34 +8,12 @@ export default function CalculatorPage() {
   const { t } = useLanguage();
 
   const [symbol, setSymbol] = useState("");
-  const [tradeDirection, setTradeDirection] = useState<"long" | "short">("long");
   const [accountBalance, setAccountBalance] = useState("");
   const [riskPercent, setRiskPercent] = useState("2");
   const [entryPrice, setEntryPrice] = useState("");
-  const [quantity, setQuantity] = useState("");
   const [stopLoss, setStopLoss] = useState("");
-  const [stopLossAuto, setStopLossAuto] = useState(true);
   const [takeProfit, setTakeProfit] = useState("");
   const [leverage, setLeverage] = useState("1");
-
-  // Auto-calculate stop loss when balance, risk%, entry, and quantity are provided
-  useEffect(() => {
-    if (!stopLossAuto) return;
-    const balance = parseFloat(accountBalance);
-    const risk = parseFloat(riskPercent);
-    const entry = parseFloat(entryPrice);
-    const qty = parseFloat(quantity);
-    if (!balance || !risk || !entry || !qty) {
-      setStopLoss("");
-      return;
-    }
-    const riskAmount = (balance * risk) / 100;
-    const slDistance = riskAmount / qty;
-    const sl = tradeDirection === "long" ? entry - slDistance : entry + slDistance;
-    if (sl > 0) {
-      setStopLoss(sl.toFixed(6).replace(/\.?0+$/, ""));
-    }
-  }, [accountBalance, riskPercent, entryPrice, quantity, tradeDirection, stopLossAuto]);
 
   const calculate = useCallback(() => {
     const balance = parseFloat(accountBalance);
@@ -203,78 +181,19 @@ export default function CalculatorPage() {
                 </div>
               </div>
 
-              {/* Trade Direction */}
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                  {t("calculator", "direction")}
-                </label>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setTradeDirection("long")}
-                    className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition ${
-                      tradeDirection === "long"
-                        ? "bg-green-600 text-white"
-                        : "bg-slate-700/50 text-slate-400 hover:text-white hover:bg-slate-700"
-                    }`}
-                  >
-                    {t("calculator", "long")}
-                  </button>
-                  <button
-                    onClick={() => setTradeDirection("short")}
-                    className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition ${
-                      tradeDirection === "short"
-                        ? "bg-red-600 text-white"
-                        : "bg-slate-700/50 text-slate-400 hover:text-white hover:bg-slate-700"
-                    }`}
-                  >
-                    {t("calculator", "short")}
-                  </button>
-                </div>
-              </div>
-
-              {/* Quantity / Position Size */}
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                  {t("calculator", "quantity")}
-                </label>
-                <input
-                  type="number"
-                  value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
-                  placeholder="0.5"
-                  className="w-full px-4 py-2.5 bg-slate-900/50 border border-slate-600/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
-                />
-              </div>
-
               {/* Stop Loss */}
               <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label className="block text-sm font-medium text-slate-300">
-                    {t("calculator", "stopLoss")} {stopLossAuto && <span className="text-xs text-blue-400 ml-1">({t("calculator", "autoCalculated")})</span>}
-                  </label>
-                  <button
-                    onClick={() => setStopLossAuto(!stopLossAuto)}
-                    className={`text-xs px-2 py-0.5 rounded-md transition font-medium ${
-                      stopLossAuto
-                        ? "bg-blue-600/20 text-blue-400 hover:bg-blue-600/30"
-                        : "bg-slate-700/50 text-slate-400 hover:text-white"
-                    }`}
-                  >
-                    {stopLossAuto ? t("calculator", "manual") : t("calculator", "auto")}
-                  </button>
-                </div>
+                <label className="block text-sm font-medium text-slate-300 mb-1.5">
+                  {t("calculator", "stopLoss")}
+                </label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-red-400 text-sm">$</span>
                   <input
                     type="number"
                     value={stopLoss}
-                    onChange={(e) => {
-                      if (stopLossAuto) setStopLossAuto(false);
-                      setStopLoss(e.target.value);
-                    }}
+                    onChange={(e) => setStopLoss(e.target.value)}
                     placeholder="48000"
-                    readOnly={stopLossAuto}
-                    className={`w-full pl-7 pr-4 py-2.5 bg-slate-900/50 border border-red-600/30 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition ${stopLossAuto ? "opacity-70 cursor-default" : ""}`}
+                    className="w-full pl-7 pr-4 py-2.5 bg-slate-900/50 border border-red-600/30 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition"
                   />
                 </div>
               </div>
