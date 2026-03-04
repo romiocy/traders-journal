@@ -72,6 +72,7 @@ export function Navigation() {
               <li><Link href="/trades" className={navLinkClass("/trades")}>{t("nav", "trades")}</Link></li>
               {user && <li><Link href="/add-trade" className={navLinkClass("/add-trade")}>{t("nav", "addTrade")}</Link></li>}
               <li><Link href="/performance" className={navLinkClass("/performance")}>{t("nav", "performance")}</Link></li>
+              <li><Link href="/calculator" className={navLinkClass("/calculator")}>{t("nav", "calculator")}</Link></li>
               {user && <li><Link href="/settings" className={navLinkClass("/settings")}>{t("nav", "settings")}</Link></li>}
               {user?.isAdmin && (
                 <li>
@@ -197,6 +198,9 @@ export function Navigation() {
                   )}
                   <Link href="/performance" onClick={closeMobile} className={mobileNavLinkClass("/performance")}>
                     <span className="text-lg">📈</span> {t("nav", "performance")}
+                  </Link>
+                  <Link href="/calculator" onClick={closeMobile} className={mobileNavLinkClass("/calculator")}>
+                    <span className="text-lg">🧮</span> {t("nav", "calculator")}
                   </Link>
                   {user && (
                     <Link href="/settings" onClick={closeMobile} className={mobileNavLinkClass("/settings")}>
