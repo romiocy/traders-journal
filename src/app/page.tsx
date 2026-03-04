@@ -385,7 +385,6 @@ function WelcomeLanding() {
             transition={{ duration: 0.8 }}
             className="max-w-3xl mx-auto text-center"
           >
-            <GlowPulse color="blue">
               <div className="card-base p-8 sm:p-12 border-blue-500/20 relative overflow-hidden">
                 {/* Animated background */}
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-cyan-600/5" />
@@ -414,10 +413,14 @@ function WelcomeLanding() {
                   <p className="text-slate-300 mb-8 max-w-lg mx-auto">
                     {t("welcome", "ctaSubtitle")}
                   </p>
-                  <motion.div whileHover={{ scale: 1.05, boxShadow: "0 0 50px rgba(59,130,246,0.5)" }} whileTap={{ scale: 0.97 }}>
+                  <motion.div
+                    className="inline-block rounded-2xl"
+                    whileHover={{ scale: 1.05, boxShadow: "0 0 60px rgba(59,130,246,0.6), 0 0 120px rgba(6,182,212,0.3)" }}
+                    whileTap={{ scale: 0.97 }}
+                  >
                     <Link
                       href="/signup"
-                      className="inline-flex items-center gap-2 px-10 py-4 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white text-lg font-bold rounded-2xl shadow-lg shadow-blue-500/30 transition-all"
+                      className="inline-flex items-center gap-2 px-10 py-4 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white text-lg font-bold rounded-2xl shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all"
                     >
                       ✨ {t("welcome", "signUpNow")}
                     </Link>
@@ -425,7 +428,6 @@ function WelcomeLanding() {
                   <p className="text-slate-500 text-xs mt-4">{t("welcome", "freeForever")}</p>
                 </div>
               </div>
-            </GlowPulse>
           </motion.div>
         </section>
       </div>
