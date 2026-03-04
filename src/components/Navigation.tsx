@@ -12,7 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { CryptoTicker } from "./CryptoTicker";
 import {
   LayoutDashboard, List, PlusCircle, TrendingUp, Calculator,
-  Settings, ShieldCheck, User, LogOut
+  Settings, ShieldCheck, User, LogOut, ChevronRight, X
 } from "lucide-react";
 
 export function Navigation() {
@@ -21,15 +21,41 @@ export function Navigation() {
   const { user, logout } = useAuth();
   const { lang, setLang, t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [desktopProfileOpen, setDesktopProfileOpen] = useState(false);
   const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
+  const profilePanelRef = useRef<HTMLDivElement>(null);
+  const profileBtnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     setPortalRoot(document.body);
   }, []);
 
+  // Close desktop profile panel on click outside
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (
+        desktopProfileOpen &&
+        profilePanelRef.current &&
+        !profilePanelRef.current.contains(e.target as Node) &&
+        profileBtnRef.current &&
+        !profileBtnRef.current.contains(e.target as Node)
+      ) {
+        setDesktopProfileOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [desktopProfileOpen]);
+
+  // Close desktop profile panel on route change
+  useEffect(() => {
+    setDesktopProfileOpen(false);
+  }, [pathname]);
+
   const handleLogout = () => {
     logout();
     setMobileMenuOpen(false);
+    setDesktopProfileOpen(false);
     router.push("/login");
   };
 
@@ -77,7 +103,6 @@ export function Navigation() {
               {user && <li><Link href="/add-trade" className={navLinkClass("/add-trade")}>{t("nav", "addTrade")}</Link></li>}
               <li><Link href="/performance" className={navLinkClass("/performance")}>{t("nav", "performance")}</Link></li>
               <li><Link href="/calculator" className={navLinkClass("/calculator")}>{t("nav", "calculator")}</Link></li>
-              {user && <li><Link href="/settings" className={navLinkClass("/settings")}>{t("nav", "settings")}</Link></li>}
               {user?.isAdmin && (
                 <li>
                   <Link href="/admin" className={`px-3 py-2 rounded-lg transition text-sm font-semibold ${isActive("/admin") ? "text-blue-300 bg-blue-900/40 border border-blue-500/30" : "text-blue-400 hover:text-blue-300 hover:bg-blue-900/30"}`}>
@@ -97,14 +122,20 @@ export function Navigation() {
                 {lang === "en" ? "🇷🇺 RU" : "🇬🇧 EN"}
               </button>
               {user ? (
-                <>
-                  <Link href="/profile" className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition font-medium text-sm">
-                    {t("nav", "profile")}
-                  </Link>
-                  <button onClick={handleLogout} className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition font-medium text-sm">
-                    {t("nav", "signOut")}
-                  </button>
-                </>
+                <button
+                  ref={profileBtnRef}
+                  onClick={() => setDesktopProfileOpen(!desktopProfileOpen)}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/60 transition font-medium text-sm border border-slate-700/50"
+                >
+                  {user.profileImage ? (
+                    <Image src={user.profileImage} alt="" width={28} height={28} className="rounded-full object-cover" />
+                  ) : (
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-xs font-bold text-white">
+                      {(user.name?.[0] || "").toUpperCase()}{(user.surname?.[0] || "").toUpperCase()}
+                    </div>
+                  )}
+                  <span className="max-w-[100px] truncate">{user.name}</span>
+                </button>
               ) : (
                 <>
                   <Link href="/login" className="px-4 py-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition font-medium text-sm">
@@ -145,6 +176,111 @@ export function Navigation() {
       {/* Crypto Ticker - outside nav to avoid overlay coverage */}
       <CryptoTicker />
       </div>
+
+      {/* Desktop Profile Slide-out Panel */}
+      <AnimatePresence>
+        {desktopProfileOpen && user && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm hidden md:block"
+              style={{ zIndex: 9998 }}
+              onClick={() => setDesktopProfileOpen(false)}
+            />
+            {/* Panel */}
+            <motion.div
+              ref={profilePanelRef}
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 28, stiffness: 320 }}
+              className="fixed top-0 right-0 bottom-0 w-80 bg-slate-900/98 backdrop-blur-xl border-l border-slate-700/60 hidden md:flex flex-col shadow-2xl shadow-black/40"
+              style={{ zIndex: 9999 }}
+            >
+              {/* Close button */}
+              <div className="flex items-center justify-between px-6 pt-5 pb-3">
+                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{t("nav", "profile")}</span>
+                <button
+                  onClick={() => setDesktopProfileOpen(false)}
+                  className="p-1.5 text-slate-400 hover:text-white transition rounded-lg hover:bg-slate-800"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Profile Header */}
+              <div className="px-6 py-5 border-b border-slate-700/50">
+                <Link
+                  href="/profile"
+                  className="flex items-center gap-4 group"
+                  onClick={() => setDesktopProfileOpen(false)}
+                >
+                  {user.profileImage ? (
+                    <Image src={user.profileImage} alt="" width={52} height={52} className="rounded-full object-cover ring-2 ring-blue-500/30 group-hover:ring-blue-500/60 transition" />
+                  ) : (
+                    <div className="w-[52px] h-[52px] rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-lg font-bold text-white ring-2 ring-blue-500/30 group-hover:ring-blue-500/60 transition">
+                      {(user.name?.[0] || "").toUpperCase()}{(user.surname?.[0] || "").toUpperCase()}
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-white font-semibold text-base truncate group-hover:text-blue-300 transition">
+                      {user.name} {user.surname}
+                    </p>
+                    <p className="text-slate-400 text-sm truncate">{user.email}</p>
+                    {user.login && (
+                      <p className="text-slate-500 text-xs mt-0.5">@{user.login}</p>
+                    )}
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-blue-400 transition flex-shrink-0" />
+                </Link>
+              </div>
+
+              {/* Menu Items */}
+              <nav className="flex-1 px-4 py-4 space-y-1">
+                <Link
+                  href="/profile"
+                  onClick={() => setDesktopProfileOpen(false)}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition text-sm font-medium ${
+                    isActive("/profile")
+                      ? "text-white bg-blue-600/20 border border-blue-500/30"
+                      : "text-slate-300 hover:text-white hover:bg-slate-800/60"
+                  }`}
+                >
+                  <User className="w-5 h-5" />
+                  {t("nav", "profile")}
+                </Link>
+                <Link
+                  href="/settings"
+                  onClick={() => setDesktopProfileOpen(false)}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition text-sm font-medium ${
+                    isActive("/settings")
+                      ? "text-white bg-blue-600/20 border border-blue-500/30"
+                      : "text-slate-300 hover:text-white hover:bg-slate-800/60"
+                  }`}
+                >
+                  <Settings className="w-5 h-5" />
+                  {t("nav", "settings")}
+                </Link>
+              </nav>
+
+              {/* Sign Out */}
+              <div className="px-4 pb-6 pt-2 border-t border-slate-700/50">
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-red-600/10 text-red-400 hover:bg-red-600/20 hover:text-red-300 transition text-sm font-medium"
+                >
+                  <LogOut className="w-5 h-5" />
+                  {t("nav", "signOut")}
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Mobile Slide-out Menu — rendered via portal to escape all stacking contexts */}
       {portalRoot && createPortal(
