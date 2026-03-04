@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import { PageTransition, FadeIn } from "@/components/PageTransition";
+import { ArrowLeft } from "lucide-react";
 
 export default function ForgotPasswordPage() {
   const { t } = useLanguage();
@@ -69,7 +70,7 @@ export default function ForgotPasswordPage() {
                   href="/login"
                   className="inline-block mt-4 text-blue-400 hover:text-blue-300 text-sm font-medium"
                 >
-                  ← {t("forgotPassword", "backToLogin")}
+                  <ArrowLeft className="w-4 h-4 inline" /> {t("forgotPassword", "backToLogin")}
                 </Link>
               </div>
             </FadeIn>

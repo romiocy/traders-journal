@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
 import { PageTransition, FadeIn } from "@/components/PageTransition";
+import { ArrowLeft } from "lucide-react";
 
 export default function ResetPasswordPage() {
   return (
@@ -160,7 +161,7 @@ function ResetPasswordContent() {
 
               <p className="text-center text-slate-300 text-sm">
                 <Link href="/login" className="text-blue-400 hover:text-blue-300">
-                  ← {t("forgotPassword", "backToLogin")}
+                  <ArrowLeft className="w-4 h-4 inline" /> {t("forgotPassword", "backToLogin")}
                 </Link>
               </p>
             </form>

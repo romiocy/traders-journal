@@ -15,6 +15,12 @@ import {
   TextReveal, SlideIn, AnimatedProgressBar
 } from "@/components/PageTransition";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  BarChart3, Calculator, TrendingUp, Bot, Link2, Globe,
+  Rocket, HandMetal, Crosshair, DollarSign, Users, Unlock,
+  PenLine, Trophy, Sparkles, ArrowUpRight, ArrowDownRight, Minus,
+  BarChart2
+} from "lucide-react";
 
 interface Stats {
   totalTrades: number;
@@ -70,12 +76,12 @@ function WelcomeLanding() {
   const [visibleFeature, setVisibleFeature] = useState(0);
 
   const features = [
-    { icon: "📊", titleKey: "featureTrack", descKey: "featureTrackDesc" },
-    { icon: "🧮", titleKey: "featureCalculator", descKey: "featureCalculatorDesc" },
-    { icon: "📈", titleKey: "featureAnalytics", descKey: "featureAnalyticsDesc" },
-    { icon: "🤖", titleKey: "featureAI", descKey: "featureAIDesc" },
-    { icon: "🔗", titleKey: "featureExchange", descKey: "featureExchangeDesc" },
-    { icon: "🌍", titleKey: "featureLang", descKey: "featureLangDesc" },
+    { icon: <BarChart3 className="w-9 h-9 text-blue-400" />, titleKey: "featureTrack", descKey: "featureTrackDesc" },
+    { icon: <Calculator className="w-9 h-9 text-orange-400" />, titleKey: "featureCalculator", descKey: "featureCalculatorDesc" },
+    { icon: <TrendingUp className="w-9 h-9 text-emerald-400" />, titleKey: "featureAnalytics", descKey: "featureAnalyticsDesc" },
+    { icon: <Bot className="w-9 h-9 text-cyan-400" />, titleKey: "featureAI", descKey: "featureAIDesc" },
+    { icon: <Link2 className="w-9 h-9 text-violet-400" />, titleKey: "featureExchange", descKey: "featureExchangeDesc" },
+    { icon: <Globe className="w-9 h-9 text-sky-400" />, titleKey: "featureLang", descKey: "featureLangDesc" },
   ];
 
   useEffect(() => {
@@ -111,11 +117,11 @@ function WelcomeLanding() {
             className="relative z-10 mb-6"
           >
             <motion.span
-              className="text-6xl sm:text-8xl block mb-4"
+              className="block mb-4"
               animate={{ rotate: [0, -5, 5, 0], scale: [1, 1.1, 1] }}
               transition={{ duration: 4, repeat: Infinity, repeatDelay: 2 }}
             >
-              📈
+              <TrendingUp className="w-16 h-16 sm:w-20 sm:h-20 text-blue-400" />
             </motion.span>
           </motion.div>
 
@@ -152,7 +158,7 @@ function WelcomeLanding() {
                 href="/signup"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white text-lg font-bold rounded-2xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all"
               >
-                🚀 {t("welcome", "getStartedFree")}
+                <Rocket className="w-5 h-5" /> {t("welcome", "getStartedFree")}
               </Link>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
@@ -160,7 +166,7 @@ function WelcomeLanding() {
                 href="/login"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-slate-800/80 backdrop-blur border border-slate-600/50 text-white text-lg font-medium rounded-2xl hover:bg-slate-700/80 transition-all"
               >
-                👋 {t("welcome", "iHaveAccount")}
+                <HandMetal className="w-5 h-5" /> {t("welcome", "iHaveAccount")}
               </Link>
             </motion.div>
           </motion.div>
@@ -194,7 +200,7 @@ function WelcomeLanding() {
             <ScrollStaggerItem>
               <HoverCard glowColor="rgba(59, 130, 246, 0.15)">
                 <div className="card-base p-4 sm:p-6 text-center">
-                  <motion.span className="text-3xl mb-2 block" animate={{ y: [0, -4, 0] }} transition={{ duration: 2.5, repeat: Infinity }}>📊</motion.span>
+                  <motion.span className="text-3xl mb-2 block" animate={{ y: [0, -4, 0] }} transition={{ duration: 2.5, repeat: Infinity }}><BarChart3 className="w-8 h-8 text-blue-400 mx-auto" /></motion.span>
                   <p className="text-xs sm:text-sm text-slate-400 mb-1">{t("welcome", "demoTotalTrades")}</p>
                   <p className="text-2xl sm:text-3xl font-bold text-white">
                     <AnimatedCounter value={1247} duration={2} />
@@ -205,7 +211,7 @@ function WelcomeLanding() {
             <ScrollStaggerItem>
               <HoverCard glowColor="rgba(16, 185, 129, 0.15)">
                 <div className="card-base p-4 sm:p-6 text-center">
-                  <motion.span className="text-3xl mb-2 block" animate={{ y: [0, -4, 0] }} transition={{ duration: 2.5, repeat: Infinity, delay: 0.3 }}>🎯</motion.span>
+                  <motion.span className="text-3xl mb-2 block" animate={{ y: [0, -4, 0] }} transition={{ duration: 2.5, repeat: Infinity, delay: 0.3 }}><Crosshair className="w-8 h-8 text-emerald-400 mx-auto" /></motion.span>
                   <p className="text-xs sm:text-sm text-slate-400 mb-1">{t("welcome", "demoWinRate")}</p>
                   <p className="text-2xl sm:text-3xl font-bold text-green-400">
                     <AnimatedCounter value={68.5} suffix="%" decimals={1} duration={2} />
@@ -216,7 +222,7 @@ function WelcomeLanding() {
             <ScrollStaggerItem>
               <HoverCard glowColor="rgba(16, 185, 129, 0.15)">
                 <div className="card-base p-4 sm:p-6 text-center">
-                  <motion.span className="text-3xl mb-2 block" animate={{ y: [0, -4, 0] }} transition={{ duration: 2.5, repeat: Infinity, delay: 0.6 }}>💰</motion.span>
+                  <motion.span className="text-3xl mb-2 block" animate={{ y: [0, -4, 0] }} transition={{ duration: 2.5, repeat: Infinity, delay: 0.6 }}><DollarSign className="w-8 h-8 text-emerald-400 mx-auto" /></motion.span>
                   <p className="text-xs sm:text-sm text-slate-400 mb-1">{t("welcome", "demoProfit")}</p>
                   <p className="text-2xl sm:text-3xl font-bold text-green-400">
                     <AnimatedCounter value={28940} prefix="$" duration={2.5} />
@@ -227,7 +233,7 @@ function WelcomeLanding() {
             <ScrollStaggerItem>
               <HoverCard glowColor="rgba(139, 92, 246, 0.15)">
                 <div className="card-base p-4 sm:p-6 text-center">
-                  <motion.span className="text-3xl mb-2 block" animate={{ y: [0, -4, 0] }} transition={{ duration: 2.5, repeat: Infinity, delay: 0.9 }}>👥</motion.span>
+                  <motion.span className="text-3xl mb-2 block" animate={{ y: [0, -4, 0] }} transition={{ duration: 2.5, repeat: Infinity, delay: 0.9 }}><Users className="w-8 h-8 text-violet-400 mx-auto" /></motion.span>
                   <p className="text-xs sm:text-sm text-slate-400 mb-1">{t("welcome", "demoTraders")}</p>
                   <p className="text-2xl sm:text-3xl font-bold text-white">
                     <AnimatedCounter value={5200} duration={2} />+
@@ -323,13 +329,13 @@ function WelcomeLanding() {
               >
                 <HoverCard glowColor="rgba(59, 130, 246, 0.1)" className="h-full">
                   <div className="card-base p-6 text-center h-full flex flex-col items-center justify-center">
-                    <motion.span
-                      className="text-4xl block mb-3"
+                    <motion.div
+                      className="block mb-3"
                       animate={visibleFeature === i ? { scale: [1, 1.3, 1], rotate: [0, 10, -10, 0] } : {}}
                       transition={{ duration: 0.6 }}
                     >
                       {f.icon}
-                    </motion.span>
+                    </motion.div>
                     <h3 className="text-white font-semibold mb-2">{t("welcome", f.titleKey)}</h3>
                     <p className="text-slate-400 text-sm leading-relaxed">{t("welcome", f.descKey)}</p>
                   </div>
@@ -349,9 +355,9 @@ function WelcomeLanding() {
 
           <div className="space-y-6 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-8">
             {[
-              { step: "1", icon: "✍️", titleKey: "step1Title", descKey: "step1Desc" },
-              { step: "2", icon: "📊", titleKey: "step2Title", descKey: "step2Desc" },
-              { step: "3", icon: "🚀", titleKey: "step3Title", descKey: "step3Desc" },
+              { step: "1", icon: <PenLine className="w-7 h-7 text-blue-400" />, titleKey: "step1Title", descKey: "step1Desc" },
+              { step: "2", icon: <BarChart3 className="w-7 h-7 text-cyan-400" />, titleKey: "step2Title", descKey: "step2Desc" },
+              { step: "3", icon: <Rocket className="w-7 h-7 text-emerald-400" />, titleKey: "step3Title", descKey: "step3Desc" },
             ].map((s, i) => (
               <motion.div
                 key={i}
@@ -365,7 +371,7 @@ function WelcomeLanding() {
                   className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600/20 to-cyan-600/20 border border-blue-500/20 flex items-center justify-center mx-auto mb-4"
                   whileHover={{ scale: 1.1, rotate: 5 }}
                 >
-                  <span className="text-3xl">{s.icon}</span>
+                  {s.icon}
                 </motion.div>
                 <div className="text-blue-400 text-xs font-bold mb-2 uppercase tracking-wider">
                   {t("welcome", "step")} {s.step}
@@ -406,7 +412,7 @@ function WelcomeLanding() {
                     animate={{ rotate: [0, -10, 10, 0], scale: [1, 1.15, 1] }}
                     transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
                   >
-                    🏆
+                    <Trophy className="w-12 h-12 text-yellow-400" />
                   </motion.span>
                   <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white mb-4">
                     {t("welcome", "ctaTitle")}
@@ -423,7 +429,7 @@ function WelcomeLanding() {
                       href="/signup"
                       className="inline-flex items-center gap-2 px-10 py-4 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white text-lg font-bold rounded-2xl shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 transition-all"
                     >
-                      ✨ {t("welcome", "signUpNow")}
+                      <Sparkles className="w-5 h-5" /> {t("welcome", "signUpNow")}
                     </Link>
                   </motion.div>
                   <p className="text-slate-500 text-xs mt-4">{t("welcome", "freeForever")}</p>
@@ -531,7 +537,7 @@ function UserDashboard() {
               title={t("dashboard", "totalTrades")}
               value={stats.totalTrades || 0}
               numericValue={stats.totalTrades || 0}
-              icon="📊"
+              icon="BarChart3"
               trend={stats.totalTrades > 0 ? "up" : "neutral"}
               trendLabels={[t("dashboard", "positive"), t("dashboard", "negative"), t("dashboard", "neutral")]}
             />
@@ -545,7 +551,7 @@ function UserDashboard() {
               numericValue={stats.winRate || 0}
               suffix="%"
               decimals={1}
-              icon="🎯"
+              icon="Crosshair"
               trend={stats.winRate > 50 ? "up" : "down"}
               trendLabels={[t("dashboard", "positive"), t("dashboard", "negative"), t("dashboard", "neutral")]}
             />
@@ -559,7 +565,7 @@ function UserDashboard() {
               numericValue={stats.totalProfit || 0}
               prefix="$"
               decimals={2}
-              icon="💰"
+              icon="DollarSign"
               trend={stats.totalProfit > 0 ? "up" : "down"}
               isProfit={stats.totalProfit >= 0}
               trendLabels={[t("dashboard", "positive"), t("dashboard", "negative"), t("dashboard", "neutral")]}
@@ -572,7 +578,7 @@ function UserDashboard() {
               title={t("dashboard", "openTrades")}
               value={stats.openTrades || 0}
               numericValue={stats.openTrades || 0}
-              icon="🔓"
+              icon="Unlock"
               trend="neutral"
               trendLabels={[t("dashboard", "positive"), t("dashboard", "negative"), t("dashboard", "neutral")]}
             />
@@ -612,7 +618,7 @@ function UserDashboard() {
               animate={{ rotate: [0, 5, -5, 0] }}
               transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
             >
-              📈
+              <TrendingUp className="w-8 h-8 text-blue-400" />
             </motion.div>
           </div>
           {chartData.length > 0 ? (
@@ -678,7 +684,7 @@ function UserDashboard() {
               animate={{ scale: [1, 1.15, 1] }}
               transition={{ duration: 2, repeat: Infinity, repeatDelay: 4 }}
             >
-              🎯
+              <Crosshair className="w-8 h-8 text-emerald-400" />
             </motion.div>
           </div>
           {winLossData.some((d) => d.value > 0) ? (
@@ -746,7 +752,7 @@ function UserDashboard() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                📊 {t("dashboard", "viewTrades")}
+                <BarChart2 className="w-5 h-5" /> {t("dashboard", "viewTrades")}
               </motion.a>
             </div>
           </div>
@@ -785,6 +791,13 @@ function StatCard({
   suffix?: string;
   decimals?: number;
 }) {
+  const iconMap: Record<string, React.ReactNode> = {
+    BarChart3: <BarChart3 className="w-7 h-7 sm:w-8 sm:h-8 text-blue-400" />,
+    Crosshair: <Crosshair className="w-7 h-7 sm:w-8 sm:h-8 text-emerald-400" />,
+    DollarSign: <DollarSign className="w-7 h-7 sm:w-8 sm:h-8 text-green-400" />,
+    Unlock: <Unlock className="w-7 h-7 sm:w-8 sm:h-8 text-violet-400" />,
+  };
+
   return (
     <div className="card-base p-4 sm:p-6 relative overflow-hidden group">
       {/* Subtle shimmer on hover */}
@@ -808,43 +821,42 @@ function StatCard({
           <div className="flex items-center gap-1">
             {trend === "up" && (
               <motion.span 
-                className="text-green-400 text-xs font-medium"
+                className="text-green-400 text-xs font-medium flex items-center gap-1"
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 }}
               >
-                ↑ {trendLabels[0]}
+                <ArrowUpRight className="w-3.5 h-3.5" /> {trendLabels[0]}
               </motion.span>
             )}
             {trend === "down" && (
               <motion.span 
-                className="text-red-400 text-xs font-medium"
+                className="text-red-400 text-xs font-medium flex items-center gap-1"
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 }}
               >
-                ↓ {trendLabels[1]}
+                <ArrowDownRight className="w-3.5 h-3.5" /> {trendLabels[1]}
               </motion.span>
             )}
             {trend === "neutral" && (
               <motion.span 
-                className="text-slate-400 text-xs font-medium"
+                className="text-slate-400 text-xs font-medium flex items-center gap-1"
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 }}
               >
-                — {trendLabels[2]}
+                <Minus className="w-3.5 h-3.5" /> {trendLabels[2]}
               </motion.span>
             )}
           </div>
         </div>
-        <motion.span 
-          className="text-2xl sm:text-3xl"
+        <motion.div 
           animate={{ y: [0, -4, 0] }}
           transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
         >
-          {icon}
-        </motion.span>
+          {iconMap[icon] || icon}
+        </motion.div>
       </div>
     </div>
   );

@@ -10,6 +10,10 @@ import { useLanguage } from "@/context/LanguageContext";
 import { clearCurrentUser } from "@/lib/auth";
 import { motion, AnimatePresence } from "framer-motion";
 import { CryptoTicker } from "./CryptoTicker";
+import {
+  LayoutDashboard, List, PlusCircle, TrendingUp, Calculator,
+  Settings, ShieldCheck, User, LogOut
+} from "lucide-react";
 
 export function Navigation() {
   const router = useRouter();
@@ -186,32 +190,32 @@ export function Navigation() {
                 {/* Nav Links */}
                 <nav className="flex-1 space-y-1">
                   <Link href="/" onClick={closeMobile} className={mobileNavLinkClass("/")}>
-                    <span className="text-lg">📊</span> {t("nav", "dashboard")}
+                    <LayoutDashboard className="w-5 h-5" /> {t("nav", "dashboard")}
                   </Link>
                   <Link href="/trades" onClick={closeMobile} className={mobileNavLinkClass("/trades")}>
-                    <span className="text-lg">📋</span> {t("nav", "trades")}
+                    <List className="w-5 h-5" /> {t("nav", "trades")}
                   </Link>
                   {user && (
                     <Link href="/add-trade" onClick={closeMobile} className={mobileNavLinkClass("/add-trade")}>
-                      <span className="text-lg">➕</span> {t("nav", "addTrade")}
+                      <PlusCircle className="w-5 h-5" /> {t("nav", "addTrade")}
                     </Link>
                   )}
                   <Link href="/performance" onClick={closeMobile} className={mobileNavLinkClass("/performance")}>
-                    <span className="text-lg">📈</span> {t("nav", "performance")}
+                    <TrendingUp className="w-5 h-5" /> {t("nav", "performance")}
                   </Link>
                   <Link href="/calculator" onClick={closeMobile} className={mobileNavLinkClass("/calculator")}>
-                    <span className="text-lg">🧮</span> {t("nav", "calculator")}
+                    <Calculator className="w-5 h-5" /> {t("nav", "calculator")}
                   </Link>
                   {user && (
                     <Link href="/settings" onClick={closeMobile} className={mobileNavLinkClass("/settings")}>
-                      <span className="text-lg">⚙️</span> {t("nav", "settings")}
+                      <Settings className="w-5 h-5" /> {t("nav", "settings")}
                     </Link>
                   )}
                   {user?.isAdmin && (
                     <>
                       <div className="border-t border-slate-700 my-3" />
                       <Link href="/admin" onClick={closeMobile} className={mobileNavLinkClass("/admin")}>
-                        <span className="text-lg">🛡️</span> {t("nav", "adminPanel")}
+                        <ShieldCheck className="w-5 h-5" /> {t("nav", "adminPanel")}
                       </Link>
                     </>
                   )}
@@ -226,13 +230,13 @@ export function Navigation() {
                         onClick={closeMobile}
                         className="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/60 transition text-sm font-medium"
                       >
-                        <span className="text-lg">👤</span> {t("nav", "profile")}
+                        <span className="text-lg"><User className="w-5 h-5" /></span> {t("nav", "profile")}
                       </Link>
                       <button
                         onClick={handleLogout}
                         className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-red-600/20 text-red-400 hover:bg-red-600/30 hover:text-red-300 transition text-sm font-medium"
                       >
-                        <span className="text-lg">🚪</span> {t("nav", "signOut")}
+                        <span className="text-lg"><LogOut className="w-5 h-5" /></span> {t("nav", "signOut")}
                       </button>
                     </>
                   ) : (

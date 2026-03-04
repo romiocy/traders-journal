@@ -6,6 +6,7 @@ import { Trade } from "@/types/trade";
 import { getCurrentUser } from "@/lib/auth";
 import { useLanguage } from "@/context/LanguageContext";
 import { PageTransition } from "@/components/PageTransition";
+import { Check } from "lucide-react";
 
 export default function EditTradePage() {
   const router = useRouter();
@@ -227,8 +228,8 @@ export default function EditTradePage() {
 
         {trade.status === "CLOSED" && (
           <div className="bg-green-900/30 border border-green-700/50 rounded-lg p-4">
-            <p className="text-sm font-semibold text-green-300">
-              ✓ {t("editTrade", "tradeClosed")}
+            <p className="text-sm font-semibold text-green-300 flex items-center gap-1">
+              <Check className="w-4 h-4" /> {t("editTrade", "tradeClosed")}
             </p>
             <p className="text-sm text-green-400 mt-1">
               {t("editTrade", "exitPrice")}: ${(trade.exitPrice || 0).toFixed(2)}

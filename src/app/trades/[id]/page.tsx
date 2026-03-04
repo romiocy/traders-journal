@@ -7,6 +7,7 @@ import { Trade } from "@/types/trade";
 import { getCurrentUser } from "@/lib/auth";
 import { useLanguage } from "@/context/LanguageContext";
 import { PageTransition, FadeIn } from "@/components/PageTransition";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export default function TradeDetailPage() {
   const { id } = useParams();
@@ -47,8 +48,8 @@ export default function TradeDetailPage() {
     return (
       <div className="text-center py-16">
         <p className="text-slate-300 text-lg mb-4">{t("editTrade", "tradeNotFound")}</p>
-        <Link href="/trades" className="text-blue-400 hover:text-blue-300">
-          ← {t("tradeDetail", "backToTrades")}
+        <Link href="/trades" className="text-blue-400 hover:text-blue-300 inline-flex items-center gap-1">
+          <ArrowLeft className="w-4 h-4" /> {t("tradeDetail", "backToTrades")}
         </Link>
       </div>
     );
@@ -72,7 +73,7 @@ export default function TradeDetailPage() {
             href="/trades"
             className="text-sm text-slate-400 hover:text-slate-200 transition inline-flex items-center gap-1 mb-4"
           >
-            ← {t("tradeDetail", "backToTrades")}
+            <ArrowLeft className="w-4 h-4" /> {t("tradeDetail", "backToTrades")}
           </Link>
 
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -101,7 +102,7 @@ export default function TradeDetailPage() {
               href={`/edit-trade/${trade.id}`}
               className="btn-primary inline-flex items-center gap-2 w-fit text-sm"
             >
-              {t("trades", "edit")} →
+              {t("trades", "edit")} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>

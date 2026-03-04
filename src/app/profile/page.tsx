@@ -6,6 +6,7 @@ import { useAuth } from "@/context/AuthContext";
 import { getCurrentUser } from "@/lib/auth";
 import { useLanguage } from "@/context/LanguageContext";
 import { PageTransition } from "@/components/PageTransition";
+import { ChevronDown, ChevronRight } from "lucide-react";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -336,7 +337,7 @@ export default function ProfilePage() {
               onClick={() => setPasswordSectionOpen(!passwordSectionOpen)}
               className="flex items-center gap-2 text-white font-semibold mb-4 hover:text-blue-400 transition"
             >
-              <span className="text-xl">{passwordSectionOpen ? "▼" : "▶"}</span>
+              <span className="text-xl">{passwordSectionOpen ? <ChevronDown className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}</span>
               {t("profile", "changePassword")}
             </button>
 

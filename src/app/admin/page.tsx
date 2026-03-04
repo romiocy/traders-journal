@@ -6,6 +6,10 @@ import { useAuth } from "@/context/AuthContext";
 import { getCurrentUser } from "@/lib/auth";
 import { useLanguage } from "@/context/LanguageContext";
 import { PageTransition, FadeIn, FadeInStagger, FadeInItem } from "@/components/PageTransition";
+import {
+  Users, ShieldCheck, BarChart3, DollarSign, Crosshair,
+  UserPlus, ChevronDown, PieChart, FileText
+} from "lucide-react";
 
 interface Portfolio {
   totalTrades: number;
@@ -145,22 +149,22 @@ export default function AdminPanel() {
 
       {/* Overview Stats */}
       <FadeInStagger className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
-        <OverviewCard label={t("admin", "totalMembers")} value={totalMembers} icon="👥" />
-        <OverviewCard label={t("admin", "admins")} value={totalAdmins} icon="🛡️" color="text-blue-400" />
-        <OverviewCard label={t("admin", "totalTrades")} value={totalAllTrades} icon="📊" color="text-cyan-400" />
+        <OverviewCard label={t("admin", "totalMembers")} value={totalMembers} icon={<Users className="w-5 h-5 text-slate-300" />} />
+        <OverviewCard label={t("admin", "admins")} value={totalAdmins} icon={<ShieldCheck className="w-5 h-5 text-blue-400" />} color="text-blue-400" />
+        <OverviewCard label={t("admin", "totalTrades")} value={totalAllTrades} icon={<BarChart3 className="w-5 h-5 text-cyan-400" />} color="text-cyan-400" />
         <OverviewCard
           label={t("admin", "platformPL")}
           value={`$${totalAllProfit.toFixed(2)}`}
-          icon="💰"
+          icon={<DollarSign className="w-5 h-5 text-green-400" />}
           color={totalAllProfit >= 0 ? "text-green-400" : "text-red-400"}
         />
         <OverviewCard
           label={t("admin", "avgWinRate")}
           value={`${isNaN(avgWinRate) ? 0 : avgWinRate.toFixed(1)}%`}
-          icon="🎯"
+          icon={<Crosshair className="w-5 h-5 text-yellow-400" />}
           color="text-yellow-400"
         />
-        <OverviewCard label={t("admin", "newThisMonth")} value={newThisMonth} icon="🆕" color="text-green-400" />
+        <OverviewCard label={t("admin", "newThisMonth")} value={newThisMonth} icon={<UserPlus className="w-5 h-5 text-green-400" />} color="text-green-400" />
       </FadeInStagger>
 
       {/* Members List */}
@@ -225,7 +229,7 @@ export default function AdminPanel() {
                   </div>
 
                   <span className={`text-slate-300 transition-transform ${expandedUser === member.id ? "rotate-180" : ""}`}>
-                    ▼
+                    <ChevronDown className="w-5 h-5" />
                   </span>
                 </button>
 
@@ -253,7 +257,7 @@ export default function AdminPanel() {
                     </div>
 
                     {/* Portfolio Stats */}
-                    <h3 className="text-sm font-semibold text-white mb-3">📊 {t("admin", "investmentPortfolio")}</h3>
+                    <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-1"><PieChart className="w-4 h-4 text-blue-400" /> {t("admin", "investmentPortfolio")}</h3>
                     <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
                       <MiniStat label={t("admin", "totalTrades")} value={member.portfolio.totalTrades} />
                       <MiniStat label={t("admin", "open")} value={member.portfolio.openTrades} color="text-blue-400" />
@@ -295,7 +299,7 @@ export default function AdminPanel() {
                     {/* Recent Trades */}
                     {member.recentTrades.length > 0 ? (
                       <>
-                        <h3 className="text-sm font-semibold text-white mb-3">📝 {t("admin", "recentTrades")}</h3>
+                        <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-1"><FileText className="w-4 h-4 text-blue-400" /> {t("admin", "recentTrades")}</h3>
                         <div className="overflow-x-auto">
                           <table className="w-full text-sm">
                             <thead>
@@ -367,14 +371,14 @@ function OverviewCard({
 }: {
   label: string;
   value: string | number;
-  icon: string;
+  icon: React.ReactNode;
   color?: string;
 }) {
   return (
     <FadeInItem>
     <div className="bg-slate-800/50 rounded-lg p-3 sm:p-4 border border-slate-700">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-lg sm:text-xl">{icon}</span>
+        {icon}
       </div>
       <p className="text-slate-300 text-[10px] sm:text-xs mb-1">{label}</p>
       <p className={`text-base sm:text-xl font-bold ${color}`}>{value}</p>

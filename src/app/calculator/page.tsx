@@ -3,6 +3,11 @@
 import { useState, useCallback, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { motion } from "framer-motion";
+import {
+  SlidersHorizontal, Crosshair, AlertTriangle, Ban,
+  BarChart3, ShieldCheck, Calculator, CheckCircle2,
+  ThumbsUp, AlertCircle, Siren
+} from "lucide-react";
 
 export default function CalculatorPage() {
   const { t } = useLanguage();
@@ -106,7 +111,7 @@ export default function CalculatorPage() {
             className="bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-6"
           >
             <h2 className="text-lg font-semibold text-white mb-5 flex items-center gap-2">
-              <span className="text-xl">⚙️</span> {t("calculator", "parameters")}
+              <SlidersHorizontal className="w-5 h-5 text-slate-400" /> {t("calculator", "parameters")}
             </h2>
 
             <div className="space-y-4">
@@ -320,7 +325,7 @@ export default function CalculatorPage() {
                       <div className={`text-4xl ${
                         results.rrRatio >= 2 ? "opacity-100" : results.rrRatio >= 1 ? "opacity-70" : "opacity-50"
                       }`}>
-                        {results.rrRatio >= 2 ? "🎯" : results.rrRatio >= 1 ? "⚠️" : "🚫"}
+                        {results.rrRatio >= 2 ? <Crosshair className="w-10 h-10 text-green-400" /> : results.rrRatio >= 1 ? <AlertTriangle className="w-10 h-10 text-yellow-400" /> : <Ban className="w-10 h-10 text-red-400" />}
                       </div>
                     </div>
                     {/* Visual bar */}
@@ -343,7 +348,7 @@ export default function CalculatorPage() {
                 {/* Position Details */}
                 <div className="bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-4">
                   <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-                    <span>📊</span> {t("calculator", "positionDetails")}
+                    <BarChart3 className="w-4 h-4 text-blue-400" /> {t("calculator", "positionDetails")}
                   </h3>
                   <div className="space-y-2.5">
                     <div className="flex justify-between items-center">
@@ -384,7 +389,7 @@ export default function CalculatorPage() {
                 {/* Survival Stats */}
                 <div className="bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-4">
                   <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-                    <span>🛡️</span> {t("calculator", "survivalStats")}
+                    <ShieldCheck className="w-4 h-4 text-emerald-400" /> {t("calculator", "survivalStats")}
                   </h3>
                   <div className="space-y-2.5">
                     <div className="flex justify-between items-center">
@@ -414,12 +419,12 @@ export default function CalculatorPage() {
                   <div className="flex items-center gap-3">
                     <span className="text-2xl">
                       {parseFloat(riskPercent) <= 1
-                        ? "✅"
+                        ? <CheckCircle2 className="w-7 h-7 text-green-400" />
                         : parseFloat(riskPercent) <= 2
-                        ? "👍"
+                        ? <ThumbsUp className="w-7 h-7 text-blue-400" />
                         : parseFloat(riskPercent) <= 5
-                        ? "⚠️"
-                        : "🚨"
+                        ? <AlertCircle className="w-7 h-7 text-yellow-400" />
+                        : <Siren className="w-7 h-7 text-red-400" />
                       }
                     </span>
                     <div>
@@ -456,7 +461,7 @@ export default function CalculatorPage() {
             ) : (
               /* Empty state */
               <div className="bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-12 flex flex-col items-center justify-center text-center h-full min-h-[400px]">
-                <span className="text-6xl mb-4">🧮</span>
+                <Calculator className="w-16 h-16 text-slate-500 mb-4" />
                 <h3 className="text-lg font-semibold text-white mb-2">
                   {t("calculator", "emptyTitle")}
                 </h3>

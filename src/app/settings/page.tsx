@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { PageTransition, FadeIn } from "@/components/PageTransition";
+import { Check, X } from "lucide-react";
 
 export default function SettingsPage() {
   const { t } = useLanguage();
@@ -106,7 +107,7 @@ export default function SettingsPage() {
                       exchange.connected ? "text-green-400" : "text-red-400"
                     }`}
                   >
-                    {exchange.connected ? `✓ ${t("settings", "connected")}` : `✗ ${t("settings", "disconnected")}`}
+                    {exchange.connected ? <><Check className="w-4 h-4 inline" /> {t("settings", "connected")}</> : <><X className="w-4 h-4 inline" /> {t("settings", "disconnected")}</>}
                   </span>
                 </div>
               ))
