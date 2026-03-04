@@ -315,13 +315,14 @@ function WelcomeLanding() {
             {features.map((f, i) => (
               <motion.div
                 key={i}
+                className="h-full"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
               >
-                <HoverCard glowColor="rgba(59, 130, 246, 0.1)">
-                  <div className="card-base p-6 text-center h-full">
+                <HoverCard glowColor="rgba(59, 130, 246, 0.1)" className="h-full">
+                  <div className="card-base p-6 text-center h-full flex flex-col items-center justify-center">
                     <motion.span
                       className="text-4xl block mb-3"
                       animate={visibleFeature === i ? { scale: [1, 1.3, 1], rotate: [0, 10, -10, 0] } : {}}
