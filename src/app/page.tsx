@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+import Link from "next/link";
+import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, AreaChart, Area } from "recharts";
 import { Trade } from "@/types/trade";
 import { getCurrentUser } from "@/lib/auth";
 import { useAuth } from "@/context/AuthContext";
@@ -13,7 +14,7 @@ import {
   HoverCard, AnimatedCounter, FloatingParticles, GlowPulse,
   TextReveal, SlideIn, AnimatedProgressBar
 } from "@/components/PageTransition";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Stats {
   totalTrades: number;
@@ -28,6 +29,415 @@ interface ChartData {
 }
 
 export default function Dashboard() {
+  const { user } = useAuth();
+  const { t, lang } = useLanguage();
+
+  // If no user is logged in, show the welcome landing page
+  if (!user) {
+    return <WelcomeLanding />;
+  }
+
+  return <UserDashboard />;
+}
+
+// ============================================================
+// WELCOME LANDING PAGE — for first-time / non-logged-in visitors
+// ============================================================
+
+// Fake demo chart data
+const demoChartData = [
+  { date: "Jan", profit: 320 },
+  { date: "Feb", profit: 580 },
+  { date: "Mar", profit: 420 },
+  { date: "Apr", profit: 890 },
+  { date: "May", profit: 1150 },
+  { date: "Jun", profit: 980 },
+  { date: "Jul", profit: 1420 },
+  { date: "Aug", profit: 1680 },
+  { date: "Sep", profit: 1540 },
+  { date: "Oct", profit: 2100 },
+  { date: "Nov", profit: 2450 },
+  { date: "Dec", profit: 2890 },
+];
+
+const demoWinLoss = [
+  { name: "Wins", value: 68, color: "#10b981" },
+  { name: "Losses", value: 32, color: "#ef4444" },
+];
+
+function WelcomeLanding() {
+  const { t, lang } = useLanguage();
+  const [visibleFeature, setVisibleFeature] = useState(0);
+
+  const features = [
+    { icon: "📊", titleKey: "featureTrack", descKey: "featureTrackDesc" },
+    { icon: "🧮", titleKey: "featureCalculator", descKey: "featureCalculatorDesc" },
+    { icon: "📈", titleKey: "featureAnalytics", descKey: "featureAnalyticsDesc" },
+    { icon: "🤖", titleKey: "featureAI", descKey: "featureAIDesc" },
+    { icon: "🔗", titleKey: "featureExchange", descKey: "featureExchangeDesc" },
+    { icon: "🌍", titleKey: "featureLang", descKey: "featureLangDesc" },
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setVisibleFeature((prev) => (prev + 1) % features.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [features.length]);
+
+  return (
+    <PageTransition>
+      <div className="relative overflow-hidden">
+        <FloatingParticles count={30} />
+
+        {/* ─── HERO SECTION ─── */}
+        <section className="relative min-h-[85vh] flex flex-col items-center justify-center text-center px-4 py-16 sm:py-24">
+          {/* Animated background glow */}
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 2 }}
+          >
+            <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[120px]" />
+            <div className="absolute bottom-1/4 left-1/3 w-[400px] h-[400px] bg-cyan-500/8 rounded-full blur-[100px]" />
+            <div className="absolute top-1/3 right-1/4 w-[300px] h-[300px] bg-violet-500/8 rounded-full blur-[80px]" />
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="relative z-10 mb-6"
+          >
+            <motion.span
+              className="text-6xl sm:text-8xl block mb-4"
+              animate={{ rotate: [0, -5, 5, 0], scale: [1, 1.1, 1] }}
+              transition={{ duration: 4, repeat: Infinity, repeatDelay: 2 }}
+            >
+              📈
+            </motion.span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="relative z-10 text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight mb-4 sm:mb-6"
+          >
+            <span className="gradient-text-animated">{t("welcome", "heroTitle")}</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="relative z-10 text-lg sm:text-xl lg:text-2xl text-slate-300 max-w-3xl mb-10"
+          >
+            {t("welcome", "heroSubtitle")}
+          </motion.p>
+
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="relative z-10 flex flex-col sm:flex-row gap-4 mb-16"
+          >
+            <motion.div
+              whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(59,130,246,0.4)" }}
+              whileTap={{ scale: 0.97 }}
+            >
+              <Link
+                href="/signup"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white text-lg font-bold rounded-2xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all"
+              >
+                🚀 {t("welcome", "getStartedFree")}
+              </Link>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
+              <Link
+                href="/login"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-slate-800/80 backdrop-blur border border-slate-600/50 text-white text-lg font-medium rounded-2xl hover:bg-slate-700/80 transition-all"
+              >
+                👋 {t("welcome", "iHaveAccount")}
+              </Link>
+            </motion.div>
+          </motion.div>
+
+          {/* Scroll indicator */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, y: [0, 8, 0] }}
+            transition={{ opacity: { delay: 1.5 }, y: { duration: 2, repeat: Infinity } }}
+            className="relative z-10 text-slate-400 text-sm flex flex-col items-center gap-2"
+          >
+            <span>{t("welcome", "scrollToExplore")}</span>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+          </motion.div>
+        </section>
+
+        {/* ─── FAKE STATS SHOWCASE ─── */}
+        <section className="px-4 py-12 sm:py-20">
+          <ScrollFadeIn>
+            <h2 className="text-2xl sm:text-3xl font-bold text-center text-white mb-3">
+              {t("welcome", "statsTitle")}
+            </h2>
+            <p className="text-slate-400 text-center mb-10 max-w-xl mx-auto">
+              {t("welcome", "statsSubtitle")}
+            </p>
+          </ScrollFadeIn>
+
+          <ScrollStagger className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 max-w-5xl mx-auto">
+            <ScrollStaggerItem>
+              <HoverCard glowColor="rgba(59, 130, 246, 0.15)">
+                <div className="card-base p-4 sm:p-6 text-center">
+                  <motion.span className="text-3xl mb-2 block" animate={{ y: [0, -4, 0] }} transition={{ duration: 2.5, repeat: Infinity }}>📊</motion.span>
+                  <p className="text-xs sm:text-sm text-slate-400 mb-1">{t("welcome", "demoTotalTrades")}</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-white">
+                    <AnimatedCounter value={1247} duration={2} />
+                  </p>
+                </div>
+              </HoverCard>
+            </ScrollStaggerItem>
+            <ScrollStaggerItem>
+              <HoverCard glowColor="rgba(16, 185, 129, 0.15)">
+                <div className="card-base p-4 sm:p-6 text-center">
+                  <motion.span className="text-3xl mb-2 block" animate={{ y: [0, -4, 0] }} transition={{ duration: 2.5, repeat: Infinity, delay: 0.3 }}>🎯</motion.span>
+                  <p className="text-xs sm:text-sm text-slate-400 mb-1">{t("welcome", "demoWinRate")}</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-green-400">
+                    <AnimatedCounter value={68.5} suffix="%" decimals={1} duration={2} />
+                  </p>
+                </div>
+              </HoverCard>
+            </ScrollStaggerItem>
+            <ScrollStaggerItem>
+              <HoverCard glowColor="rgba(16, 185, 129, 0.15)">
+                <div className="card-base p-4 sm:p-6 text-center">
+                  <motion.span className="text-3xl mb-2 block" animate={{ y: [0, -4, 0] }} transition={{ duration: 2.5, repeat: Infinity, delay: 0.6 }}>💰</motion.span>
+                  <p className="text-xs sm:text-sm text-slate-400 mb-1">{t("welcome", "demoProfit")}</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-green-400">
+                    <AnimatedCounter value={28940} prefix="$" duration={2.5} />
+                  </p>
+                </div>
+              </HoverCard>
+            </ScrollStaggerItem>
+            <ScrollStaggerItem>
+              <HoverCard glowColor="rgba(139, 92, 246, 0.15)">
+                <div className="card-base p-4 sm:p-6 text-center">
+                  <motion.span className="text-3xl mb-2 block" animate={{ y: [0, -4, 0] }} transition={{ duration: 2.5, repeat: Infinity, delay: 0.9 }}>👥</motion.span>
+                  <p className="text-xs sm:text-sm text-slate-400 mb-1">{t("welcome", "demoTraders")}</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-white">
+                    <AnimatedCounter value={5200} duration={2} />+
+                  </p>
+                </div>
+              </HoverCard>
+            </ScrollStaggerItem>
+          </ScrollStagger>
+        </section>
+
+        {/* ─── DEMO CHARTS ─── */}
+        <section className="px-4 py-12 sm:py-16 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <SlideIn from="left" delay={0.1}>
+              <HoverCard className="h-full">
+                <div className="card-base p-5 sm:p-6 h-full">
+                  <h3 className="text-lg font-bold text-white mb-1">{t("welcome", "demoChartTitle")}</h3>
+                  <p className="text-xs text-slate-400 mb-4">{t("welcome", "demoChartDesc")}</p>
+                  <ResponsiveContainer width="100%" height={220}>
+                    <AreaChart data={demoChartData}>
+                      <defs>
+                        <linearGradient id="profitGrad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
+                          <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                      <XAxis dataKey="date" tick={{ fontSize: 11, fill: "#94a3b8" }} stroke="#475569" />
+                      <YAxis tick={{ fontSize: 11, fill: "#94a3b8" }} stroke="#475569" />
+                      <Tooltip
+                        contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #475569", borderRadius: "8px" }}
+                        formatter={(value: number) => [`$${value}`, "Profit"]}
+                      />
+                      <Area type="monotone" dataKey="profit" stroke="#3b82f6" strokeWidth={2.5} fill="url(#profitGrad)" />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+              </HoverCard>
+            </SlideIn>
+
+            <SlideIn from="right" delay={0.15}>
+              <HoverCard className="h-full">
+                <div className="card-base p-5 sm:p-6 h-full">
+                  <h3 className="text-lg font-bold text-white mb-1">{t("welcome", "demoWinLossTitle")}</h3>
+                  <p className="text-xs text-slate-400 mb-4">{t("welcome", "demoWinLossDesc")}</p>
+                  <ResponsiveContainer width="100%" height={220}>
+                    <PieChart>
+                      <Pie
+                        data={demoWinLoss}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={55}
+                        outerRadius={85}
+                        paddingAngle={4}
+                        dataKey="value"
+                        label={({ name, value }) => `${name}: ${value}%`}
+                      >
+                        {demoWinLoss.map((entry, i) => (
+                          <Cell key={i} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        contentStyle={{ backgroundColor: "#1e293b", border: "1px solid #475569", borderRadius: "8px" }}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </HoverCard>
+            </SlideIn>
+          </div>
+        </section>
+
+        {/* ─── FEATURES CAROUSEL ─── */}
+        <section className="px-4 py-12 sm:py-20">
+          <ScrollFadeIn>
+            <h2 className="text-2xl sm:text-3xl font-bold text-center text-white mb-3">
+              {t("welcome", "featuresTitle")}
+            </h2>
+            <p className="text-slate-400 text-center mb-12 max-w-xl mx-auto">
+              {t("welcome", "featuresSubtitle")}
+            </p>
+          </ScrollFadeIn>
+
+          <div className="max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {features.map((f, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+              >
+                <HoverCard glowColor="rgba(59, 130, 246, 0.1)">
+                  <div className="card-base p-6 text-center h-full">
+                    <motion.span
+                      className="text-4xl block mb-3"
+                      animate={visibleFeature === i ? { scale: [1, 1.3, 1], rotate: [0, 10, -10, 0] } : {}}
+                      transition={{ duration: 0.6 }}
+                    >
+                      {f.icon}
+                    </motion.span>
+                    <h3 className="text-white font-semibold mb-2">{t("welcome", f.titleKey)}</h3>
+                    <p className="text-slate-400 text-sm leading-relaxed">{t("welcome", f.descKey)}</p>
+                  </div>
+                </HoverCard>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* ─── HOW IT WORKS ─── */}
+        <section className="px-4 py-12 sm:py-20 max-w-4xl mx-auto">
+          <ScrollFadeIn>
+            <h2 className="text-2xl sm:text-3xl font-bold text-center text-white mb-12">
+              {t("welcome", "howItWorks")}
+            </h2>
+          </ScrollFadeIn>
+
+          <div className="space-y-6 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-8">
+            {[
+              { step: "1", icon: "✍️", titleKey: "step1Title", descKey: "step1Desc" },
+              { step: "2", icon: "📊", titleKey: "step2Title", descKey: "step2Desc" },
+              { step: "3", icon: "🚀", titleKey: "step3Title", descKey: "step3Desc" },
+            ].map((s, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: i * 0.2 }}
+                className="text-center"
+              >
+                <motion.div
+                  className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600/20 to-cyan-600/20 border border-blue-500/20 flex items-center justify-center mx-auto mb-4"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                >
+                  <span className="text-3xl">{s.icon}</span>
+                </motion.div>
+                <div className="text-blue-400 text-xs font-bold mb-2 uppercase tracking-wider">
+                  {t("welcome", "step")} {s.step}
+                </div>
+                <h3 className="text-white font-semibold mb-2">{t("welcome", s.titleKey)}</h3>
+                <p className="text-slate-400 text-sm">{t("welcome", s.descKey)}</p>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* ─── FINAL CTA ─── */}
+        <section className="px-4 py-16 sm:py-24">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="max-w-3xl mx-auto text-center"
+          >
+            <GlowPulse color="blue">
+              <div className="card-base p-8 sm:p-12 border-blue-500/20 relative overflow-hidden">
+                {/* Animated background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-cyan-600/5" />
+                <motion.div
+                  className="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl"
+                  animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.6, 0.3] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                />
+                <motion.div
+                  className="absolute -bottom-24 -left-24 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl"
+                  animate={{ scale: [1.3, 1, 1.3], opacity: [0.3, 0.6, 0.3] }}
+                  transition={{ duration: 4, repeat: Infinity, delay: 2 }}
+                />
+
+                <div className="relative z-10">
+                  <motion.span
+                    className="text-5xl block mb-4"
+                    animate={{ rotate: [0, -10, 10, 0], scale: [1, 1.15, 1] }}
+                    transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
+                  >
+                    🏆
+                  </motion.span>
+                  <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white mb-4">
+                    {t("welcome", "ctaTitle")}
+                  </h2>
+                  <p className="text-slate-300 mb-8 max-w-lg mx-auto">
+                    {t("welcome", "ctaSubtitle")}
+                  </p>
+                  <motion.div whileHover={{ scale: 1.05, boxShadow: "0 0 50px rgba(59,130,246,0.5)" }} whileTap={{ scale: 0.97 }}>
+                    <Link
+                      href="/signup"
+                      className="inline-flex items-center gap-2 px-10 py-4 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white text-lg font-bold rounded-2xl shadow-lg shadow-blue-500/30 transition-all"
+                    >
+                      ✨ {t("welcome", "signUpNow")}
+                    </Link>
+                  </motion.div>
+                  <p className="text-slate-500 text-xs mt-4">{t("welcome", "freeForever")}</p>
+                </div>
+              </div>
+            </GlowPulse>
+          </motion.div>
+        </section>
+      </div>
+    </PageTransition>
+  );
+}
+
+// ============================================================
+// USER DASHBOARD — for logged-in users (existing functionality)
+// ============================================================
+
+function UserDashboard() {
   const { user } = useAuth();
   const { t, lang } = useLanguage();
   const [stats, setStats] = useState<Stats>({

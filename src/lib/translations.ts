@@ -357,6 +357,64 @@ export const translations = {
     emptyDesc: { en: "Fill in account balance, risk percentage, entry price and stop loss to see calculated position sizing and risk analysis.", ru: "Заполните баланс, процент риска, цену входа и стоп-лосс, чтобы увидеть расчёт позиции и анализ рисков." },
   },
 
+  // Welcome / Landing page
+  welcome: {
+    heroTitle: { en: "Master Your Trading Journey", ru: "Управляйте своей торговлей" },
+    heroSubtitle: {
+      en: "The all-in-one trading journal that helps you track trades, manage risk, and grow your portfolio with confidence.",
+      ru: "Универсальный торговый журнал, который помогает отслеживать сделки, управлять рисками и уверенно наращивать портфель.",
+    },
+    getStartedFree: { en: "Get Started Free", ru: "Начать бесплатно" },
+    iHaveAccount: { en: "I Have an Account", ru: "У меня есть аккаунт" },
+    scrollToExplore: { en: "Scroll to explore", ru: "Прокрутите вниз" },
+
+    // Demo stats
+    statsTitle: { en: "Trusted by Traders Worldwide", ru: "Трейдеры по всему миру доверяют нам" },
+    statsSubtitle: { en: "See what's possible when you trade with discipline and data", ru: "Посмотрите, чего можно достичь с дисциплиной и данными" },
+    demoTotalTrades: { en: "Trades Logged", ru: "Записано сделок" },
+    demoWinRate: { en: "Avg Win Rate", ru: "Средний % побед" },
+    demoProfit: { en: "Total Profit", ru: "Общая прибыль" },
+    demoTraders: { en: "Active Traders", ru: "Активных трейдеров" },
+
+    // Demo charts
+    demoChartTitle: { en: "Portfolio Growth", ru: "Рост портфеля" },
+    demoChartDesc: { en: "Average trader equity curve over 12 months", ru: "Средняя кривая капитала трейдера за 12 месяцев" },
+    demoWinLossTitle: { en: "Win / Loss Ratio", ru: "Соотношение побед / поражений" },
+    demoWinLossDesc: { en: "Average results of disciplined traders", ru: "Средние результаты дисциплинированных трейдеров" },
+
+    // Features
+    featuresTitle: { en: "Everything You Need", ru: "Всё, что вам нужно" },
+    featuresSubtitle: { en: "Powerful tools designed for serious traders", ru: "Мощные инструменты для серьёзных трейдеров" },
+    featureTrack: { en: "Trade Journal", ru: "Журнал сделок" },
+    featureTrackDesc: { en: "Log every trade with entry/exit prices, notes, setup descriptions and lessons learned.", ru: "Записывайте каждую сделку с ценами входа/выхода, заметками, описаниями сетапов и уроками." },
+    featureCalculator: { en: "Risk Calculator", ru: "Калькулятор рисков" },
+    featureCalculatorDesc: { en: "Calculate position size, risk/reward ratio, and stop loss automatically before every trade.", ru: "Рассчитывайте размер позиции, R:R и стоп-лосс автоматически перед каждой сделкой." },
+    featureAnalytics: { en: "Performance Analytics", ru: "Аналитика результатов" },
+    featureAnalyticsDesc: { en: "Track win rate, profit factor, drawdown, and equity curve with beautiful charts.", ru: "Отслеживайте % побед, фактор прибыли, просадку и кривую капитала с красивыми графиками." },
+    featureAI: { en: "AI Assistant", ru: "AI Ассистент" },
+    featureAIDesc: { en: "Get AI-powered insights and suggestions to improve your trading strategy.", ru: "Получайте AI-аналитику и советы для улучшения торговой стратегии." },
+    featureExchange: { en: "Exchange Sync", ru: "Синхронизация с биржей" },
+    featureExchangeDesc: { en: "Connect your exchange accounts and import trades automatically.", ru: "Подключите свои биржевые аккаунты и импортируйте сделки автоматически." },
+    featureLang: { en: "Multi-Language", ru: "Мультиязычность" },
+    featureLangDesc: { en: "Full English and Russian support — switch instantly anytime.", ru: "Полная поддержка английского и русского — переключайтесь мгновенно." },
+
+    // How it works
+    howItWorks: { en: "How It Works", ru: "Как это работает" },
+    step: { en: "Step", ru: "Шаг" },
+    step1Title: { en: "Log Your Trades", ru: "Записывайте сделки" },
+    step1Desc: { en: "Add trades manually or sync with your exchange. Track every detail.", ru: "Добавляйте сделки вручную или синхронизируйте с биржей. Отслеживайте каждую деталь." },
+    step2Title: { en: "Analyze Performance", ru: "Анализируйте результаты" },
+    step2Desc: { en: "View charts, statistics, and AI insights to understand your strengths.", ru: "Просматривайте графики, статистику и AI-аналитику, чтобы понять свои сильные стороны." },
+    step3Title: { en: "Grow Your Account", ru: "Увеличивайте капитал" },
+    step3Desc: { en: "Apply what you learn, manage risk better, and trade with confidence.", ru: "Применяйте знания, лучше управляйте рисками и торгуйте уверенно." },
+
+    // Final CTA
+    ctaTitle: { en: "Start Trading Smarter Today", ru: "Начните торговать умнее сегодня" },
+    ctaSubtitle: { en: "Join thousands of traders who use Trader's Journal to track, analyze, and improve their performance.", ru: "Присоединяйтесь к тысячам трейдеров, которые используют Trader's Journal для отслеживания, анализа и улучшения результатов." },
+    signUpNow: { en: "Sign Up Now — It's Free", ru: "Зарегистрируйтесь — Это бесплатно" },
+    freeForever: { en: "Free forever. No credit card required.", ru: "Бесплатно навсегда. Карта не нужна." },
+  },
+
   // Common
   common: {
     tradersJournal: { en: "Trader's Journal", ru: "Журнал Трейдера" },
