@@ -170,8 +170,10 @@ export default function AddTradePage() {
                 <option value="SELL">{t("addTrade", "sell")}</option>
               </select>
             </motion.div>
+          </div>
 
-            <motion.div custom={2} variants={fieldVariants} initial="hidden" animate="visible">
+          <div className="grid grid-cols-5 sm:grid-cols-2 gap-4">
+            <motion.div custom={2} variants={fieldVariants} initial="hidden" animate="visible" className="col-span-3 sm:col-span-1">
               <label className="block text-sm font-semibold text-white mb-2">
                 {t("addTrade", "quantity")} *
               </label>
@@ -198,7 +200,7 @@ export default function AddTradePage() {
               </div>
             </motion.div>
 
-            <motion.div custom={3} variants={fieldVariants} initial="hidden" animate="visible">
+            <motion.div custom={3} variants={fieldVariants} initial="hidden" animate="visible" className="col-span-2 sm:col-span-1">
               <label className="block text-sm font-semibold text-white mb-2">
                 {t("addTrade", "entryPrice")} *
               </label>
@@ -212,8 +214,9 @@ export default function AddTradePage() {
                 className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               />
             </motion.div>
+          </div>
 
-            <motion.div custom={4} variants={fieldVariants} initial="hidden" animate="visible" className="col-span-2">
+          <motion.div custom={4} variants={fieldVariants} initial="hidden" animate="visible">
               <label className="block text-sm font-semibold text-white mb-2">
                 {t("addTrade", "tradeDate")} *
               </label>
@@ -225,8 +228,7 @@ export default function AddTradePage() {
                 required
                 className="w-full px-4 py-2 bg-slate-800 border border-slate-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               />
-            </motion.div>
-          </div>
+          </motion.div>
 
           <motion.div custom={5} variants={fieldVariants} initial="hidden" animate="visible">
             <label className="block text-sm font-semibold text-white mb-2">

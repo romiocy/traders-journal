@@ -319,6 +319,8 @@ export const translations = {
     title: { en: "Risk Calculator", ru: "Калькулятор рисков" },
     subtitle: { en: "Calculate position size, risk/reward ratio, and potential outcomes before entering a trade", ru: "Рассчитайте размер позиции, соотношение риск/прибыль и возможные результаты перед входом в сделку" },
     parameters: { en: "Trade Parameters", ru: "Параметры сделки" },
+    symbol: { en: "Symbol", ru: "Символ" },
+    symbolPlaceholder: { en: "e.g., AAPL, BTC/USD", ru: "напр., AAPL, BTC/USD" },
     accountBalance: { en: "Account Balance", ru: "Баланс аккаунта" },
     riskPercent: { en: "Risk per Trade (%)", ru: "Риск на сделку (%)" },
     entryPrice: { en: "Entry Price", ru: "Цена входа" },

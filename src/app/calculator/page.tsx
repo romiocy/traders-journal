@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 export default function CalculatorPage() {
   const { t } = useLanguage();
 
+  const [symbol, setSymbol] = useState("");
   const [accountBalance, setAccountBalance] = useState("");
   const [riskPercent, setRiskPercent] = useState("2");
   const [entryPrice, setEntryPrice] = useState("");
@@ -96,6 +97,20 @@ export default function CalculatorPage() {
             </h2>
 
             <div className="space-y-4">
+              {/* Symbol */}
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-1.5">
+                  {t("calculator", "symbol")} <span className="text-red-400">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={symbol}
+                  onChange={(e) => setSymbol(e.target.value.toUpperCase())}
+                  placeholder={t("calculator", "symbolPlaceholder")}
+                  className="w-full px-4 py-2.5 bg-slate-900/50 border border-slate-600/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                />
+              </div>
+
               {/* Account Balance */}
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1.5">
