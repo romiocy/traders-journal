@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { motion } from "framer-motion";
 
@@ -14,6 +14,19 @@ export default function CalculatorPage() {
   const [stopLoss, setStopLoss] = useState("");
   const [takeProfit, setTakeProfit] = useState("");
   const [leverage, setLeverage] = useState("1");
+
+  // Auto-calculate Stop Loss from entry price, risk %, and leverage
+  useEffect(() => {
+    const entry = parseFloat(entryPrice);
+    const risk = parseFloat(riskPercent);
+    const lev = parseFloat(leverage) || 1;
+    if (entry && risk) {
+      const sl = entry * (1 - risk / (100 * lev));
+      setStopLoss(sl > 0 ? sl.toFixed(2) : "");
+    } else {
+      setStopLoss("");
+    }
+  }, [entryPrice, riskPercent, leverage]);
 
   const calculate = useCallback(() => {
     const balance = parseFloat(accountBalance);
@@ -184,14 +197,14 @@ export default function CalculatorPage() {
               {/* Stop Loss */}
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-1.5">
-                  {t("calculator", "stopLoss")}
+                  {t("calculator", "stopLoss")} <span className="text-xs text-blue-400 ml-1">({t("calculator", "autoCalculated")})</span>
                 </label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-red-400 text-sm">$</span>
                   <input
                     type="number"
                     value={stopLoss}
-                    onChange={(e) => setStopLoss(e.target.value)}
+                    readOnly
                     placeholder="48000"
                     className="w-full pl-7 pr-4 py-2.5 bg-slate-900/50 border border-red-600/30 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition"
                   />

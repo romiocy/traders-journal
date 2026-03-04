@@ -325,6 +325,7 @@ export const translations = {
     riskPercent: { en: "Risk per Trade (%)", ru: "Риск на сделку (%)" },
     entryPrice: { en: "Entry Price", ru: "Цена входа" },
     stopLoss: { en: "Stop Loss Price", ru: "Цена стоп-лосса" },
+    autoCalculated: { en: "auto", ru: "авто" },
     takeProfit: { en: "Take Profit Price", ru: "Цена тейк-профита" },
     leverage: { en: "Leverage", ru: "Плечо" },
     riskAmount: { en: "Risk Amount", ru: "Сумма риска" },
