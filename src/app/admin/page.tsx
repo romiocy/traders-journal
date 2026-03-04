@@ -8,7 +8,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { PageTransition, FadeIn, FadeInStagger, FadeInItem } from "@/components/PageTransition";
 import {
   Users, ShieldCheck, BarChart3, DollarSign, Crosshair,
-  UserPlus, ChevronDown, PieChart, FileText
+  UserPlus, ChevronDown, PieChart, FileText, Trash2
 } from "lucide-react";
 
 interface Portfolio {
@@ -58,6 +58,8 @@ export default function AdminPanel() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [expandedUser, setExpandedUser] = useState<string | null>(null);
+  const [deletingUser, setDeletingUser] = useState<string | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
   const { t } = useLanguage();
 
   useEffect(() => {
@@ -102,6 +104,39 @@ export default function AdminPanel() {
 
   const toggleExpand = (userId: string) => {
     setExpandedUser(expandedUser === userId ? null : userId);
+  };
+
+  const handleDeleteUser = async (userId: string) => {
+    const currentUser = getCurrentUser();
+    if (!currentUser) return;
+
+    if (userId === currentUser.id) {
+      alert(t("admin", "cannotDeleteSelf"));
+      return;
+    }
+
+    setDeletingUser(userId);
+    try {
+      const response = await fetch(`/api/admin/users/${userId}`, {
+        method: "DELETE",
+        headers: {
+          "x-admin-id": currentUser.id,
+        },
+      });
+
+      if (response.ok) {
+        setUsers((prev) => prev.filter((u) => u.id !== userId));
+        setExpandedUser(null);
+      } else {
+        const data = await response.json();
+        alert(data.message || t("admin", "deleteError"));
+      }
+    } catch {
+      alert(t("admin", "deleteError"));
+    } finally {
+      setDeletingUser(null);
+      setConfirmDelete(null);
+    }
   };
 
   // Aggregate portfolio stats
@@ -349,6 +384,47 @@ export default function AdminPanel() {
                       </>
                     ) : (
                       <p className="text-slate-400 text-sm italic">{t("admin", "noTradesRecorded")}</p>
+                    )}
+
+                    {/* Delete User Button */}
+                    {!member.isAdmin && (
+                      <div className="mt-6 pt-4 border-t border-slate-700/50">
+                        {confirmDelete === member.id ? (
+                          <div className="bg-red-900/20 border border-red-700/40 rounded-xl p-4">
+                            <p className="text-red-300 text-sm mb-3">
+                              {t("admin", "deleteConfirm")}
+                            </p>
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => handleDeleteUser(member.id)}
+                                disabled={deletingUser === member.id}
+                                className="px-4 py-2 bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white rounded-lg transition text-sm font-medium flex items-center gap-2"
+                              >
+                                {deletingUser === member.id ? (
+                                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                ) : (
+                                  <Trash2 className="w-4 h-4" />
+                                )}
+                                {t("admin", "deleteUser")}
+                              </button>
+                              <button
+                                onClick={() => setConfirmDelete(null)}
+                                className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-lg transition text-sm font-medium"
+                              >
+                                {t("admin", "deleteCancel")}
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => setConfirmDelete(member.id)}
+                            className="flex items-center gap-2 px-4 py-2 rounded-lg text-red-400 hover:text-red-300 hover:bg-red-600/10 transition text-sm font-medium"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                            {t("admin", "deleteUser")}
+                          </button>
+                        )}
+                      </div>
                     )}
                   </div>
                 )}

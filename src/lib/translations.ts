@@ -261,6 +261,12 @@ export const translations = {
     status: { en: "Status", ru: "Статус" },
     date: { en: "Date", ru: "Дата" },
     loading: { en: "Loading admin panel...", ru: "Загрузка панели..." },
+    deleteUser: { en: "Delete User", ru: "Удалить" },
+    deleteConfirm: { en: "Are you sure you want to delete this user? All their trades will be permanently removed.", ru: "Вы уверены, что хотите удалить этого пользователя? Все его сделки будут удалены навсегда." },
+    deleteCancel: { en: "Cancel", ru: "Отмена" },
+    deleteSuccess: { en: "User deleted successfully", ru: "Пользователь удалён" },
+    deleteError: { en: "Failed to delete user", ru: "Ошибка удаления" },
+    cannotDeleteSelf: { en: "Cannot delete your own account", ru: "Нельзя удалить свой аккаунт" },
   },
 
   // Trade Detail page
