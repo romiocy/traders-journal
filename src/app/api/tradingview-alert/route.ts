@@ -22,7 +22,7 @@ ${body.alert || "New trading alert received"}
 
 *Pair:* ${body.symbol || "N/A"}
 *Price:* $${body.close || "N/A"}
-*Time:* ${new Date().toLocaleString()}
+*Timeframe:* ${body.timeframe || "N/A"}
     `.trim();
 
     // Send to Telegram
