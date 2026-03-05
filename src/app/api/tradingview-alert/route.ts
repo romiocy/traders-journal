@@ -1,5 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 
+// Convert TradingView interval to readable format (240 → 4h, 60 → 1h, 5 → 5m, D → 1D)
+function formatTimeframe(interval: string): string {
+  if (!interval) return "";
+  // Already formatted (e.g., "4h", "1D")
+  if (/[a-zA-Z]/.test(interval)) return interval;
+  const mins = parseInt(interval);
+  if (isNaN(mins)) return interval;
+  if (mins >= 1440) return `${mins / 1440}D`;
+  if (mins >= 60) return `${mins / 60}h`;
+  return `${mins}m`;
+}
+
 export async function POST(request: NextRequest) {
   try {
     const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
@@ -19,12 +31,12 @@ export async function POST(request: NextRequest) {
     const actionEmoji = action === "BUY" ? "🟩" : action === "SELL" ? "🟥" : "⚠️";
     const symbol = body.symbol || "N/A";
     const price = body.close || "N/A";
-    const timeframe = body.timeframe || "";
+    const timeframe = formatTimeframe(body.timeframe || "");
 
-    // Build message to match TradingView alert style
+    // Build message
     const lines: string[] = [];
 
-    // Header: ETH 4h 🟥 SELL  or  BTC 4h 🟩 BUY
+    // Header: BTC 4h 🟥 SELL
     let header = `*${symbol}*`;
     if (timeframe) header += ` ${timeframe}`;
     header += ` ${actionEmoji}`;
@@ -86,13 +98,13 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   return NextResponse.json({
-    message: "TradingView Telegram Alert Webhook v2",
+    message: "TradingView Telegram Alert Webhook v3",
     method: "POST",
     expectedFields: {
-      symbol: "Trading pair (e.g., BTCUSDT)",
-      close: "Current price",
-      action: "BUY or SELL",
-      timeframe: "e.g., 4h, 1d",
+      symbol: "Auto: {{ticker}}",
+      close: "Auto: {{close}}",
+      action: "BUY or SELL (set per alert)",
+      timeframe: "Auto: {{interval}} (converts 240→4h, 5→5m)",
       tp: "Take profit (optional)",
       sl: "Stop loss (optional)",
       alert: "Extra message (optional)",
