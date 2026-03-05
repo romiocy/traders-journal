@@ -15,15 +15,16 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
 
-    // Format the alert message
-    const message = `
-🚨 *TradingView Alert*
-${body.alert || "New trading alert received"}
+    // Format the alert message based on action (BUY/SELL)
+    const action = (body.action || "").toUpperCase();
+    const emoji = action === "BUY" ? "🟩" : action === "SELL" ? "🟥" : "🚨";
+    const symbol = body.symbol || "N/A";
+    const close = body.close || "N/A";
+    const interval = body.interval || "N/A";
 
-*Pair:* ${body.symbol || "N/A"}
-*Price:* $${body.close || "N/A"}
-*Time:* ${new Date().toLocaleString()}
-    `.trim();
+    const message = `${symbol} ${interval}h ${emoji} ${action || "ALERT"}
+PRICE: ${close}$
+TIMEFRAME: ${interval}h`;
 
     // Send to Telegram
     const response = await fetch(
@@ -34,7 +35,6 @@ ${body.alert || "New trading alert received"}
         body: JSON.stringify({
           chat_id: telegramChatId,
           text: message,
-          parse_mode: "Markdown",
         }),
       }
     );
