@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    // Validate environment variables
     const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
     const telegramChatId = process.env.TELEGRAM_CHAT_ID;
 
@@ -15,15 +14,47 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
 
-    // Format the alert message
-    const message = `
-🚨 *TradingView Alert*
-${body.alert || "New trading alert received"}
+    // Determine action and emoji
+    const action = (body.action || "").toUpperCase();
+    const actionEmoji = action === "BUY" ? "🟩" : action === "SELL" ? "🟥" : "⚠️";
+    const symbol = body.symbol || "N/A";
+    const price = body.close || "N/A";
+    const timeframe = body.timeframe || "";
 
-*Pair:* ${body.symbol || "N/A"}
-*Price:* $${body.close || "N/A"}
-*Time:* ${new Date().toLocaleString()}
-    `.trim();
+    // Build message to match TradingView alert style
+    const lines: string[] = [];
+
+    // Header: ETH 4h 🟥 SELL  or  BTC 4h 🟩 BUY
+    let header = `*${symbol}*`;
+    if (timeframe) header += ` ${timeframe}`;
+    header += ` ${actionEmoji}`;
+    if (action) header += ` *${action}*`;
+    lines.push(header);
+
+    // Separator
+    lines.push("━━━━━━━━━━━━━━━");
+
+    // Price
+    lines.push(`💰 *PRICE:* ${price}$`);
+
+    // Timeframe
+    if (timeframe) lines.push(`⏱ *TIMEFRAME:* ${timeframe}`);
+
+    // Take Profit & Stop Loss
+    if (body.tp) lines.push(`🎯 *TAKE PROFIT:* ${body.tp}$`);
+    if (body.sl) lines.push(`🛑 *STOP LOSS:* ${body.sl}$`);
+
+    // Extra alert message
+    if (body.alert) {
+      lines.push("");
+      lines.push(`📝 ${body.alert}`);
+    }
+
+    // Timestamp
+    lines.push("");
+    lines.push(`⏰ ${new Date().toLocaleString()}`);
+
+    const message = lines.join("\n");
 
     // Send to Telegram
     const response = await fetch(
@@ -55,13 +86,16 @@ ${body.alert || "New trading alert received"}
 
 export async function GET() {
   return NextResponse.json({
-    message: "TradingView Telegram Alert Webhook",
-    version: "1.0.1",
+    message: "TradingView Telegram Alert Webhook v2",
     method: "POST",
     expectedFields: {
-      alert: "Alert message",
-      symbol: "Trading pair (e.g., BTC/USD)",
+      symbol: "Trading pair (e.g., BTCUSDT)",
       close: "Current price",
+      action: "BUY or SELL",
+      timeframe: "e.g., 4h, 1d",
+      tp: "Take profit (optional)",
+      sl: "Stop loss (optional)",
+      alert: "Extra message (optional)",
     },
   });
 }
