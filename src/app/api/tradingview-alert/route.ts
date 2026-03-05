@@ -56,6 +56,7 @@ ${body.alert || "New trading alert received"}
 export async function GET() {
   return NextResponse.json({
     message: "TradingView Telegram Alert Webhook",
+    version: "1.0.1",
     method: "POST",
     expectedFields: {
       alert: "Alert message",
