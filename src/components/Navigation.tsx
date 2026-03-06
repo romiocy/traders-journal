@@ -15,6 +15,20 @@ import {
   Settings, ShieldCheck, User, LogOut, ChevronRight, X
 } from "lucide-react";
 
+// Small animated badge for demo mode nav items
+function DemoBadge({ count, delay = 0 }: { count: number | string; delay?: number }) {
+  return (
+    <motion.span
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ type: "spring", stiffness: 400, damping: 15, delay }}
+      className="ml-1.5 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-bold rounded-full bg-blue-500/30 text-blue-300 border border-blue-500/40"
+    >
+      {count}
+    </motion.span>
+  );
+}
+
 export function Navigation() {
   const router = useRouter();
   const pathname = usePathname();
@@ -99,10 +113,25 @@ export function Navigation() {
             {/* Desktop Nav Links */}
             <ul className="hidden md:flex gap-1 text-sm">
               <li><Link href="/" className={navLinkClass("/")}>{t("nav", "dashboard")}</Link></li>
-              <li><Link href="/trades" className={navLinkClass("/trades")}>{t("nav", "trades")}</Link></li>
+              <li>
+                <Link href="/trades" className={navLinkClass("/trades")}>
+                  {t("nav", "trades")}
+                  {!user && <DemoBadge count={10} delay={0.5} />}
+                </Link>
+              </li>
               {user && <li><Link href="/add-trade" className={navLinkClass("/add-trade")}>{t("nav", "addTrade")}</Link></li>}
-              <li><Link href="/performance" className={navLinkClass("/performance")}>{t("nav", "performance")}</Link></li>
-              <li><Link href="/calculator" className={navLinkClass("/calculator")}>{t("nav", "calculator")}</Link></li>
+              <li>
+                <Link href="/performance" className={navLinkClass("/performance")}>
+                  {t("nav", "performance")}
+                  {!user && <DemoBadge count="67%" delay={0.7} />}
+                </Link>
+              </li>
+              <li>
+                <Link href="/calculator" className={navLinkClass("/calculator")}>
+                  {t("nav", "calculator")}
+                  {!user && <DemoBadge count="BTC" delay={0.9} />}
+                </Link>
+              </li>
               {user?.isAdmin && (
                 <li>
                   <Link href="/admin" className={`px-3 py-2 rounded-lg transition text-sm font-semibold ${isActive("/admin") ? "text-blue-300 bg-blue-900/40 border border-blue-500/30" : "text-blue-400 hover:text-blue-300 hover:bg-blue-900/30"}`}>
@@ -330,6 +359,7 @@ export function Navigation() {
                   </Link>
                   <Link href="/trades" onClick={closeMobile} className={mobileNavLinkClass("/trades")}>
                     <List className="w-5 h-5" /> {t("nav", "trades")}
+                    {!user && <DemoBadge count={10} delay={0.3} />}
                   </Link>
                   {user && (
                     <Link href="/add-trade" onClick={closeMobile} className={mobileNavLinkClass("/add-trade")}>
@@ -338,9 +368,11 @@ export function Navigation() {
                   )}
                   <Link href="/performance" onClick={closeMobile} className={mobileNavLinkClass("/performance")}>
                     <TrendingUp className="w-5 h-5" /> {t("nav", "performance")}
+                    {!user && <DemoBadge count="67%" delay={0.5} />}
                   </Link>
                   <Link href="/calculator" onClick={closeMobile} className={mobileNavLinkClass("/calculator")}>
                     <Calculator className="w-5 h-5" /> {t("nav", "calculator")}
+                    {!user && <DemoBadge count="BTC" delay={0.7} />}
                   </Link>
                   {user && (
                     <Link href="/settings" onClick={closeMobile} className={mobileNavLinkClass("/settings")}>

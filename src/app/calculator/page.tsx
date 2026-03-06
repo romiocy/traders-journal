@@ -2,15 +2,20 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
+import { useAuth } from "@/context/AuthContext";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import {
   SlidersHorizontal, Crosshair, AlertTriangle, Ban,
   BarChart3, ShieldCheck, Calculator, CheckCircle2,
   ThumbsUp, AlertCircle, Siren
 } from "lucide-react";
+import { DEMO_CALCULATOR } from "@/lib/demoData";
 
 export default function CalculatorPage() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const { user } = useAuth();
+  const isDemo = !user;
 
   const [symbol, setSymbol] = useState("");
   const [accountBalance, setAccountBalance] = useState("");
@@ -19,6 +24,23 @@ export default function CalculatorPage() {
   const [stopLoss, setStopLoss] = useState("");
   const [takeProfit, setTakeProfit] = useState("");
   const [leverage, setLeverage] = useState("1");
+  const [demoLoaded, setDemoLoaded] = useState(false);
+
+  // Load demo data for non-logged-in users with animated fill effect
+  useEffect(() => {
+    if (isDemo && !demoLoaded) {
+      const timer = setTimeout(() => {
+        setSymbol(DEMO_CALCULATOR.symbol);
+        setTimeout(() => setAccountBalance(DEMO_CALCULATOR.accountBalance), 150);
+        setTimeout(() => setRiskPercent(DEMO_CALCULATOR.riskPercent), 300);
+        setTimeout(() => setEntryPrice(DEMO_CALCULATOR.entryPrice), 450);
+        setTimeout(() => setTakeProfit(DEMO_CALCULATOR.takeProfit), 600);
+        setTimeout(() => setLeverage(DEMO_CALCULATOR.leverage), 750);
+        setDemoLoaded(true);
+      }, 400);
+      return () => clearTimeout(timer);
+    }
+  }, [isDemo, demoLoaded]);
 
   // Auto-calculate Stop Loss from entry price, risk %, and leverage
   useEffect(() => {
@@ -88,6 +110,26 @@ export default function CalculatorPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto">
+        {/* Demo Banner */}
+        {isDemo && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-gradient-to-r from-orange-600/20 to-amber-600/20 border border-orange-500/30 rounded-xl p-4 flex items-center justify-between mb-6"
+          >
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">🧮</span>
+              <div>
+                <p className="text-white font-semibold text-sm">{lang === "ru" ? "Пример расчёта" : "Example Calculation"}</p>
+                <p className="text-slate-300 text-xs">{lang === "ru" ? "Поля заполнены демо-данными. Зарегистрируйтесь для сохранения расчётов!" : "Fields pre-filled with demo data. Sign up to save your calculations!"}</p>
+              </div>
+            </div>
+            <Link href="/signup" className="px-4 py-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-lg hover:from-orange-600 hover:to-amber-600 transition font-medium text-xs whitespace-nowrap">
+              {lang === "ru" ? "Начать" : "Get Started"}
+            </Link>
+          </motion.div>
+        )}
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}

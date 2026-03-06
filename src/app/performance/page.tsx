@@ -18,6 +18,7 @@ import {
 } from "recharts";
 import { Trade } from "@/types/trade";
 import { getCurrentUser } from "@/lib/auth";
+import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { 
   PageTransition, FadeIn, FadeInStagger, FadeInItem,
@@ -25,6 +26,11 @@ import {
   HoverCard, AnimatedCounter, AnimatedProgressBar, SlideIn, TextReveal, FloatingParticles
 } from "@/components/PageTransition";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import {
+  DEMO_TRADES, DEMO_METRICS, DEMO_MONTHLY_DATA,
+  DEMO_SYMBOL_DATA, DEMO_CHART_DATA, DEMO_DRAWDOWN_DATA
+} from "@/lib/demoData";
 
 interface PerformanceMetrics {
   totalTrades: number;
@@ -59,7 +65,9 @@ interface SymbolPerformance {
 
 export default function PerformanceReviewPage() {
   const [loading, setLoading] = useState(true);
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const { user } = useAuth();
+  const isDemo = !user;
   const [metrics, setMetrics] = useState<PerformanceMetrics>({
     totalTrades: 0,
     closedTrades: 0,
@@ -82,6 +90,19 @@ export default function PerformanceReviewPage() {
   const [drawdownData, setDrawdownData] = useState<any[]>([]);
 
   useEffect(() => {
+    if (isDemo) {
+      // Load demo data for non-logged-in users with a short delay for animation
+      const timer = setTimeout(() => {
+        setMetrics(DEMO_METRICS);
+        setMonthlyData(DEMO_MONTHLY_DATA);
+        setSymbolData(DEMO_SYMBOL_DATA);
+        setChartData(DEMO_CHART_DATA);
+        setDrawdownData(DEMO_DRAWDOWN_DATA);
+        setLoading(false);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+
     const user = getCurrentUser();
     if (!user) return;
 
@@ -275,6 +296,26 @@ export default function PerformanceReviewPage() {
     <div className="space-y-6 sm:space-y-8 relative">
       {/* Floating particles */}
       <FloatingParticles count={10} />
+
+      {/* Demo Banner */}
+      {isDemo && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-gradient-to-r from-emerald-600/20 to-blue-600/20 border border-emerald-500/30 rounded-xl p-4 flex items-center justify-between"
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">📊</span>
+            <div>
+              <p className="text-white font-semibold text-sm">{lang === "ru" ? "Пример аналитики" : "Sample Analytics"}</p>
+              <p className="text-slate-300 text-xs">{lang === "ru" ? "На основе 10 демо-сделок. Зарегистрируйтесь, чтобы видеть свою статистику!" : "Based on 10 demo trades. Sign up to see your own stats!"}</p>
+            </div>
+          </div>
+          <Link href="/signup" className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-blue-600 text-white rounded-lg hover:from-emerald-700 hover:to-blue-700 transition font-medium text-xs whitespace-nowrap">
+            {lang === "ru" ? "Начать" : "Get Started"}
+          </Link>
+        </motion.div>
+      )}
 
       {/* Header */}
       <div className="mb-6 sm:mb-8">
@@ -546,7 +587,7 @@ export default function PerformanceReviewPage() {
       )}
 
       {/* Empty State */}
-      {metrics.totalTrades === 0 && (
+      {metrics.totalTrades === 0 && !isDemo && (
         <ScrollScaleIn>
         <div className="card-base p-8 sm:p-12 text-center">
           <div className="text-slate-300">

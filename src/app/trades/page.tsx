@@ -5,12 +5,15 @@ import { Trade } from "@/types/trade";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
+import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { PageTransition, FadeIn, FadeInStagger, FadeInItem } from "@/components/PageTransition";
 import { motion, AnimatePresence } from "framer-motion";
+import { DEMO_TRADES } from "@/lib/demoData";
 
 export default function TradesPage() {
   const router = useRouter();
+  const { user } = useAuth();
   const [trades, setTrades] = useState<Trade[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "open" | "closed">("all");
@@ -20,11 +23,28 @@ export default function TradesPage() {
   const [dateTo, setDateTo] = useState("");
   const [plFilter, setPlFilter] = useState<"all" | "profit" | "loss">("all");
   const [sortBy, setSortBy] = useState<"date-desc" | "date-asc" | "pl-desc" | "pl-asc">("date-desc");
+  const [demoAnimated, setDemoAnimated] = useState(false);
   const { t, lang } = useLanguage();
+  const isDemo = !user;
 
   useEffect(() => {
+    if (isDemo) {
+      // For demo users, show fake trades with staggered animation
+      setLoading(true);
+      setDemoAnimated(false);
+      const demoFiltered = filter === "all" 
+        ? DEMO_TRADES 
+        : DEMO_TRADES.filter(t => t.status === (filter === "open" ? "OPEN" : "CLOSED"));
+      // Simulate short loading then animate in
+      const timer = setTimeout(() => {
+        setTrades(demoFiltered);
+        setLoading(false);
+        setTimeout(() => setDemoAnimated(true), 100);
+      }, 400);
+      return () => clearTimeout(timer);
+    }
     fetchTrades();
-  }, [filter]);
+  }, [filter, isDemo]);
 
   const fetchTrades = async () => {
     setLoading(true);
@@ -48,6 +68,7 @@ export default function TradesPage() {
   };
 
   const handleDelete = async (id: string) => {
+    if (isDemo) return; // Demo mode — no deleting
     if (confirm(t("trades", "confirmDelete"))) {
       try {
         const user = getCurrentUser();
@@ -116,6 +137,26 @@ export default function TradesPage() {
   return (
     <PageTransition>
     <div className="space-y-4 sm:space-y-6">
+      {/* Demo Banner */}
+      {isDemo && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-xl p-4 flex items-center justify-between"
+        >
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">👀</span>
+            <div>
+              <p className="text-white font-semibold text-sm">{lang === "ru" ? "Режим демо" : "Demo Mode"}</p>
+              <p className="text-slate-300 text-xs">{lang === "ru" ? "Это пример данных. Зарегистрируйтесь, чтобы добавить свои сделки!" : "This is example data. Sign up to track your own trades!"}</p>
+            </div>
+          </div>
+          <Link href="/signup" className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition font-medium text-xs whitespace-nowrap">
+            {lang === "ru" ? "Начать" : "Get Started"}
+          </Link>
+        </motion.div>
+      )}
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
         <div>
@@ -123,7 +164,7 @@ export default function TradesPage() {
           <p className="text-slate-300 text-sm sm:text-base">{t("trades", "trackAndAnalyze")}</p>
         </div>
         <Link
-          href="/add-trade"
+          href={isDemo ? "/signup" : "/add-trade"}
           className="btn-primary inline-flex items-center gap-2 w-fit text-sm sm:text-base"
         >
           <span>+</span> {t("trades", "addTrade")}
