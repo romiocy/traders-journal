@@ -320,15 +320,25 @@ export function FloatingParticles({
   count?: number;
   className?: string;
 }) {
-  const particles = Array.from({ length: count }, (_, i) => ({
-    id: i,
-    size: Math.random() * 4 + 2,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    duration: Math.random() * 15 + 10,
-    delay: Math.random() * 5,
-    opacity: Math.random() * 0.3 + 0.05,
-  }));
+  const [particles, setParticles] = useState<
+    { id: number; size: number; x: number; y: number; duration: number; delay: number; opacity: number }[]
+  >([]);
+
+  useEffect(() => {
+    setParticles(
+      Array.from({ length: count }, (_, i) => ({
+        id: i,
+        size: Math.random() * 4 + 2,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        duration: Math.random() * 15 + 10,
+        delay: Math.random() * 5,
+        opacity: Math.random() * 0.3 + 0.05,
+      }))
+    );
+  }, [count]);
+
+  if (particles.length === 0) return null;
 
   return (
     <div className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}>

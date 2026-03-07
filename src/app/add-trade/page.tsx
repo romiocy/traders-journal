@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { useLanguage } from "@/context/LanguageContext";
@@ -26,10 +26,18 @@ export default function AddTradePage() {
     quantity: "",
     quantityCurrency: "USDT",
     entryPrice: "",
-    tradeDate: new Date().toISOString().slice(0, 10),
+    tradeDate: "",
     setupDescription: "",
     reasonToBuy: "",
   });
+
+  // Set today's date on the client only to avoid hydration mismatch
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      tradeDate: prev.tradeDate || new Date().toISOString().slice(0, 10),
+    }));
+  }, []);
 
   // Extract base currency from symbol (e.g., "BTC" from "BTC/USDT")
   const getBaseCurrency = () => {

@@ -104,7 +104,7 @@ export function Footer() {
           transition={{ delay: 0.6, duration: 0.5 }}
         >
           <p className="text-slate-300 text-sm text-center">
-            © {new Date().getFullYear()} {t("common", "tradersJournal")}. {t("footer", "allRightsReserved")}
+            © 2026 {t("common", "tradersJournal")}. {t("footer", "allRightsReserved")}
           </p>
         </motion.div>
       </div>

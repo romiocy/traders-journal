@@ -7,7 +7,14 @@ interface Message {
   id: string;
   role: "user" | "assistant";
   content: string;
-  timestamp: Date;
+  timestamp: Date | null;
+}
+
+function formatTime(date: Date | null): string {
+  if (!date) return "";
+  const h = date.getHours().toString().padStart(2, "0");
+  const m = date.getMinutes().toString().padStart(2, "0");
+  return `${h}:${m}`;
 }
 
 export function AIAssistant() {
@@ -17,9 +24,16 @@ export function AIAssistant() {
       id: "1",
       role: "assistant",
       content: "Hello! I'm your Trading AI Assistant. I can help you analyze trades, discuss trading strategies, and answer questions about investing. How can I help you today?",
-      timestamp: new Date(),
+      timestamp: null,
     },
   ]);
+
+  // Set the initial timestamp on the client only to avoid hydration mismatch
+  useEffect(() => {
+    setMessages((prev) =>
+      prev.map((msg) => (msg.timestamp === null ? { ...msg, timestamp: new Date() } : msg))
+    );
+  }, []);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -128,10 +142,7 @@ export function AIAssistant() {
             >
               <p className="text-sm">{message.content}</p>
               <span className="text-xs opacity-70 mt-1 block">
-                {message.timestamp.toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
+                {formatTime(message.timestamp)}
               </span>
             </div>
           </div>
